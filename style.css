@@ -398,7 +398,20 @@ footer {
     video,
     .map-container {
         max-width: 100% !important;
-        width: 100%;
+        width: 100% !important;
+        box-sizing: border-box;
+    }
+
+    /* Constrain content blocks */
+    .textbook-content,
+    .container {
+        overflow-x: hidden;
+    }
+
+    .textbook-content iframe,
+    .textbook-content video {
+        max-width: 100% !important;
+        height: auto;
     }
 
     /* Fix Forms on Mobile */

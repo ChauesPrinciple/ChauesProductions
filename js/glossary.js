@@ -632,41 +632,76 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Tooltip Logic
     let currentTooltipTerm = null;
+    let tooltipVisible = false;
+
+    function showTooltip(term, e) {
+        const termKey = term.getAttribute('data-term');
+        const data = glossaryTerms.find(t => (t.matchTerm || t.term) === termKey);
+
+        if (data) {
+            let content = `<strong>${data.term}</strong><br>${data.definition}`;
+            if (data.image) {
+                content += `<br><img src="${data.image}" alt="${data.term}" style="max-width:100%; margin-top:10px; border-radius:4px;">`;
+            }
+            if (data.caption) {
+                content += `<br><small>${data.caption}</small>`;
+            }
+            tooltip.innerHTML = content;
+            tooltip.style.display = 'block';
+            tooltipVisible = true;
+            currentTooltipTerm = term;
+
+            // Positioning
+            const rect = term.getBoundingClientRect();
+            let top = rect.bottom + window.scrollY + 5;
+            let left = rect.left + window.scrollX;
+
+            // Adjust if off screen
+            if (left + 300 > window.innerWidth) {
+                left = window.innerWidth - 310;
+            }
+            if (left < 10) {
+                left = 10;
+            }
+
+            tooltip.style.top = `${top}px`;
+            tooltip.style.left = `${left}px`;
+        }
+    }
+
+    function hideTooltip() {
+        tooltip.style.display = 'none';
+        tooltipVisible = false;
+        currentTooltipTerm = null;
+    }
 
     document.querySelectorAll('.glossary-term').forEach(term => {
+        // Desktop hover
         term.addEventListener('mouseenter', (e) => {
-            const termKey = e.target.getAttribute('data-term');
-            const data = glossaryTerms.find(t => (t.matchTerm || t.term) === termKey);
-
-            if (data) {
-                let content = `<strong>${data.term}</strong><br>${data.definition}`;
-                if (data.image) {
-                    content += `<br><img src="${data.image}" alt="${data.term}" style="max-width:100%; margin-top:10px; border-radius:4px;">`;
-                }
-                if (data.caption) {
-                    content += `<br><small>${data.caption}</small>`;
-                }
-                tooltip.innerHTML = content;
-                tooltip.style.display = 'block';
-
-                // Positioning
-                const rect = e.target.getBoundingClientRect();
-                let top = rect.bottom + window.scrollY + 5;
-                let left = rect.left + window.scrollX;
-
-                // Adjust if off screen
-                if (left + 300 > window.innerWidth) {
-                    left = window.innerWidth - 310;
-                }
-
-                tooltip.style.top = `${top}px`;
-                tooltip.style.left = `${left}px`;
-            }
+            showTooltip(e.target, e);
         });
 
         term.addEventListener('mouseleave', () => {
-            tooltip.style.display = 'none';
+            hideTooltip();
         });
+
+        // Mobile touch/click support
+        term.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (tooltipVisible && currentTooltipTerm === e.target) {
+                hideTooltip();
+            } else {
+                showTooltip(e.target, e);
+            }
+        });
+    });
+
+    // Close tooltip when tapping elsewhere on mobile
+    document.addEventListener('click', (e) => {
+        if (tooltipVisible && !e.target.classList.contains('glossary-term') && !tooltip.contains(e.target)) {
+            hideTooltip();
+        }
     });
 });
 
