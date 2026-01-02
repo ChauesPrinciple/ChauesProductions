@@ -626,16 +626,20 @@ blockquote {
 }
 
 .banner-image-wrap {
-    width: 100%;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
     height: auto;
     min-height: 200px;
     aspect-ratio: 4/1;
-    position: relative;
     margin-bottom: 2rem;
-    border-radius: 8px;
+    border-radius: 0;
     background-color: #000;
 }
 
