@@ -117,15 +117,15 @@
     <script src="js/glossary.js"></script>
     <script src="js/mobile-nav.js"></script>
     <script>
-        document.addEventListener(DOMContentLoaded, () => {
-            const container = document.getElementById(glossary-container);
-            const searchInput = document.getElementById(search-input);
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('glossary-container');
+            const searchInput = document.getElementById('search-input');
 
             // Function to categorize term (simple heuristic or manual mapping could be added)
             // For now, we just display the term and definition.
 
             function renderTerms(filter = "") {
-                container.innerHTML = ;
+                container.innerHTML = '';
                 const lowerFilter = filter.toLowerCase();
 
                 // Sort terms alphabetically
@@ -133,8 +133,8 @@
 
                 sortedTerms.forEach(item => {
                     if (item.term.toLowerCase().includes(lowerFilter) || item.definition.toLowerCase().includes(lowerFilter)) {
-                        const card = document.createElement(div);
-                        card.className = glossary-card;
+                        const card = document.createElement('div');
+                        card.className = 'glossary-card';
 
                         card.innerHTML = `
                             <div class="glossary-term">${item.term}</div>
@@ -145,7 +145,7 @@
                 });
 
                 if (container.children.length === 0) {
-                    container.innerHTML = <p style="text-align:center; grid-column: 1/-1; color: #777;">No terms found matching your search.</p>;
+                    container.innerHTML = '<p style="text-align:center; grid-column: 1/-1; color: #777;">No terms found matching your search.</p>';
                 }
             }
 
@@ -153,7 +153,7 @@
             renderTerms();
 
             // Search Listener
-            searchInput.addEventListener(input, (e) => {
+            searchInput.addEventListener('input', (e) => {
                 renderTerms(e.target.value);
             });
         });
@@ -161,5 +161,3 @@
 </body>
 
 </html>
-
-
