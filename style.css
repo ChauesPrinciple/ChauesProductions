@@ -832,3 +832,44 @@ blockquote {
         max-height: 500px;
     }
 }
+
+/* Student Quote Styling */
+.student-quote {
+    background: linear-gradient(135deg, rgba(255, 0, 127, 0.05), rgba(0, 243, 255, 0.03));
+    border-left: 3px solid var(--accent-neon-pink);
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    border-radius: 0 8px 8px 0;
+    position: relative;
+}
+
+.student-quote::before {
+    content: '"';
+    position: absolute;
+    top: 0.5rem;
+    left: 0.75rem;
+    font-size: 3rem;
+    color: rgba(255, 0, 127, 0.3);
+    font-family: Georgia, serif;
+    line-height: 1;
+}
+
+.student-quote p {
+    margin-bottom: 0.75rem;
+    font-style: italic;
+    color: #ddd;
+    padding-left: 1.5rem;
+}
+
+.student-quote footer {
+    font-size: 0.85rem;
+    color: #888;
+    padding-left: 1.5rem;
+    margin-top: 0.5rem;
+    border-top: none;
+}
+
+.student-quote footer cite {
+    font-style: italic;
+    color: var(--accent-neon-cyan);
+}

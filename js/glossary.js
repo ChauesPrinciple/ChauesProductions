@@ -71,6 +71,10 @@ const glossaryTerms = [
         definition: "The choreographed physical movement and positioning of actors within the frame during a scene."
     },
     {
+        term: "Bokeh",
+        definition: "The aesthetic quality of the out-of-focus areas in an image, often appearing as soft, circular shapes. Derived from the Japanese word for 'blur' (暈け), it is a hallmark of shallow depth of field cinematography."
+    },
+    {
         term: "Boom Shot",
         definition: "A fluid shot created by a camera mounted on a counterweighted boom arm or jib that allows for vertical and horizontal movement."
     },
