@@ -1,0 +1,271 @@
+﻿How to Shoot and Edit a Local Business Commercial
+Core Goal
+Youâ€™re not making a pretty montage.Youâ€™re making a 60-second ad that:
+Hooks the viewer in the first 3â€“5 seconds.
+Clearly shows what the service/experience feels like.
+Ends with a specific call to action that can actually generate sales.
+Everything below exists to serve those three things.
+Pre-Production (Weeks Before the Shoot)
+Talk to the client
+Before you touch a camera:
+Clarify:
+What are we selling? (exact service/offer)
+Who is it for?
+What should viewers do after watching? (click, book, call, visit)
+Ask where the ad will live:
+Website (horizontal 16:9)
+Social media (vertical 9:16)
+Paid ads (both)
+Write a simple script
+Aim for ~60 seconds. Structure:
+Hook (first line):
+Directly hit a problem or desire.
+Example: â€œIf youâ€™re feeling tense, stressed, and overwhelmed, itâ€™s time to reset.â€
+Experience / solution:
+Walk the viewer through the experience step by step.
+Focus on sensory detail and transformation:
+What they see, hear, feel.
+Offer + call to action:
+Spell out the offer (time, price, discount, location).
+Tell them exactly what to do:
+â€œClick below to book,â€
+â€œCall now,â€
+â€œBook your first session today.â€
+Turn the script into a shot list
+For each beat of the script, define:
+What we see while that line is heard:
+Wide: establish space and vibe.
+Medium: show the process.
+Close-up: show details and emotion.
+Extreme close-up: hands, feet, tools, textures.
+Aim for:
+A mix of wides, mediums, tights, and extreme close-ups.
+Enough coverage that youâ€™re never stuck on one shot for too long.
+On-Set Workflow (Order of Operations)
+On shoot day, the basic order is:
+Shoot the hook.
+Shoot the outro / call to action.
+Record the entire script as audio (like a voiceover) while talent is still micâ€™d.
+Shoot B-roll to cover the whole script.
+Finish with extra detail shots to give yourself options in the edit.
+Youâ€™re building the spine first (hook + CTA + full script), then filling it with visuals.
+General Shooting Practices (Camera-Agnostic)
+Frame rate and motion
+Use 24 fps (or 25 if youâ€™re in a PAL region) for the main edit:
+Hook
+Most talking moments
+Outros / CTA
+Use a slightly higher frame rate (e.g., 30 fps or 50/60 fps) for B-roll when:
+You want a subtle slow-motion feel.
+Youâ€™re capturing gentle, slow movement (hands, water, fabrics, etc.).
+Rule of thumb:
+Main narrative: 24/25 fps.
+Soft slow-mo B-roll: slightly higher frame rate, slowed down in post.
+Shutter and exposure (generic)
+Shutter:
+Use roughly double the frame rate (180Â° shutter equivalent).
+Example:
+24 fps â†’ ~1/50
+30 fps â†’ ~1/60
+Exposure:
+Use your cameraâ€™s exposure tools:
+Histogram, zebras, false color (if available).
+Skin tones should sit comfortably above mid-grey without clipping.
+Avoid â€œmonster lightingâ€:
+Donâ€™t light from directly below the chin.
+Look for a soft shadow under the chin and one side of the face slightly darker.
+Lighting basics
+Key light:
+Place the key light so the subject faces slightly toward it and toward camera.
+Soften it (softbox, bounce, diffusion) to match the mood of the business (spa = soft, relaxing).
+Back/hair light:
+Add a small light behind or above to separate talent from the background.
+Ambient mood:
+Lift exposure enough so itâ€™s readable.
+Do not flatten or over-brighten a space that is supposed to feel cozy or calm.
+Audio
+Use lav mics for spoken lines if possible.
+Monitor levels:
+Avoid clipping.
+Capture at a healthy level with headroom.
+Bonus: if you have timecode or any sync tool, use it; if not:
+Clap for sync.
+Keep good notes on which audio track goes with which talent.
+Backup recording
+If your camera supports dual recording (two cards), use it.
+If not:
+Keep extra cards.
+Donâ€™t fill any card to 100%.
+Back up as soon as youâ€™re done.
+Directing and Capturing Performance
+The hook
+Direct the hook like a mini-scene:
+Give your subject a simple action:
+Coming out of a relaxed state in a chair.
+Walking into frame.
+Have them deliver one strong line aimed at:
+The viewerâ€™s problem.
+The name of the service.
+The feeling theyâ€™ll get.
+Get multiple takes:
+Slightly different wording.
+Different energy levels (more calm, more direct, more â€œurgent but warmâ€).
+The outro / call to action
+While theyâ€™re still comfortable and micâ€™d:
+Record the CTA:
+â€œClick below to book your first experience.â€
+â€œBook now to get your first session at [price].â€
+Get multiple versions:
+Short, punchy version.
+Slightly longer version that includes the offer.
+You might not end up using a talking-head outro, but having it gives you options.
+Recording the full script as audio (voiceover model)
+Before you remove mics:
+Have them read the entire script like a voiceover.
+They donâ€™t need to be on camera. This audio will be covered by B-roll.
+Direct them to:
+Read naturally.
+Pause between sentences.
+If they mess up, restart from that sentence only.
+Result: You now have a clean, complete narration track that describes the full experience and offer.
+B-Roll Strategy (Visualizing the Script)
+Start with movement shots
+If youâ€™re using a gimbal, slider, or any stabilizer:
+Use it while itâ€™s already set up.
+Get your wider and medium moving shots first:
+Establish the space.
+Show the environment, dÃ©cor, and overall vibe.
+Track the customer entering, sitting, relaxing.
+Cover the whole experience
+Match B-roll to the script beats:
+Arrival / context
+Exterior of the business.
+Door, sign, logo.
+Client walking in.
+Settle in
+Chair reclining.
+Weighted blanket, warm towels.
+Close-ups of hands placing the blanket, adjusting the chair.
+Sensory elements
+Essential oils, candles.
+Steam or warm towels.
+Close-ups of textures (fabrics, tools, bottles).
+Service in action
+Hands working on feet, hands, neck, shoulders, head.
+Different angles:
+Over-the-shoulder.
+Side profile.
+Tight detail shots.
+Afterglow / exit
+Client relaxed, smiling softly.
+Standing up, stretching.
+Walking out of the room or building.
+Variety of shots
+For each moment, aim for:
+Wide shot â€“ show the space and context.
+Medium shot â€“ show the interaction.
+Close-up â€“ show emotion and details.
+Extreme close-up â€“ tools, skin, water, oils, contact.
+Get more than you think you need:
+You want options to maintain pacing at 2â€“3 seconds per shot.
+Handheld detail shots
+If youâ€™re going handheld:
+Make the camera slightly heavier with a handle, cage, or monitor:
+More mass = smoother motion.
+Use three points of contact:
+Camera/rig against your chest or shoulder.
+Right hand on grip.
+Left hand under lens/rig.
+Direct your talent:
+Move slower than feels natural.
+Hold positions for longer.
+Repeat the same action if needed so you can get multiple angles.
+Editing the Commercial
+Build the structure
+Drop your voiceover/full script audio into the timeline.
+Place your best hook take at the very beginning.
+Lay B-roll over the script so the visuals:
+Follow the experience chronologically.
+Show the steps as theyâ€™re being described.
+Pacing
+Aim for 2â€“3 seconds per shot on average.
+Shorten shots to:
+Keep energy up.
+Avoid repetitive visuals.
+If the ad feels slow:
+Cut earlier.
+Use tighter shots.
+Drop redundant angles.
+Choosing the ending
+You have two main options:
+Talking-head CTA on screen:
+Talent speaks directly to camera.
+Text or logo appears beside/over them.
+Experience ending:
+Show the client leaving relaxed.
+Cut to logo and text with a CTA (no talking head).
+Choose whichever feels more confident and on-brand for the business.
+Delivering Both Horizontal and Vertical Versions
+Shoot with both formats in mind
+When framing on set:
+Keep main action centered or slightly toward the middle vertically.
+Avoid putting key information at the extreme edges:
+It may get cropped out in vertical.
+If your camera allows higher resolution or taller aspect capture (e.g., full sensor rather than strict 16:9):
+Use that to give yourself extra room to reframe in post.
+Edit workflow
+Primary edit in horizontal (16:9):
+Build your main cut for web and YouTube.
+Lock pacing and story here first.
+Duplicate for vertical (9:16):
+Copy the full timeline.
+Paste into a 9:16 sequence.
+Reframe each shot:
+Slide the frame up or down to keep faces and action centered vertically.
+Avoid cropping off hands, faces, or key elements.
+Captions and on-screen text
+Especially for vertical (where people often watch muted):
+Add captions for key spoken lines.
+Use a clear, bold font when possible.
+If the brandâ€™s font is thin:
+Add a soft black gradient bar behind the text at the bottom to improve legibility.
+Keep text:
+Short
+High contrast
+Easy to read instantly
+Color and Finishing (Camera-Neutral Log Workflow)
+If you shot in a log profile:
+Technical conversion
+Apply an appropriate log-to-Rec.709 transform or LUT.
+This gets you into a normal contrast and color space.
+Basic correction
+Adjust exposure until skin tones look natural.
+Fix color temperature (too warm / too cool).
+Adjust tint (remove green/magenta shifts).
+Creative look
+Optionally add a gentle creative LUT or grade:
+Slight warmth for a spa.
+A bit more contrast, but not harsh.
+Dial back intensity so it supports, not dominates.
+Optional bloom / softness
+Add a subtle glow/bloom on highlights if you want a more â€œfilmic,â€ gentle feel.
+Do not overdo it; the image still needs clarity.
+Final check:
+Does it still feel like a cozy, calm, relaxing space?
+Can you clearly see the essential actions and expressions?
+Business Outcome: Making the Ad Work
+The end goal:
+Viewers:
+Understand the service.
+Feel what it would be like to experience it.
+Know exactly what to do next.
+The client cares about:
+Clicks
+Bookings
+Revenue
+So make sure the ad:
+Clearly states the offer.
+Clearly states the action (â€œClick below,â€ â€œBook now,â€ etc.).
+Feels trustworthy and aligned with the brand.
+
+
