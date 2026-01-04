@@ -1069,62 +1069,66 @@ blockquote {
     }
 }
 
-/* Infinite Game Section */
-.infinite-game-box {
-    margin-top: 3rem;
-    padding: 2rem;
-    border: 2px solid var(--accent-neon-cyan);
-    border-radius: 8px;
-    background-color: rgba(10, 20, 40, 0.8);
-    /* Darker, more opaque background */
-    box-shadow: 0 0 20px rgba(0, 243, 255, 0.15);
-}
-
-.infinite-game-box h3 {
-    color: var(--accent-neon-cyan);
-    margin-bottom: 1rem;
-    font-size: 1.8rem;
-    text-shadow: 0 0 5px rgba(0, 243, 255, 0.3);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.infinite-game-box ul {
-    list-style: none;
-    padding: 0;
-    margin: 1.5rem 0;
-}
-
-.infinite-game-box li {
-    margin-bottom: 1rem;
-    padding-left: 1.5rem;
+/* Infinite Game Section - High Specificity */
+.textbook-content .infinite-game-box {
+    margin-top: 3rem !important;
+    padding: 2rem !important;
+    border: 3px solid var(--accent-neon-cyan) !important;
+    border-radius: 8px !important;
+    background-color: rgba(10, 20, 40, 0.9) !important;
+    box-shadow: 0 0 25px rgba(0, 243, 255, 0.2) !important;
     position: relative;
-    line-height: 1.6;
+    z-index: 10;
 }
 
-.infinite-game-box li::before {
-    content: "\25B6";
-    /* Unicode arrow */
-    position: absolute;
-    left: 0;
-    color: var(--accent-neon-pink);
-    font-size: 0.8rem;
-    top: 0.2rem;
+.textbook-content .infinite-game-box h3 {
+    color: var(--accent-neon-cyan) !important;
+    margin-bottom: 1rem !important;
+    font-size: 1.8rem !important;
+    text-shadow: 0 0 8px rgba(0, 243, 255, 0.5) !important;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border: none !important;
+    /* Prevent conflicts */
 }
 
-.infinite-game-box strong {
-    color: #fff;
-    font-weight: 600;
+.textbook-content .infinite-game-box ul {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 1.5rem 0 !important;
+}
+
+.textbook-content .infinite-game-box li {
+    margin-bottom: 1rem !important;
+    padding-left: 2rem !important;
+    position: relative !important;
+    line-height: 1.6 !important;
+    display: block !important;
+}
+
+.textbook-content .infinite-game-box li::before {
+    content: "▶" !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 2px !important;
+    color: var(--accent-neon-pink) !important;
+    font-size: 1rem !important;
+    line-height: inherit !important;
+}
+
+.textbook-content .infinite-game-box strong {
+    color: #fff !important;
+    font-weight: 700 !important;
 }
 
 .infinite-game-price {
-    font-family: var(--font-heading);
-    font-size: 1.2rem;
-    color: var(--accent-neon-pink);
-    margin-top: 2rem;
-    display: block;
-    text-align: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    padding-top: 1.5rem;
-    font-weight: bold;
+    font-family: var(--font-heading) !important;
+    font-size: 1.3rem !important;
+    color: var(--accent-neon-pink) !important;
+    margin-top: 2rem !important;
+    display: block !important;
+    text-align: center !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.3) !important;
+    padding-top: 1.5rem !important;
+    font-weight: 800 !important;
 }
