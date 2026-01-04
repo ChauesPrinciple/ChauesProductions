@@ -1079,21 +1079,20 @@ blockquote {
     box-shadow: 0 0 15px rgba(0, 243, 255, 0.15) !important;
     position: relative;
     z-index: 10;
+    max-width: 100%;
 }
 
 .textbook-content .infinite-game-box h3 {
     color: var(--accent-neon-cyan) !important;
     margin-bottom: 0.5rem !important;
     font-size: 1.3rem !important;
-    /* Slightly smaller to fit */
-    white-space: nowrap !important;
-    /* Force one line */
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
     text-shadow: 0 0 5px rgba(0, 243, 255, 0.4) !important;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     border: none !important;
+    white-space: normal !important;
+    /* Allow wrapping */
+    line-height: 1.3;
 }
 
 .textbook-content .infinite-game-box p {
@@ -1133,7 +1132,8 @@ blockquote {
 
 .infinite-game-price {
     font-family: var(--font-heading) !important;
-    font-size: 1.1rem !important;
+    font-size: 1rem !important;
+    /* Slightly smaller for mobile */
     color: var(--accent-neon-pink) !important;
     margin-top: 1rem !important;
     display: block !important;
@@ -1141,4 +1141,31 @@ blockquote {
     border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
     padding-top: 1rem !important;
     font-weight: 700 !important;
+    line-height: 1.4;
+}
+
+/* Mobile Fixes for Map and Partners */
+@media (max-width: 768px) {
+    .map-key-list {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+    }
+
+    .map-key-list li {
+        white-space: normal;
+        /* Allow text wrap */
+        margin-bottom: 0.5rem;
+    }
+
+    .partner-item img {
+        max-width: 100%;
+        /* Ensure logos don't overflow */
+        height: auto;
+    }
+
+    .infinite-game-box h3 {
+        font-size: 1.1rem !important;
+        /* Smaller title on mobile */
+    }
 }

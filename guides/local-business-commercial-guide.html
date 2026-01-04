@@ -96,6 +96,9 @@
 
         .worksheet-textarea {
             width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            /* Critical for mobile */
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 4px;
@@ -121,6 +124,34 @@
             padding: 1.5rem;
             margin-top: 3rem;
             text-align: center;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .guide-header {
+                padding: 1.5rem;
+            }
+
+            .guide-header h1 {
+                font-size: 2rem;
+                /* Smaller header */
+                word-wrap: break-word;
+            }
+
+            .guide-content h2 {
+                font-size: 1.5rem;
+            }
+
+            .step-box,
+            .example-box,
+            .choices-box {
+                padding: 1rem;
+            }
+
+            main.container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
         }
 
         @media print {
