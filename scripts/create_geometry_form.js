@@ -6,12 +6,14 @@ function createGeometryForm() {
     form.addSectionHeaderItem().setTitle('Project Information');
     form.addTextItem().setTitle('Student Name').setRequired(true);
     form.addTextItem().setTitle('Project Title').setRequired(true);
-    form.addChoiceItem().setTitle('Current Project Stage')
+
+    var stageItem = form.addMultipleChoiceItem();
+    stageItem.setTitle('Current Project Stage')
         .setChoices([
-            form.createChoice('Planning'),
-            form.createChoice('Shot'),
-            form.createChoice('Rough Cut'),
-            form.createChoice('Near Final')
+            stageItem.createChoice('Planning'),
+            stageItem.createChoice('Shot'),
+            stageItem.createChoice('Rough Cut'),
+            stageItem.createChoice('Near Final')
         ]).setRequired(true);
 
     form.addTextItem().setTitle('Scene').setRequired(true);
@@ -19,37 +21,40 @@ function createGeometryForm() {
     form.addParagraphTextItem().setTitle('Characters in scene (list)').setRequired(true);
 
     // Step 1: Pick the “Geometry Anchor”
-    form.addSectionHeaderItem().setTitle('Step 1: Pick the “Geometry Anchor”')
+    form.addPageBreakItem().setTitle('Step 1: Pick the “Geometry Anchor”')
         .setHelpText('Choose the one thing that must stay readable and will anchor the design.');
 
-    form.addChoiceItem().setTitle('Anchor Type')
+    var anchorTypeItem = form.addMultipleChoiceItem();
+    anchorTypeItem.setTitle('Anchor Type')
         .setChoices([
-            form.createChoice('Object'),
-            form.createChoice('Exit-Threshold'),
-            form.createChoice('Power Seat'),
-            form.createChoice('Secret-Witness'),
-            form.createChoice('Other')
+            anchorTypeItem.createChoice('Object'),
+            anchorTypeItem.createChoice('Exit-Threshold'),
+            anchorTypeItem.createChoice('Power Seat'),
+            anchorTypeItem.createChoice('Secret-Witness'),
+            anchorTypeItem.createChoice('Other')
         ]).setRequired(true);
 
     form.addTextItem().setTitle('Anchor is:').setRequired(true);
 
-    form.addChoiceItem().setTitle('Where will it sit in the frame?')
+    var framePosItem = form.addMultipleChoiceItem();
+    framePosItem.setTitle('Where will it sit in the frame?')
         .setChoices([
-            form.createChoice('Foreground'),
-            form.createChoice('Midground'),
-            form.createChoice('Background')
+            framePosItem.createChoice('Foreground'),
+            framePosItem.createChoice('Midground'),
+            framePosItem.createChoice('Background')
         ]).setRequired(true);
 
     // Step 2: Build the First Shape
-    form.addSectionHeaderItem().setTitle('Step 2: Build the First Shape')
+    form.addPageBreakItem().setTitle('Step 2: Build the First Shape')
         .setHelpText('Pick one base shape and define its points.');
 
-    form.addChoiceItem().setTitle('Shape 1 Type')
+    var shape1TypeItem = form.addMultipleChoiceItem();
+    shape1TypeItem.setTitle('Shape 1 Type')
         .setChoices([
-            form.createChoice('Triangle'),
-            form.createChoice('Square (trap)'),
-            form.createChoice('Line (rank)'),
-            form.createChoice('Cluster (pressure)')
+            shape1TypeItem.createChoice('Triangle'),
+            shape1TypeItem.createChoice('Square (trap)'),
+            shape1TypeItem.createChoice('Line (rank)'),
+            shape1TypeItem.createChoice('Cluster (pressure)')
         ]).setRequired(true);
 
     form.addTextItem().setTitle('Shape 1 name').setRequired(true);
@@ -61,84 +66,100 @@ function createGeometryForm() {
     form.addTextItem().setTitle('What is the viewer supposed to look at first?').setRequired(true);
 
     // Step 3: Lock the Frame Rule
-    form.addSectionHeaderItem().setTitle('Step 3: Lock the Frame Rule')
+    form.addPageBreakItem().setTitle('Step 3: Lock the Frame Rule')
         .setHelpText('Geometry only works if the camera rule is stable.');
 
-    form.addChoiceItem().setTitle('Choose one rule')
+    var ruleItem = form.addMultipleChoiceItem();
+    ruleItem.setTitle('Choose one rule')
         .setChoices([
-            form.createChoice('Rule 1: Hold a wide or medium-wide until the shape changes.'),
-            form.createChoice('Rule 2: No reaction cuts unless a new fact appears.'),
-            form.createChoice('Rule 3: Reframe only when a character crosses a boundary (door, corner, table edge).')
+            ruleItem.createChoice('Rule 1: Hold a wide or medium-wide until the shape changes.'),
+            ruleItem.createChoice('Rule 2: No reaction cuts unless a new fact appears.'),
+            ruleItem.createChoice('Rule 3: Reframe only when a character crosses a boundary (door, corner, table edge).')
         ]).setRequired(true);
 
     form.addTextItem().setTitle('My rule is (specifics):').setRequired(true);
 
     // Step 4: Plan the Shape Change
-    form.addSectionHeaderItem().setTitle('Step 4: Plan the Shape Change')
+    form.addPageBreakItem().setTitle('Step 4: Plan the Shape Change')
         .setHelpText('A geometry scene needs at least one clear transformation.');
 
     form.addTextItem().setTitle('Trigger: What causes the shape to change?')
         .setHelpText('Example triggers: entry, object handoff, accusation, reveal, someone backing up.')
         .setRequired(true);
 
-    form.addChoiceItem().setTitle('Shape 2 Type')
+    var shape2TypeItem = form.addMultipleChoiceItem();
+    shape2TypeItem.setTitle('Shape 2 Type')
         .setChoices([
-            form.createChoice('Triangle'),
-            form.createChoice('Square'),
-            form.createChoice('Line'),
-            form.createChoice('Cluster')
+            shape2TypeItem.createChoice('Triangle'),
+            shape2TypeItem.createChoice('Square'),
+            shape2TypeItem.createChoice('Line'),
+            shape2TypeItem.createChoice('Cluster')
         ]).setRequired(true);
 
-    form.addCheckboxItem().setTitle('How does Shape 2 differ from Shape 1?')
+    var diffItem = form.addCheckboxItem();
+    diffItem.setTitle('How does Shape 2 differ from Shape 1?')
         .setChoices([
-            form.createChoice('Expands (distance increases)'),
-            form.createChoice('Compresses (trap forms)'),
-            form.createChoice('Rotates (new dominant angle)'),
-            form.createChoice('Splits (two vs one)'),
-            form.createChoice('Breaks (one point peels off to anchor object)')
+            diffItem.createChoice('Expands (distance increases)'),
+            diffItem.createChoice('Compresses (trap forms)'),
+            diffItem.createChoice('Rotates (new dominant angle)'),
+            diffItem.createChoice('Splits (two vs one)'),
+            diffItem.createChoice('Breaks (one point peels off to anchor object)')
         ]).setRequired(true);
 
     form.addTextItem().setTitle('Describe the new arrangement in one sentence:').setRequired(true);
 
     // Step 5: Geometry Beat Map
-    form.addSectionHeaderItem().setTitle('Step 5: Geometry Beat Map')
+    form.addPageBreakItem().setTitle('Step 5: Geometry Beat Map')
         .setHelpText('List the scene as shape beats. Keep it simple and countable.');
 
+    // Helper to create the number choices reused 4 times
+    function createNumChoices(item) {
+        return [item.createChoice('1'), item.createChoice('2'), item.createChoice('3'), item.createChoice('4')];
+    }
+    function createYesNo(item) {
+        return [item.createChoice('Yes'), item.createChoice('No')];
+    }
+
     // Beat 1
-    form.addChoiceItem().setTitle('Beat 1 (start) - Number of people')
-        .setChoices([form.createChoice('1'), form.createChoice('2'), form.createChoice('3'), form.createChoice('4')]);
+    var b1Num = form.addMultipleChoiceItem();
+    b1Num.setTitle('Beat 1 (start) - Number of people').setChoices(createNumChoices(b1Num));
     form.addTextItem().setTitle('Beat 1 Shape');
-    form.addChoiceItem().setTitle('Beat 1 Anchor visible?').setChoices([form.createChoice('Yes'), form.createChoice('No')]);
+    var b1Anchor = form.addMultipleChoiceItem();
+    b1Anchor.setTitle('Beat 1 Anchor visible?').setChoices(createYesNo(b1Anchor));
 
     // Beat 2
-    form.addChoiceItem().setTitle('Beat 2 (pressure rises) - Number of people')
-        .setChoices([form.createChoice('1'), form.createChoice('2'), form.createChoice('3'), form.createChoice('4')]);
+    var b2Num = form.addMultipleChoiceItem();
+    b2Num.setTitle('Beat 2 (pressure rises) - Number of people').setChoices(createNumChoices(b2Num));
     form.addTextItem().setTitle('Beat 2 Shape');
-    form.addChoiceItem().setTitle('Beat 2 Anchor visible?').setChoices([form.createChoice('Yes'), form.createChoice('No')]);
+    var b2Anchor = form.addMultipleChoiceItem();
+    b2Anchor.setTitle('Beat 2 Anchor visible?').setChoices(createYesNo(b2Anchor));
 
     // Beat 3
-    form.addChoiceItem().setTitle('Beat 3 (peak) - Number of people')
-        .setChoices([form.createChoice('1'), form.createChoice('2'), form.createChoice('3'), form.createChoice('4')]);
+    var b3Num = form.addMultipleChoiceItem();
+    b3Num.setTitle('Beat 3 (peak) - Number of people').setChoices(createNumChoices(b3Num));
     form.addTextItem().setTitle('Beat 3 Shape');
-    form.addChoiceItem().setTitle('Beat 3 Anchor visible?').setChoices([form.createChoice('Yes'), form.createChoice('No')]);
+    var b3Anchor = form.addMultipleChoiceItem();
+    b3Anchor.setTitle('Beat 3 Anchor visible?').setChoices(createYesNo(b3Anchor));
 
     // Beat 4
-    form.addChoiceItem().setTitle('Beat 4 (release) - Number of people')
-        .setChoices([form.createChoice('1'), form.createChoice('2'), form.createChoice('3'), form.createChoice('4')]);
+    var b4Num = form.addMultipleChoiceItem();
+    b4Num.setTitle('Beat 4 (release) - Number of people').setChoices(createNumChoices(b4Num));
     form.addTextItem().setTitle('Beat 4 Shape');
-    form.addChoiceItem().setTitle('Beat 4 Anchor visible?').setChoices([form.createChoice('Yes'), form.createChoice('No')]);
+    var b4Anchor = form.addMultipleChoiceItem();
+    b4Anchor.setTitle('Beat 4 Anchor visible?').setChoices(createYesNo(b4Anchor));
 
-    form.addChoiceItem().setTitle('Are you using the clean "geometry arc" (1 -> 2 -> 3 -> 2 -> 1)?')
-        .setChoices([form.createChoice('Yes'), form.createChoice('No')]);
+    var arcItem = form.addMultipleChoiceItem();
+    arcItem.setTitle('Are you using the clean "geometry arc" (1 -> 2 -> 3 -> 2 -> 1)?')
+        .setChoices(createYesNo(arcItem));
 
     // Step 6: Blocking Instructions
-    form.addSectionHeaderItem().setTitle('Step 6: Blocking Instructions (Concrete Moves Only)')
+    form.addPageBreakItem().setTitle('Step 6: Blocking Instructions (Concrete Moves Only)')
         .setHelpText('Write the moves that create the shapes. No psychology, just actions.');
 
     form.addParagraphTextItem().setTitle('Blocking Moves').setRequired(true);
 
     // Step 7: Composition Checks
-    form.addSectionHeaderItem().setTitle('Step 7: Composition Checks');
+    form.addPageBreakItem().setTitle('Step 7: Composition Checks');
 
     form.addTextItem().setTitle('Triangle Check (if applicable): Who is Point A looking at?');
     form.addTextItem().setTitle('Triangle Check: Who is Point B looking at?');
@@ -147,13 +168,14 @@ function createGeometryForm() {
     form.addTextItem().setTitle('Square Trap Check (if applicable): What frames the trapped character?')
         .setHelpText('Doorway / wall corner / table edge / window / bodies / other');
 
-    form.addChoiceItem().setTitle('Clarity Check: In one wide frame, can we read all points of the shape?')
-        .setChoices([form.createChoice('Yes'), form.createChoice('No')]).setRequired(true);
+    var clarityItem = form.addMultipleChoiceItem();
+    clarityItem.setTitle('Clarity Check: In one wide frame, can we read all points of the shape?')
+        .setChoices(createYesNo(clarityItem)).setRequired(true);
 
     form.addTextItem().setTitle('If no, what must change?');
 
     // Final Confirmation
-    form.addSectionHeaderItem().setTitle('Final Confirmation');
+    form.addPageBreakItem().setTitle('Final Confirmation');
 
     form.addParagraphTextItem().setTitle('Fill in the blanks: This scene adds geometry by staging [shape] around [anchor], then changing it to [new shape] when [trigger] happens.')
         .setRequired(true);
