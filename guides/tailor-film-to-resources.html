@@ -64,6 +64,54 @@
             border-radius: 0 8px 8px 0;
         }
 
+        /* Interactive Elements */
+        .form-label {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: block;
+            margin-top: 1rem;
+        }
+
+        .worksheet-textarea {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+            color: #fff;
+            padding: 1rem;
+            min-height: 100px;
+            font-family: 'Inter', sans-serif;
+            resize: vertical;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .worksheet-textarea:focus {
+            outline: none;
+            border-color: var(--accent-neon-cyan);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .checkbox-field {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            cursor: pointer;
+        }
+
+        .checkbox-field input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--accent-neon-cyan);
+            cursor: pointer;
+        }
+
+        .checkbox-field label {
+            cursor: pointer;
+        }
+
         .download-section {
             background: rgba(0, 243, 255, 0.05);
             border: 1px solid rgba(0, 243, 255, 0.2);
@@ -79,6 +127,36 @@
             footer,
             .download-section {
                 display: none;
+            }
+
+            body {
+                background: #fff;
+                color: #000;
+            }
+
+            .worksheet-textarea {
+                border: 1px solid #ccc;
+                background: #fff;
+                color: #000;
+                min-height: 80px;
+            }
+
+            h1,
+            h2,
+            h3,
+            h4,
+            p,
+            li,
+            label,
+            strong {
+                color: #000 !important;
+            }
+
+            .example-box,
+            .principle-box {
+                border: 1px solid #ccc;
+                background: transparent;
+                color: #000;
             }
         }
     </style>
@@ -104,7 +182,7 @@
 
     <main class="container" style="padding-top: 100px;">
         <div class="guide-header">
-            <p class="subtitle">Tokyo in Film &bull; Free Guide</p>
+            <p class="subtitle">Tokyo in Film &bull; Interactive Worksheet</p>
             <h1>Tailor Your Film to Your Resources</h1>
         </div>
 
@@ -117,88 +195,88 @@
             <p>Strong small-scale execution beats failed big ideas every time. This guide helps you identify what you
                 actually have and design a project that maximizes those assets.</p>
 
-            <h2>What Works Well on Limited Resources</h2>
-            <ul>
-                <li>A hallway</li>
-                <li>An apartment</li>
-                <li>Two actors</li>
-                <li>One creature detail</li>
-                <li>One gag or prop</li>
-                <li>One conflict</li>
-            </ul>
+            <div class="example-box">
+                <h3 style="margin-top: 0; color: var(--accent-neon-cyan);">What Works Well on Limited Resources</h3>
+                <ul>
+                    <li>A hallway</li>
+                    <li>An apartment</li>
+                    <li>Two actors</li>
+                    <li>One creature detail</li>
+                    <li>One gag or prop</li>
+                    <li>One conflict</li>
+                </ul>
+            </div>
 
-            <h2>What Often Fails</h2>
-            <ul>
-                <li>Worldbuilding without budget</li>
-                <li>Action without choreography</li>
-                <li>Fight scenes without trained performers</li>
-                <li>Sci-fi rules no one can visualize</li>
-            </ul>
+            <div class="example-box"
+                style="border-left-color: var(--accent-neon-pink); background: rgba(255, 0, 127, 0.05);">
+                <h3 style="margin-top: 0; color: var(--accent-neon-pink);">What Often Fails</h3>
+                <ul>
+                    <li>Worldbuilding without budget</li>
+                    <li>Action without choreography</li>
+                    <li>Fight scenes without trained performers</li>
+                    <li>Sci-fi rules no one can visualize</li>
+                </ul>
+            </div>
 
             <h2>Inventory Your Resources</h2>
+            <p>Fill out what you actually have access to right now.</p>
 
-            <h3>Locations You Actually Have Access To</h3>
-            <div class="example-box">
-                <p>List places you can film without asking permission or paying fees:</p>
-                <ul>
-                    <li>Your home or apartment</li>
-                    <li>A friends business after hours</li>
-                    <li>Public spaces with no permit requirements</li>
-                    <li>Schools (with permission from administration)</li>
-                </ul>
-            </div>
+            <label class="form-label"><strong>Locations:</strong> List places you can film without asking permission or
+                paying fees (e.g., your home, friend's business after hours, public parks).</label>
+            <textarea class="worksheet-textarea" placeholder="List your available locations here..."></textarea>
 
-            <h3>People Available to You</h3>
-            <div class="example-box">
-                <p>Consider:</p>
-                <ul>
-                    <li>How many actors can you reliably get for multiple shoot days?</li>
-                    <li>Do any have special skills (martial arts, dance, music)?</li>
-                    <li>Can you write roles that match their natural personalities?</li>
-                </ul>
-            </div>
+            <label class="form-label"><strong>People:</strong> Who can you reliably get? Do they have special skills
+                (martial arts, dance, music)?</label>
+            <textarea class="worksheet-textarea" placeholder="List actors and crew..."></textarea>
 
-            <h3>Equipment You Own or Can Borrow</h3>
-            <div class="example-box">
-                <ul>
-                    <li>Camera (even a phone counts)</li>
-                    <li>Tripod or stabilizer</li>
-                    <li>Lighting (including practical lamps, windows)</li>
-                    <li>Audio recording device or microphone</li>
-                </ul>
-            </div>
+            <label class="form-label"><strong>Equipment:</strong> What do you own or can borrow? (Camera, tripod,
+                practical lights, audio recorder).</label>
+            <textarea class="worksheet-textarea" placeholder="List your gear..."></textarea>
 
             <h2>Design Around Constraints</h2>
+            <p>Based on your inventory above, how will you shape your story?</p>
 
-            <p><strong>If you have one location:</strong> Write a contained thriller, a conversation piece, or a mystery
-                that unfolds in one space.</p>
+            <label class="form-label"><strong>If you have one location:</strong> Write a contained thriller,
+                conversation, or mystery.</label>
+            <textarea class="worksheet-textarea" style="min-height: 80px;"
+                placeholder="Story idea based on location..."></textarea>
 
-            <p><strong>If you have one actor:</strong> Create a solo documentary-style piece, a vlog narrative, or a
-                character study.</p>
+            <label class="form-label"><strong>If you have one actor:</strong> Create a solo documentary, vlog narrative,
+                or character study.</label>
+            <textarea class="worksheet-textarea" style="min-height: 80px;"
+                placeholder="Story idea for one actor..."></textarea>
 
-            <p><strong>If you have no lighting equipment:</strong> Shoot during golden hour, use window light, or
-                embrace the natural darkness for horror.</p>
+            <label class="form-label"><strong>If you have few/no lights:</strong> Shoot during golden hour, window
+                light, or embrace darkness/horror.</label>
+            <textarea class="worksheet-textarea" style="min-height: 80px;"
+                placeholder="Lighting strategy..."></textarea>
 
-            <p><strong>If you have no budget:</strong> Focus on performance, dialogue, and editing rather than effects.
-            </p>
+            <label class="form-label"><strong>If you have no budget:</strong> Focus on performance, dialogue, and
+                editing rather than effects.</label>
+            <textarea class="worksheet-textarea" style="min-height: 80px;"
+                placeholder="How will you rely on performance?"></textarea>
+
 
             <h2>Stories That Fit Small Resources</h2>
-            <ul>
-                <li><strong>Two people talking:</strong> A breakup, a confession, a negotiation</li>
-                <li><strong>One person alone:</strong> A discovery, a decision, a transformation</li>
-                <li><strong>A simple task going wrong:</strong> Making coffee, fixing something, waiting for someone
-                </li>
-                <li><strong>A mystery in a single room:</strong> Something is different, someone is lying, an object is
-                    missing</li>
-            </ul>
+            <div class="example-box">
+                <ul>
+                    <li><strong>Two people talking:</strong> A breakup, a confession, a negotiation</li>
+                    <li><strong>One person alone:</strong> A discovery, a decision, a transformation</li>
+                    <li><strong>A simple task going wrong:</strong> Making coffee, fixing something, waiting for someone
+                    </li>
+                    <li><strong>A mystery in a single room:</strong> Something is different, someone is lying, an object
+                        is missing</li>
+                </ul>
+            </div>
 
             <div class="principle-box">
-                <strong>Remember:</strong> The best short films arent ambitious—theyre precise. Find the story that
+                <strong>Remember:</strong> The best short films aren't ambitious—they're precise. Find the story that
                 your resources can execute perfectly.
             </div>
 
             <div class="download-section">
-                <p>Save this guide for offline reference:</p>
+                <h3>Save Your Plan</h3>
+                <p>Print to PDF to save your resource inventory.</p>
                 <button class="btn" onclick="window.print()">Print / Save as PDF</button>
             </div>
 
