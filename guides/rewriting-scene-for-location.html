@@ -65,6 +65,54 @@
             border-radius: 0 8px 8px 0;
         }
 
+        /* Interactive Elements */
+        .form-label {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: block;
+            margin-top: 1rem;
+        }
+
+        .worksheet-textarea {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+            color: #fff;
+            padding: 1rem;
+            min-height: 100px;
+            font-family: 'Inter', sans-serif;
+            resize: vertical;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .worksheet-textarea:focus {
+            outline: none;
+            border-color: var(--accent-neon-cyan);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .checkbox-field {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            cursor: pointer;
+        }
+
+        .checkbox-field input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--accent-neon-cyan);
+            cursor: pointer;
+        }
+
+        .checkbox-field label {
+            cursor: pointer;
+        }
+
         .download-section {
             background: rgba(0, 243, 255, 0.05);
             border: 1px solid rgba(0, 243, 255, 0.2);
@@ -80,6 +128,37 @@
             footer,
             .download-section {
                 display: none;
+            }
+
+            body {
+                background: #fff;
+                color: #000;
+            }
+
+            .worksheet-textarea {
+                border: 1px solid #ccc;
+                background: #fff;
+                color: #000;
+                min-height: 80px;
+                /* Ensure space for writing when printed empty */
+            }
+
+            h1,
+            h2,
+            h3,
+            h4,
+            p,
+            li,
+            label,
+            strong {
+                color: #000 !important;
+            }
+
+            .example-box,
+            .principle-box {
+                border: 1px solid #ccc;
+                background: transparent;
+                color: #000;
             }
         }
     </style>
@@ -105,7 +184,7 @@
 
     <main class="container" style="padding-top: 100px;">
         <div class="guide-header">
-            <p class="subtitle">Tokyo in Film &bull; Free Guide</p>
+            <p class="subtitle">Tokyo in Film &bull; Interactive Worksheet</p>
             <h1>Rewriting the Scene for Location</h1>
         </div>
 
@@ -117,10 +196,8 @@
                 apartment.
             </p>
 
-            <p><strong>The mistake:</strong> Trying to shoot the scene as if it were the sitcom set, jamming the camera
-                in the corner and fighting the space.</p>
-
-            <p><strong>The solution:</strong> Rewrite the scene <em>for</em> the galley kitchen.</p>
+            <p><strong>The solution:</strong> Rewrite the scene <em>for</em> the location. Use this worksheet to audit
+                your location and rewrite your scene to embrace its constraints.</p>
 
             <h2>The Core Principle</h2>
             <div class="principle-box">
@@ -129,33 +206,39 @@
             </div>
 
             <h2>Phase 1: The Location Audit</h2>
-            <p>Before you lock your script, go to the location with a notebook (not a camera). Sit there for 20 minutes
-                and observe. Write down:</p>
+            <p>Before you lock your script, go to the location with this worksheet. Observe and fill out the details
+                below.</p>
+
+            <label class="form-label">Location Name / Address:</label>
+            <textarea class="worksheet-textarea" style="min-height: 50px;"></textarea>
 
             <div class="example-box">
                 <h3>Visual Geometry</h3>
-                <p>Is the room long and narrow? Is it wide and open? Does it have weird angles? A long hallway demands
-                    tracking shots or characters walking toward/away from the camera. A small square room forces
-                    intimacy or confrontation.</p>
+                <p>Is the room long and narrow? Wide and open? Low ceilings? Describe the physical shape that will
+                    constrain movement.</p>
+                <textarea class="worksheet-textarea"
+                    placeholder="e.g., Narrow hallway, barely room for two people to pass..."></textarea>
             </div>
 
             <div class="example-box">
                 <h3>Light Sources</h3>
-                <p>Where does the actual light come from? If there is a bright vending machine outside the window, write
-                    a moment where a character steps into its neon glow. If the room is dark, make the darkness a story
-                    point.</p>
+                <p>Where does the actual light come from? (Windows, neon signs, specific lamps). How can you use this?
+                </p>
+                <textarea class="worksheet-textarea"
+                    placeholder="e.g., Only one window on the north wall, creates a silhouette at 3PM..."></textarea>
             </div>
 
             <div class="example-box">
                 <h3>Soundscape</h3>
-                <p>Close your eyes. What do you hear? The train passing every 4 minutes? The hum of the AC? Don't try to
-                    hide these in post; write them into the dialogue. "Wait for the train to pass" is a great natural
-                    beat that adds realism.</p>
+                <p>What noises are present? (Trains, AC hum, traffic). Don't ignore them—list them here to write into
+                    the dialogue.</p>
+                <textarea class="worksheet-textarea"
+                    placeholder="e.g., Loud train passes every 4 mins, fridge hums..."></textarea>
             </div>
 
-            <h2>Phase 2: The Block & Write</h2>
-            <p>Now, take your generic scene and re-block it physically in the space. Then, rewrite the script to match
-                those movements.</p>
+            <h2>Phase 2: The Rewrite</h2>
+            <p>Now, take your generic scene and re-block it physically in the space. Rewrite the action to match the
+                location's reality.</p>
 
             <h3>Example: The "Breakup" Scene</h3>
             <p><strong>Original Script (Generic):</strong> INT. CAFE - DAY. JOHN and MARY sit at a table. They talk.
@@ -175,27 +258,38 @@
             <p><em>Why this is better:</em> The "side-by-side" limitation of the bench becomes a visual metaphor for
                 their disconnect. The public setting forces them to repress their emotions, adding tension.</p>
 
-            <h2>Phase 3: The Action Audit</h2>
-            <p>Look at every physical action in your script. Does it fit?</p>
-            <ul>
-                <li>If the script says "He paces nervously," but the room is 4 feet wide, change it to "He taps his foot
-                    rapidly against the cabinet."</li>
-                <li>If the script says "She storms out," but the door sticks, change it to "She struggles with the lock,
-                    ruining her dramatic exit."</li>
-            </ul>
+            <label class="form-label"><strong>Your Rewrite Plan:</strong> How will the location change the blocking and
+                stakes?</label>
+            <textarea class="worksheet-textarea" style="min-height: 200px;"
+                placeholder="Write your new scene ideas here..."></textarea>
 
-            <div class="principle-box">
-                <strong>The "Golden Rule" of Student Film:</strong> A simple scene shot in a location that feels
-                absolutely real is worth 100 times more than a complex scene shot in a location that feels fake.
+            <h2>Phase 3: The Action Audit</h2>
+            <p>Look at your physical actions. Do they fit? (e.g., Change "Pacing" to "Tapping foot" if the room is
+                small).</p>
+            <textarea class="worksheet-textarea" placeholder="List changed actions here..."></textarea>
+
+            <h2>Final Checklist</h2>
+            <div class="checkbox-field">
+                <input type="checkbox" id="check1">
+                <label for="check1">Does the blocking use the full depth of the room?</label>
+            </div>
+            <div class="checkbox-field">
+                <input type="checkbox" id="check2">
+                <label for="check2">Are characters interacting with real objects in the space?</label>
+            </div>
+            <div class="checkbox-field">
+                <input type="checkbox" id="check3">
+                <label for="check3">Have you removed any action that is impossible in this space?</label>
+            </div>
+            <div class="checkbox-field">
+                <input type="checkbox" id="check4">
+                <label for="check4">Does the location add visual value or subtext to the scene?</label>
             </div>
 
             <div class="download-section">
-                <h3>Exercise: The Location Swap</h3>
-                <p>Take one scene from your script. Physically go to two different potential locations (e.g., a
-                    stairwell and a laundromat). Write the scene twice—once tailored for the stairwell (verticality,
-                    echoes), once for the laundromat (noise, waiting, machines). See which one feels more alive.</p>
-                <br>
-                <button class="btn" onclick="window.print()">Print This Guide to Take on Location</button>
+                <h3>Save Your Work</h3>
+                <p>Print to PDF to save your answers.</p>
+                <button class="btn" onclick="window.print()">Print / Save as PDF</button>
             </div>
 
         </div>
