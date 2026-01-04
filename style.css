@@ -182,6 +182,16 @@ nav ul li a.active {
     margin-top: 2rem;
 }
 
+.section-grid.three-col {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 768px) {
+    .section-grid.three-col {
+        grid-template-columns: 1fr;
+    }
+}
+
 .card {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -872,7 +882,9 @@ blockquote {
 .student-quote footer cite {
     font-style: italic;
     color: var(--accent-neon-cyan);
-}/* Forms Grid */
+}
+
+/* Forms Grid */
 .forms-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
