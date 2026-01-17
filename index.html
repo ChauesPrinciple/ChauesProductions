@@ -31,11 +31,6 @@
             margin: 0;
             padding: 0;
             background-color: #272B30;
-            background-image: var(--bg-overlay), url('assets/images/bg.jpg');
-            background-size: cover, cover;
-            background-position: center center;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
             color: var(--text-color);
             font-family: var(--font-main);
             line-height: 1.75;
@@ -43,19 +38,22 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
 
-        /* Fix for iOS/mobile browsers that don't support background-attachment: fixed */
-        @supports (-webkit-touch-callout: none) {
-            body {
-                background-attachment: scroll;
-            }
-        }
-
-        @media (max-width: 768px) {
-            body {
-                background-attachment: scroll;
-            }
+        /* Background using pseudo-element for mobile compatibility */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: var(--bg-overlay), url('assets/images/bg.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            z-index: -1;
         }
 
         .container {
