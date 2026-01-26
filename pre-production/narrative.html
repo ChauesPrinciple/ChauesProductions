@@ -171,20 +171,23 @@
             <h3>Protagonist vs Goal</h3>
             <p>Your protagonist is the person whose journey defines the story. Their goal is the driving force behind
                 the plot.</p>
-            <div class="section-grid three-col"
-                style="margin-top: 1rem; margin-bottom: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
-                <article class="card" style="padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+            <div class="section-grid"
+                style="display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1rem; margin-bottom: 2rem;">
+                <article class="card"
+                    style="flex: 1 1 300px; padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
                     <h4 style="font-size: 1rem; color: var(--accent-neon-cyan); margin-bottom: 0.5rem;">Spirited Away
                     </h4>
                     <p style="margin-bottom: 0;"><strong>Chihiro</strong> (Protagonist) must navigate a spirit world to
                         rescue her parents (Goal).</p>
                 </article>
-                <article class="card" style="padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                <article class="card"
+                    style="flex: 1 1 300px; padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
                     <h4 style="font-size: 1rem; color: var(--accent-neon-cyan); margin-bottom: 0.5rem;">Tokyo Drift</h4>
                     <p style="margin-bottom: 0;"><strong>Sean</strong> (Protagonist) must adapt to a subculture built on
                         speed and loyalty (Goal: Survival/Belonging).</p>
                 </article>
-                <article class="card" style="padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                <article class="card"
+                    style="flex: 1 1 300px; padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
                     <h4 style="font-size: 1rem; color: var(--accent-neon-cyan); margin-bottom: 0.5rem;">Adrift in Tokyo
                     </h4>
                     <p style="margin-bottom: 0;"><strong>Fumiya</strong> (Protagonist) uses his unexpected walk across
@@ -213,9 +216,26 @@
                 room. But what if the narrator is lying?</p>
 
             <div class="mt-video-widget">
-                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-                    <iframe src="https://www.youtube.com/embed/18M6k_yO8iQ"
-                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
+                <style>
+                    .video-wrapper {
+                        position: relative;
+                        padding-bottom: 56.25%;
+                        /* 16:9 */
+                        height: 0;
+                        overflow: hidden;
+                    }
+
+                    .video-wrapper iframe {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        border: 0;
+                    }
+                </style>
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/18M6k_yO8iQ" title="Rashomon Effect"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen></iframe>
                 </div>
