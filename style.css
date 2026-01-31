@@ -148,7 +148,6 @@ nav .logo.active .dropdown-menu,
     color: #fff;
     border-left-color: var(--accent-neon-pink);
     background: rgba(255, 0, 127, 0.05);
-    pointer-events: none;
 }
 
 .menu-toggle {
@@ -1334,10 +1333,12 @@ blockquote {
 .req-list li {
     border-left-color: #ffd700;
 }
+
 /* Responsive Video Wrapper */
 .video-wrapper {
     position: relative;
-    padding-bottom: 56.25%; /* 16:9 */
+    padding-bottom: 56.25%;
+    /* 16:9 */
     height: 0;
     overflow: hidden;
     max-width: 100%;
