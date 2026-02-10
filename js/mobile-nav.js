@@ -1,4 +1,5 @@
 const mobileMenu = document.getElementById('mobile-menu');
+console.log('Mobile Nav Loaded v4 - Cache Bust'); // Debugging line
 const navList = document.querySelector('.nav-list');
 
 if (mobileMenu) {
