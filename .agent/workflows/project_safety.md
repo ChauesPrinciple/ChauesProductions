@@ -3,23 +3,36 @@ description: CRITICAL SAFETY BARRIER - PREVENT LANDING PAGE OVERWRITE
 ---
 # PROJECT SAFETY RULES
 
-## 🛑 STOP AND READ
+## 🛑 STOP AND READ BEFORE EVERY CHANGE
 
-This project contains **TWO SEPARATE WEBSITES** in the same root.
+This repo (`ChauesProductions.git`) contains **TWO SEPARATE WEBSITES** sharing the same root directory.
 
-1.  **Chaues Productions** (`index.html`)
-    -   **CSS:** `landing-style.css`
-    -   **Content:** Robert Ladd Bio, Forms, Gallery.
-    -   **RULE:** NEVER apply "Tokyo in Film" themes or content to this file.
+### 1. Chaues Productions (Robert Ladd's Portfolio)
+-   **Homepage:** `index.html`
+-   **CSS:** `landing-style.css`
+-   **Content:** Robert Ladd bio, forms, gallery, filmmaker portfolio.
+-   **Live URL:** https://chauesprinciple.github.io/ChauesProductions/
 
-2.  **Tokyo in Film** (`tokyo-in-film.html`)
-    -   **CSS:** `style.css`
-    -   **Content:** Courseware, Chapters, Modules.
+### 2. Tokyo in Film (Open Courseware)
+-   **Homepage:** `tokyo-in-film.html`
+-   **CSS:** `style.css`
+-   **Content:** Courseware, chapters, modules, filmmaking guides.
+-   **Live URL:** https://chauesprinciple.github.io/ChauesProductions/tokyo-in-film.html
+
+## 🚨 ABSOLUTE RULES
+
+1.  **NEVER** overwrite `index.html` with Tokyo in Film content. `index.html` is ALWAYS the Chaues Productions portfolio.
+2.  **NEVER** apply `style.css` themes to `index.html`. That file uses `landing-style.css`.
+3.  **NEVER** use `git add .` — always stage specific files by name to avoid accidentally committing deletions or unrelated changes.
+4.  **ALWAYS** verify which file you are editing before making changes:
+    -   If editing Tokyo in Film → edit `tokyo-in-film.html` (NOT `index.html`)
+    -   If editing Chaues Productions → edit `index.html` with `landing-style.css`
+5.  **NEVER** merge or cross-contaminate these two projects.
 
 ## INSTRUCTIONS FOR AGENTS
--   Before editing `index.html`, verify you are NOT using `style.css`.
--   Before editing `style.css`, verify you are NOT checking `index.html` for visual changes (it won't affect it).
--   **DO NOT MERGE** these two projects.
+-   Before editing ANY file, re-read this safety workflow.
+-   Before any `git push`, run `git diff --stat` to verify what you are about to push.
+-   If in doubt, ASK THE USER before pushing.
 
 // turbo
 echo "Safety rules checked."
