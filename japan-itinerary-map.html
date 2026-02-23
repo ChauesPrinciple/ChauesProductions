@@ -164,29 +164,13 @@
             transition: width 0.2s
         }
 
-        .day-card.arrival::before,
-        .day-card.travel::before {
-            background: var(--amber)
-        }
-
-        .day-card.partner::before {
-            background: var(--partner)
-        }
-
-        .day-card.cultural::before {
-            background: var(--cultural)
-        }
-
-        .day-card.festival::before {
-            background: var(--festival)
-        }
-
-        .day-card.finale::before {
-            background: var(--finale)
+        .day-card::before {
+            background: var(--amber);
         }
 
         .day-card.active {
-            border-color: rgba(245, 158, 11, 0.35);
+            border-color: rgba(236, 72, 153, 0.35);
+            /* bold pink */
             background: #152342;
             transform: translateX(3px);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4)
@@ -253,10 +237,55 @@
             transition: all 0.2s
         }
 
-        .day-card.active .day-num {
+        .day-card.partner .day-num {
+            border-color: rgba(167, 139, 250, 0.4);
+            color: var(--partner);
+        }
+
+        .day-card.cultural .day-num {
+            border-color: rgba(52, 211, 153, 0.4);
+            color: var(--cultural);
+        }
+
+        .day-card.festival .day-num {
+            border-color: rgba(239, 68, 68, 0.4);
+            color: var(--festival);
+        }
+
+        .day-card.finale .day-num {
+            border-color: rgba(251, 146, 60, 0.4);
+            color: var(--finale);
+        }
+
+        .day-card.active.arrival .day-num,
+        .day-card.active.travel .day-num {
             background: var(--amber);
             color: #000;
-            border-color: var(--amber)
+            border-color: var(--amber);
+        }
+
+        .day-card.active.partner .day-num {
+            background: var(--partner);
+            color: #000;
+            border-color: var(--partner);
+        }
+
+        .day-card.active.cultural .day-num {
+            background: var(--cultural);
+            color: #000;
+            border-color: var(--cultural);
+        }
+
+        .day-card.active.festival .day-num {
+            background: var(--festival);
+            color: #000;
+            border-color: var(--festival);
+        }
+
+        .day-card.active.finale .day-num {
+            background: var(--finale);
+            color: #000;
+            border-color: var(--finale);
         }
 
         .card-meta {
@@ -545,6 +574,46 @@
             #info {
                 display: none
             }
+
+            #back-home {
+                position: fixed;
+                bottom: 12px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 1000;
+            }
+
+            #legend {
+                bottom: 50px;
+            }
+        }
+
+        #back-home {
+            position: absolute;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 800;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(236, 72, 153, 0.35);
+            color: #ec4899;
+            padding: 8px 22px;
+            border-radius: 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            text-decoration: none;
+            backdrop-filter: blur(8px);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        #back-home:hover {
+            background: rgba(236, 72, 153, 0.15);
+            border-color: rgba(236, 72, 153, 0.6);
+            color: #f9a8d4;
         }
     </style>
 </head>
@@ -553,7 +622,8 @@
     <div id="app">
         <div id="sidebar">
             <div id="hdr">
-                <div class="eyebrow">Chaues Productions &middot; Group 8 to 12</div>
+                <div class="eyebrow"><a href="index.html" style="color:inherit;text-decoration:none;">Chaues
+                        Productions</a> &middot; Group 8 to 12</div>
                 <div class="trip-h">Rassera! Japan Summer 2026</div>
                 <div class="trip-d">July 31 to August 13, 2026 &middot; 14 days</div>
                 <div id="prog-track">
@@ -583,12 +653,13 @@
                     <div class="leg-l" style="background:var(--amber)"></div>Shinkansen
                 </div>
                 <div class="leg-r">
-                    <div class="leg-l" style="background:#be185d"></div>Local / Ltd. Express
+                    <div class="leg-l" style="background:#ec4899"></div>Local / Ltd. Express
                 </div>
                 <div class="leg-r">
-                    <div class="leg-ld" style="border-color:rgba(236,72,153,0.45)"></div>Return Flight
+                    <div class="leg-ld" style="border-color:rgba(234,88,12,0.7)"></div>Return Flight
                 </div>
             </div>
+            <a id="back-home" href="index.html">&larr; Chaues Productions</a>
         </div>
     </div>
 
@@ -604,10 +675,10 @@
             nebuta: 'https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?w=600&q=80',
             castle: 'https://images.unsplash.com/photo-1493780474015-ba834fd0ce2f?w=600&q=80',
             coast: 'https://images.unsplash.com/photo-1492571350019-22de08371fd3?w=600&q=80',
-            fireworks: 'https://images.unsplash.com/photo-1594029242614-66a0e86acb97?w=600&q=80',
+            fireworks: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=600&q=80',
             hokkaido: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',
             sapporo: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',
-            otaru: 'https://images.unsplash.com/photo-1476514525035-f6c0fd5bab88?w=600&q=80',
+            otaru: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=600&q=80',
             vintage: 'https://images.unsplash.com/photo-1535016120720-40c646be5580?w=600&q=80',
         };
 
@@ -841,18 +912,18 @@
         L.control.zoom({ position: 'bottomright' }).addTo(map);
 
         const dim = { color: '#334155', weight: 1.5, opacity: 0.4 };
-        const loc = { color: '#1e3a5f', weight: 1.2, opacity: 0.45 };
+        const loc = { color: '#334155', weight: 1.2, opacity: 0.45 };
         L.polyline(SKN_TOHOKU, dim).addTo(map);
         L.polyline(OU, loc).addTo(map);
         L.polyline(GONO, loc).addTo(map);
         L.polyline(SKN_HKD, dim).addTo(map);
         L.polyline(HOKUTO, loc).addTo(map);
         L.polyline(OTARU_L, loc).addTo(map);
-        L.polyline(FLT, { color: 'rgba(234,88,12,0.15)', weight: 1.5, dashArray: '4,6' }).addTo(map);
+        L.polyline(FLT, { color: 'rgba(234,88,12,0.45)', weight: 1.5, dashArray: '4,6' }).addTo(map);
 
         const aSkn = L.polyline([], { color: '#ec4899', weight: 3.5, opacity: 0.95, lineCap: 'round' }).addTo(map);
-        const aLoc = L.polyline([], { color: '#be185d', weight: 2.5, opacity: 0.9, lineCap: 'round' }).addTo(map);
-        const aFlt = L.polyline([], { color: '#ea580c', weight: 2, opacity: 0.75, dashArray: '5,7' }).addTo(map);
+        const aLoc = L.polyline([], { color: '#ec4899', weight: 3.5, opacity: 0.95, lineCap: 'round' }).addTo(map);
+        const aFlt = L.polyline([], { color: '#ea580c', weight: 2, opacity: 0.95, dashArray: '5,7' }).addTo(map);
 
         const ROUTE_SEGS = [
             { day: 1, s: [], l: [], f: [] },
@@ -860,11 +931,11 @@
             { day: 5, s: SKN_TOHOKU, l: [], f: [] },
             { day: 7, s: SKN_TOHOKU, l: [...OU, ...GONO], f: [] },
             { day: 8, s: SKN_TOHOKU, l: [...OU, ...GONO, ...HACHI], f: [] },
-            { day: 10, s: [...SKN_TOHOKU, ...SKN_HKD], l: [], f: [] },
-            { day: 11, s: [...SKN_TOHOKU, ...SKN_HKD], l: HOKUTO, f: [] },
-            { day: 12, s: [...SKN_TOHOKU, ...SKN_HKD], l: [...HOKUTO, ...OTARU_L], f: [] },
-            { day: 13, s: [...SKN_TOHOKU, ...SKN_HKD], l: [...HOKUTO, ...OTARU_L], f: FLT.slice(0, 10) },
-            { day: 14, s: [...SKN_TOHOKU, ...SKN_HKD], l: [...HOKUTO, ...OTARU_L], f: FLT },
+            { day: 10, s: [...SKN_TOHOKU, ...SKN_HKD], l: [...OU, ...GONO, ...HACHI], f: [] },
+            { day: 11, s: [...SKN_TOHOKU, ...SKN_HKD], l: [...OU, ...GONO, ...HACHI, ...HOKUTO], f: [] },
+            { day: 12, s: [...SKN_TOHOKU, ...SKN_HKD], l: [...OU, ...GONO, ...HACHI, ...HOKUTO, ...OTARU_L], f: [] },
+            { day: 13, s: [...SKN_TOHOKU, ...SKN_HKD], l: [...OU, ...GONO, ...HACHI, ...HOKUTO, ...OTARU_L], f: FLT.slice(0, 10) },
+            { day: 14, s: [...SKN_TOHOKU, ...SKN_HKD], l: [...OU, ...GONO, ...HACHI, ...HOKUTO, ...OTARU_L], f: FLT },
         ];
 
         function updateRoute(n) {
