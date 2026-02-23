@@ -825,7 +825,7 @@
         const OU = [[40.8244, 140.7400], [40.7333, 140.6278], [40.6031, 140.4631]];
         const GONO = [[40.6031, 140.4631], [40.7200, 140.4380], [40.8065, 140.4390]];
         const HACHI = [[40.8065, 140.4390], [40.8244, 140.7400], [40.5122, 141.4884], [40.8244, 140.7400]];
-        const SKN_HKD = [[40.7724, 140.6916], [41.0500, 140.6200], [41.4500, 140.6400], [41.9344, 140.6855]];
+        const SKN_HKD = [[40.8244, 140.7400], [40.7724, 140.6916], [41.0500, 140.6200], [41.4500, 140.6400], [41.9344, 140.6855]];
         const HOKUTO = [[41.7688, 140.7289], [42.1000, 140.9800], [42.5256, 140.3714], [42.7544, 141.6540], [43.0642, 141.3469]];
         const OTARU_L = [[43.0642, 141.3469], [43.0900, 141.1500], [43.1907, 140.9947]];
         function arc(a, b, c, n) { c = c || 1; n = n || 20; const r = []; for (let i = 0; i <= n; i++) { const t = i / n; r.push([a[0] + (b[0] - a[0]) * t + Math.sin(Math.PI * t) * c, a[1] + (b[1] - a[1]) * t]); } return r; }
@@ -848,11 +848,11 @@
         L.polyline(SKN_HKD, dim).addTo(map);
         L.polyline(HOKUTO, loc).addTo(map);
         L.polyline(OTARU_L, loc).addTo(map);
-        L.polyline(FLT, { color: 'rgba(236,72,153,0.15)', weight: 1.5, dashArray: '4,6' }).addTo(map);
+        L.polyline(FLT, { color: 'rgba(234,88,12,0.15)', weight: 1.5, dashArray: '4,6' }).addTo(map);
 
         const aSkn = L.polyline([], { color: '#ec4899', weight: 3.5, opacity: 0.95, lineCap: 'round' }).addTo(map);
         const aLoc = L.polyline([], { color: '#be185d', weight: 2.5, opacity: 0.9, lineCap: 'round' }).addTo(map);
-        const aFlt = L.polyline([], { color: '#ec4899', weight: 2, opacity: 0.75, dashArray: '5,7' }).addTo(map);
+        const aFlt = L.polyline([], { color: '#ea580c', weight: 2, opacity: 0.75, dashArray: '5,7' }).addTo(map);
 
         const ROUTE_SEGS = [
             { day: 1, s: [], l: [], f: [] },
