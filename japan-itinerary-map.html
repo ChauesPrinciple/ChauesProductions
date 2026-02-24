@@ -575,7 +575,7 @@
                 display: none
             }
 
-            #back-home {
+            #trip-nav {
                 position: fixed;
                 bottom: 12px;
                 left: 50%;
@@ -588,32 +588,67 @@
             }
         }
 
-        #back-home {
+        #trip-nav {
             position: absolute;
-            bottom: 18px;
+            bottom: 14px;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 800;
-            background: rgba(15, 23, 42, 0.85);
-            border: 1px solid rgba(236, 72, 153, 0.35);
-            color: #ec4899;
-            padding: 8px 22px;
-            border-radius: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0;
+            background: rgba(15, 23, 42, 0.88);
+            border: 1px solid rgba(236, 72, 153, 0.25);
+            border-radius: 22px;
+            padding: 0;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
             font-family: 'Inter', sans-serif;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            text-decoration: none;
-            backdrop-filter: blur(8px);
-            transition: all 0.2s ease;
-            cursor: pointer;
         }
 
-        #back-home:hover {
+        #trip-nav a {
+            padding: 8px 16px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: rgba(236, 72, 153, 0.5);
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        #trip-nav a:first-child {
+            border-radius: 22px 0 0 22px;
+        }
+
+        #trip-nav a:last-child {
+            border-radius: 0 22px 22px 0;
+        }
+
+        #trip-nav a:hover {
+            color: #ec4899;
+            background: rgba(236, 72, 153, 0.08);
+        }
+
+        #trip-nav a.active {
+            color: #ec4899;
             background: rgba(236, 72, 153, 0.15);
-            border-color: rgba(236, 72, 153, 0.6);
-            color: #f9a8d4;
+        }
+
+        #trip-nav .sep {
+            width: 1px;
+            height: 18px;
+            background: rgba(236, 72, 153, 0.2);
+            flex-shrink: 0;
+        }
+
+        .leg-poi {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            border: 1.5px solid
         }
     </style>
 </head>
@@ -658,48 +693,63 @@
                 <div class="leg-r">
                     <div class="leg-ld" style="border-color:rgba(234,88,12,0.7)"></div>Return Flight
                 </div>
+                <div class="leg-h" style="margin-top:6px">Sites</div>
+                <div class="leg-r">
+                    <div class="leg-poi" style="background:#ef4444;border-color:#ef4444"></div>Festival / Cultural
+                </div>
+                <div class="leg-r">
+                    <div class="leg-poi" style="background:#10b981;border-color:#10b981"></div>Film Site
+                </div>
             </div>
-            <a id="back-home" href="index.html">&larr; Chaues Productions</a>
+            <div id="trip-nav">
+                <a href="index.html">&larr; Home</a>
+                <div class="sep"></div>
+                <a href="japan-itinerary-map.html" class="active">Rassera!</a>
+                <div class="sep"></div>
+                <a href="japan-bushido-map.html">Bushido</a>
+                <div class="sep"></div>
+                <a href="ireland-map.html">Ireland</a>
+            </div>
         </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         const I = {
-            tokyo_arrive: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80',
-            tokyo_night: 'https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?w=600&q=80',
-            tokyo_street: 'https://images.unsplash.com/photo-1513407030348-c983a97b98d8?w=600&q=80',
-            racing: 'https://images.unsplash.com/photo-1504215680853-026ed2a45def?w=600&q=80',
-            shinkansen: 'https://images.unsplash.com/photo-1553342385-111fd6bc6ab3?w=600&q=80',
-            morioka: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80',
-            nebuta: 'https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?w=600&q=80',
-            castle: 'https://images.unsplash.com/photo-1493780474015-ba834fd0ce2f?w=600&q=80',
-            coast: 'https://images.unsplash.com/photo-1492571350019-22de08371fd3?w=600&q=80',
-            fireworks: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=600&q=80',
-            hokkaido: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',
-            sapporo: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',
-            otaru: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=600&q=80',
-            vintage: 'https://images.unsplash.com/photo-1535016120720-40c646be5580?w=600&q=80',
+            tokyo_arrive: 'assets/images/tokyo_finale.png',
+            tokyo_night: 'assets/images/tokyo_film.png',
+            bunbun: 'assets/images/bg.jpg',
+            tokyo_street: 'assets/images/tokyo_film.png',
+            racing: 'assets/bonsai_racing.png',
+            morioka: 'assets/images/009_reh_IwateSansaTop2.jpg',
+            nebuta: 'assets/images/aomori-city-view.jpg',
+            castle: 'assets/images/gosyogawara-m.jpg',
+            coast: 'assets/images/8-why-hokkaido-is-perfect-for-summer-japan-trip-body.jpg',
+            fireworks: 'assets/images/aomori-city-view.jpg',
+            hokkaido: 'assets/images/6-why-hokkaido-is-perfect-for-summer-japan-trip-body.jpg',
+            sapporo: 'assets/images/3-why-hokkaido-is-perfect-for-summer-japan-trip-body.jpg',
+            otaru: 'assets/images/2-why-hokkaido-is-perfect-for-summer-japan-trip-body.jpg',
+            vintage: 'assets/images/tokyo_film.png',
         };
 
         const SECTIONS = [
             {
                 label: 'TOKYO : OPENING', days: [
                     {
-                        n: 1, date: 'Thu Jul 31', loc: 'Tokyo', emoji: '✈️', type: 'arrival',
+                        n: 1, date: 'Thu Jul 31', loc: 'Tokyo', type: 'arrival',
                         title: 'Arrive Tokyo', img: I.tokyo_arrive,
                         lat: 35.6812, lng: 139.7671, zoom: 12, city: 'tokyo',
                         events: [
                             'Land Haneda or Narita: check in to Sequence Miyashita Park, Shibuya',
-                            'Welcome lunch: Udatsu Sushi ⚠️ confirm group capacity',
+                            'Welcome lunch: Udatsu Sushi (confirm group capacity)',
                             'Easy evening: ramen, Kabukicho or Shibuya Crossing',
                             'Get on Japan time by walking, not sleeping'
                         ],
                         prose: `<p class="prose-p">Landing in Tokyo is always a calibration. The city runs at a frequency you haven't encountered, and the first twelve hours don't align with anything. We check into <strong>Sequence Miyashita Park</strong> in Shibuya. The hotel sits directly above Miyashita Park and puts you inside the culture rather than across the street from it. Shibuya is home base for the opening days.</p><p class="prose-p">We open at <strong>Udatsu</strong> for counter omakase with Chef Toru Udatsu, one of Tokyo's serious sushiya. You sit, you eat what appears, and you stop trying to frame it. The evening is deliberately loose. Shibuya Crossing at dusk is not a tourist gesture; it is a functional portrait of organized mass. Get on Japan time by moving, not sleeping. Join us on this adventure and go places you would never go on your own.</p>`
                     },
                     {
-                        n: 2, date: 'Fri Aug 1', loc: 'Tokyo', emoji: '🎭', type: 'partner',
-                        title: 'TeamLab, BunBun, Shibuya Sky', img: I.tokyo_night,
+                        n: 2, date: 'Fri Aug 1', loc: 'Tokyo', type: 'partner',
+                        title: 'TeamLab, BunBun, Shibuya Sky', img: I.bunbun,
                         lat: 35.6812, lng: 139.7671, zoom: 12, city: 'tokyo',
                         events: [
                             'Morning: TeamLab (book timed entry in advance)',
@@ -710,7 +760,7 @@
                         prose: `<p class="prose-p"><strong>TeamLab</strong> opens the day. It is a full-body immersive installation art environment where the boundary between viewer and image dissolves entirely. You must book timed entry ahead because it sells out. We also feature an optional stop for <strong>kimono dressing</strong> with a local business. This is a working engagement with our expert partners, not a tourist photo op.</p><p class="prose-p"><strong>BunBun</strong> operates in the register where language stops being useful. It is physical, present, and without the scaffolding of shared vocabulary. Acting in a foreign country strips everything to the body. The whole group enters this one with no half-measures and no parallel scheduling.</p><p class="prose-p">The night closes at <strong>Shibuya Sky</strong>, the rooftop observation deck on Scramble Square 230 meters above the crossing. Tokyo at night from that altitude is the city making its full argument. You must book in advance. The unobstructed glass floor looks straight down onto Shibuya Crossing.</p>`
                     },
                     {
-                        n: 3, date: 'Sat Aug 2', loc: 'Tokyo', emoji: '🏎️', type: 'partner',
+                        n: 3, date: 'Sat Aug 2', loc: 'Tokyo', type: 'partner',
                         title: 'Bonsai Racing (Confirmed Partner)', img: I.racing,
                         lat: 35.6812, lng: 139.7671, zoom: 12, city: 'tokyo',
                         events: [
@@ -724,12 +774,12 @@
             {
                 label: 'JOURNEY NORTH', days: [
                     {
-                        n: 4, date: 'Sun Aug 3', loc: 'Morioka', emoji: '🥁', type: 'travel',
-                        title: 'Tokyo to Morioka, Sansa Festival', img: I.shinkansen,
+                        n: 4, date: 'Sun Aug 3', loc: 'Morioka', type: 'travel',
+                        title: 'Tokyo to Morioka, Sansa Festival', img: I.morioka,
                         lat: 39.7014, lng: 141.1349, zoom: 13, city: 'morioka',
                         events: [
                             'Tohoku Shinkansen ~2h20m: reserve group block (JR Pass)',
-                            '⚠️ Possible stop: Ebisu brewery in Fukushima (user to confirm)',
+                            'Possible stop: Ebisu brewery in Fukushima (to confirm)',
                             'Kitakami River walk: Mt. Iwate over the city',
                             'Azumaya: wanko soba until you tap out',
                             'Nagasawa Coffee or Clammbon',
@@ -738,7 +788,7 @@
                         prose: `<p class="prose-p">The Tohoku Shinkansen runs northeast. Within two hours the Tokyo skyline dissolves entirely into cedar ridges and terraced fieldwork. There is a potential stop at an <strong>Ebisu</strong> site in Fukushima depending on timing, but the ultimate destination today is <strong>Morioka</strong>. The NYT ranked Morioka as the #2 of 52 Places on Earth in 2023. This is not because it was constructed for tourism, but because it is compact, real, and still functions primarily for the people who live there.</p><p class="prose-p">The <strong>Sansa Festival</strong> is the reason we stop here tonight. It is the world's largest taiko drum procession featuring 10,000 performers moving through the streets. At the close of the night the procession opens to anyone who wants to join it. Walk into it.</p>`
                     },
                     {
-                        n: 5, date: 'Mon Aug 4', loc: 'Aomori', emoji: '🎏', type: 'travel',
+                        n: 5, date: 'Mon Aug 4', loc: 'Aomori', type: 'travel',
                         title: 'Morioka to Aomori, Nebuta Night 3', img: I.nebuta,
                         lat: 40.8244, lng: 140.7400, zoom: 13, city: 'aomori',
                         events: [
@@ -756,7 +806,7 @@
             {
                 label: 'AOMORI, NEBUTA FESTIVAL', days: [
                     {
-                        n: 6, date: 'Tue Aug 5', loc: 'Aomori', emoji: '🍣', type: 'cultural',
+                        n: 6, date: 'Tue Aug 5', loc: 'Aomori', type: 'cultural',
                         title: 'Aomori Cultural Day, Nebuta Night 4', img: I.nebuta,
                         lat: 40.8244, lng: 140.7400, zoom: 13, city: 'aomori',
                         events: [
@@ -769,21 +819,22 @@
                         prose: `<p class="prose-p"><strong>Furukawa Market</strong> opens before dawn for fishing families. By 7am the Nokke-don stalls are running. You buy a bowl of rice and choose toppings from whatever came off the boats this morning, including sea urchin, salmon roe, scallop, and squid. It is one of the most direct eating experiences in Japan.</p><p class="prose-p"><strong>Wa Rasse</strong> is one of the only places you can read a nebuta float at close range to see the internal wire armature, the layered washi paper, and the engineering of light distribution. <strong>Sannai-Maruyama</strong> is a Jomon settlement 5,500 years old sitting adjacent to the city. It is mostly unvisited, UNESCO-listed, and genuinely worth the bus ride. The parade begins again at 6:45 pm.</p>`
                     },
                     {
-                        n: 7, date: 'Wed Aug 6', loc: 'Hirosaki / Goshogawara', emoji: '🔴', type: 'festival',
+                        n: 7, date: 'Wed Aug 6', loc: 'Hirosaki / Goshogawara', type: 'festival',
                         title: 'Hirosaki to Goshogawara, Tachineputa Overnight', img: I.castle,
                         lat: 40.8065, lng: 140.4390, zoom: 13, city: 'goshogawara',
                         events: [
                             'Morning: Hirosaki Castle (Edo original) and MOCA',
-                            'Gono Line to Goshogawara (~40min from Hirosaki)',
-                            'Tachineputa no Yakata: 23m giants year-round',
-                            '19:00 to 21:00: Goshogawara Tachineputa',
+                            'Tsugaru Railway: scenic ride across the Tsugaru Plain',
+                            'Tachineputa Museum: 3 giant floats on display year-round',
+                            'Nakamade Akai Ringo: Goshogawara red-flesh apple tasting',
+                            '19:00 to 21:00: Goshogawara Tachineputa parade',
                             'Floats 23m tall, 19 tons: stand at corners for the pivot',
-                            '⚠️ Overnight: last train to Aomori departs 19:33'
+                            'Overnight in Goshogawara: last train departs 19:33'
                         ],
-                        prose: `<p class="prose-p"><strong>Hirosaki Castle</strong> is one of twelve original Edo-period fortresses still standing in Japan. The rest burned or were demolished in the Meiji modernization. The MOCA occupies a converted sake brewery and takes its programming seriously. Both are worth the morning, but we remain in transit.</p><p class="prose-p">The afternoon Gono Line carries us west across the Tsugaru plains to <strong>Goshogawara</strong>, where the Tachineputa floats stand 23 meters tall and weigh 19 tons each. They navigate streets that were designed for none of that. The best position is a corner of the parade route. Watch the rope teams heave, the float tilt, and 19 tons pivot through an alley. The chant is <strong>Yattemare</strong>. We sleep here tonight because there is no train back to Aomori after the parade starts.</p>`
+                        prose: `<p class="prose-p"><strong>Hirosaki Castle</strong> is one of twelve original Edo-period fortresses still standing in Japan. The MOCA occupies a converted sake brewery. Both are worth the morning, but we remain in transit.</p><p class="prose-p">The <strong>Tsugaru Railway</strong> carries us west across the Tsugaru Plain. This is not a commuter transfer. The single-car train rolling through rice paddies with Mt. Iwaki in the distance is one of the most quietly photogenic passages on the trip. The changing seasons of the plain seen from the windows have drawn visitors and locals for generations.</p><p class="prose-p">In Goshogawara, we visit the <strong>Tachineputa Museum</strong> first. Three giant Tachineputa floats stand on permanent display here, the same ones that will process through the streets tonight. Viewing them up close in the museum lets you read the internal wire armature, the painted washi layers, and the engineering that holds 19 tons upright before it all goes into motion at dark.</p><p class="prose-p">Goshogawara is also the origin of the <strong>Nakamade Akai Ringo</strong>, a red-flesh apple that is tart, vivid, and entirely different from what you expect an apple to be. World-leading pastry chefs source it specifically for the flavor profile. We will taste the handcrafted apple products: juice, wine, jam, and confections produced locally.</p><p class="prose-p">At 7pm the <strong>Tachineputa parade</strong> begins. The floats stand 23 meters tall and weigh 19 tons each, navigating streets that were designed for none of that. Position yourself at a corner of the parade route. Watch the rope teams heave, the float tilt, and 19 tons pivot through an intersection. The chant is <strong>Yattemare</strong>. We sleep here tonight because the last train back to Aomori departs before the parade starts.</p>`
                     },
                     {
-                        n: 8, date: 'Thu Aug 7', loc: 'Hachinohe', emoji: '🦅', type: 'festival',
+                        n: 8, date: 'Thu Aug 7', loc: 'Hachinohe', type: 'festival',
                         title: 'Hachinohe Coast, Nebuta Award Night', img: I.coast,
                         lat: 40.5122, lng: 141.4884, zoom: 12, city: 'hachinohe',
                         events: [
@@ -797,7 +848,7 @@
                         prose: `<p class="prose-p"><strong>Hachinohe</strong> runs on the Pacific as a fishing port culture that is rougher and colder in character than the festival cities to the west. <strong>Kabushima Shrine</strong> hosts the largest colony of black-tailed gulls in Japan. They have been there long enough to register humans as furniture, and 30,000 birds will not move for you. The shrine requires ninety-two stone stairs on the open ocean, so an umbrella is recommended.</p><p class="prose-p"><strong>Tanesashi Coast</strong> is serious Pacific coastline and one of the less-visited stretches on the east face of Honshu. We are back in Aomori before dark for <strong>Award Night</strong>, the parade where the season's winning floats make their final ceremonial procession. This one carries additional weight. It is the one the city built toward.</p>`
                     },
                     {
-                        n: 9, date: 'Fri Aug 8', loc: 'Aomori', emoji: '🎆', type: 'finale',
+                        n: 9, date: 'Fri Aug 8', loc: 'Aomori', type: 'finale',
                         title: 'Nebuta Finale, Marine Procession', img: I.fireworks,
                         lat: 40.8244, lng: 140.7400, zoom: 13, city: 'aomori',
                         events: [
@@ -814,33 +865,33 @@
             {
                 label: 'HOKKAIDO, RAIL NORTH', days: [
                     {
-                        n: 10, date: 'Sat Aug 9', loc: 'Hakodate', emoji: '🦀', type: 'travel',
-                        title: 'Aomori to Hakodate, Seikan Tunnel', img: I.hokkaido,
-                        lat: 41.7688, lng: 140.7289, zoom: 12, city: 'hakodate',
+                        n: 10, date: 'Sat Aug 9', loc: 'Sapporo', type: 'travel',
+                        title: 'Aomori to Sapporo (via Hakodate)', img: I.hokkaido,
+                        lat: 43.0642, lng: 141.3469, zoom: 12, city: 'sapporo',
                         events: [
-                            'Hokkaido Shinkansen: Shin-Aomori to Shin-Hakodate-Hokuto ~1hr',
+                            'Hokkaido Shinkansen: Shin-Aomori to Hakodate-Hokuto ~1hr',
                             'SEIKAN TUNNEL: 54km undersea, longest rail tunnel',
                             'Hakodate morning market: fresh crab, uni',
                             'Goryokaku star fort (1864): Western-style bastion',
-                            'Mt. Hakodate ropeway: evening view of the isthmus'
+                            'Afternoon: Ltd. express train to Sapporo ~3.5hrs'
                         ],
-                        prose: `<p class="prose-p">The Hokkaido Shinkansen descends into the <strong>Seikan Tunnel</strong> 240 meters below the Tsugaru Strait. It runs 54 kilometers underwater as the longest railway tunnel in the world. The transit itself is worth noting. The island arrives quietly.</p><p class="prose-p"><strong>Hakodate</strong> was one of the first Japanese ports opened to international trade in 1854, and it shows in the architecture. <strong>Goryokaku</strong> is a Western-style star fort built in 1864 by a Japan still calibrating what century it was entering. The morning market is serious, and the view from the Mt. Hakodate ropeway at night is exactly why people stop here.</p>`
+                        prose: `<p class="prose-p">The Hokkaido Shinkansen descends into the <strong>Seikan Tunnel</strong> 240 meters below the Tsugaru Strait. It runs 54 kilometers underwater as the longest railway tunnel in the world. The transit itself is worth noting. The island arrives quietly.</p><p class="prose-p"><strong>Hakodate</strong> was one of the first Japanese ports opened to international trade in 1854, and it shows in the architecture. <strong>Goryokaku</strong> is a Western-style star fort built in 1864. We stop for the morning market and fort before continuing three and a half hours north to Sapporo in the afternoon.</p>`
                     },
                     {
-                        n: 11, date: 'Sun Aug 10', loc: 'Sapporo', emoji: '🍺', type: 'travel',
-                        title: 'Hakodate to Sapporo', img: I.sapporo,
+                        n: 11, date: 'Sun Aug 10', loc: 'Sapporo', type: 'cultural',
+                        title: 'Sapporo City', img: I.sapporo,
                         lat: 43.0642, lng: 141.3469, zoom: 12, city: 'sapporo',
                         events: [
-                            'Ltd. express train: Hakodate to Sapporo ~3.5hrs',
+                            'Nijo Market: fresh uni ikura donburi',
                             'Sapporo Beer Museum: Akarenga 1890 brick brewery',
                             'Beer garden: all-you-can-eat Genghis Khan lamb BBQ',
                             'Odori Park: Hokkaido central axis',
                             'Susukino: miso ramen at Ramen Alley'
                         ],
-                        prose: `<p class="prose-p">The limited express continues three and a half hours north to Sapporo. Sapporo was grid-planned by American agricultural engineers in the 1870s, which is why it reads as spacious and navigable in contrast to every other Japanese city. <strong>Odori Park</strong> is the horizontal axis of the city.</p><p class="prose-p">The <strong>Beer Museum</strong> occupies the original 1890 Akarenga brick brewery where the building makes the argument before anything is poured. Miso ramen was invented here in Susukino's Ramen Alley. The beer garden does Genghis Khan lamb BBQ at a scale that makes a statement.</p>`
+                        prose: `<p class="prose-p">Sapporo was grid-planned by American agricultural engineers in the 1870s, which is why it reads as spacious and navigable in contrast to every other Japanese city. <strong>Odori Park</strong> is the horizontal axis of the city.</p><p class="prose-p">The <strong>Beer Museum</strong> occupies the original 1890 Akarenga brick brewery where the building makes the argument before anything is poured. Miso ramen was invented here in Susukino's Ramen Alley. The beer garden does Genghis Khan lamb BBQ at a scale that makes a statement.</p>`
                     },
                     {
-                        n: 12, date: 'Mon Aug 11', loc: 'Otaru / Lake Toya', emoji: '🚤', type: 'cultural',
+                        n: 12, date: 'Mon Aug 11', loc: 'Otaru / Lake Toya', type: 'cultural',
                         title: 'Otaru or Lake Toya Day Trip', img: I.otaru,
                         lat: 43.1907, lng: 140.9947, zoom: 13, city: 'otaru',
                         events: [
@@ -856,7 +907,7 @@
             {
                 label: 'TOKYO, CLOSING', days: [
                     {
-                        n: 13, date: 'Tue Aug 12', loc: 'Tokyo', emoji: '🌃', type: 'travel',
+                        n: 13, date: 'Tue Aug 12', loc: 'Tokyo', type: 'travel',
                         title: 'Sapporo to Tokyo, Return', img: I.tokyo_night,
                         lat: 35.6812, lng: 139.7671, zoom: 12, city: 'tokyo',
                         events: [
@@ -867,7 +918,7 @@
                         prose: `<p class="prose-p">The return from New Chitose is 90 minutes by air. The train alternative is the better part of eight hours. We fly. Arriving back into Tokyo on the closing leg always registers as re-entry, and the scale recalibrates after ten days in smaller northern spaces.</p><p class="prose-p">The closing hotel base serves as our final check-in. <strong>Golden Gai</strong> is still Golden Gai. It consists of forty-some narrow drinking alleys in Shinjuku, each bar seating eight people maximum, running since the postwar black market that founded it. The evening belongs to wherever momentum takes it.</p>`
                     },
                     {
-                        n: 14, date: 'Wed Aug 13', loc: 'Tokyo', emoji: '🎌', type: 'cultural',
+                        n: 14, date: 'Wed Aug 13', loc: 'Tokyo', type: 'cultural',
                         title: 'Tokyo Closing Day', img: I.vintage,
                         lat: 35.6812, lng: 139.7671, zoom: 12, city: 'tokyo',
                         events: [
@@ -897,7 +948,20 @@
         const GONO = [[40.6031, 140.4631], [40.7200, 140.4380], [40.8065, 140.4390]];
         const HACHI = [[40.8065, 140.4390], [40.8244, 140.7400], [40.5122, 141.4884], [40.8244, 140.7400]];
         const SKN_HKD = [[40.8244, 140.7400], [40.7724, 140.6916], [41.0500, 140.6200], [41.4500, 140.6400], [41.7688, 140.7289]];
-        const HOKUTO = [[41.7688, 140.7289], [42.1000, 140.9800], [42.5256, 140.3714], [42.7544, 141.6540], [43.0642, 141.3469]];
+        const HOKUTO = [
+            [41.7688, 140.7289],  // Shin-Hakodate-Hokuto
+            [41.9917, 140.6667],  // Onuma-Koen
+            [42.1044, 140.5747],  // Mori (coast of Uchiura Bay)
+            [42.2567, 140.2583],  // Yakumo
+            [42.5256, 140.3714],  // Oshamanbe (junction)
+            [42.4833, 140.7333],  // Toyako / Toya
+            [42.4500, 141.0000],  // Date-Monbetsu
+            [42.4128, 141.1856],  // Noboribetsu
+            [42.4300, 141.3500],  // Shiraoi
+            [42.6339, 141.6053],  // Tomakomai
+            [42.8200, 141.6800],  // Minami-Chitose
+            [43.0642, 141.3469]   // Sapporo
+        ];
         const OTARU_L = [[43.0642, 141.3469], [43.0900, 141.1500], [43.1907, 140.9947]];
         function arc(a, b, c, n) { c = c || 1; n = n || 20; const r = []; for (let i = 0; i <= n; i++) { const t = i / n; r.push([a[0] + (b[0] - a[0]) * t + Math.sin(Math.PI * t) * c, a[1] + (b[1] - a[1]) * t]); } return r; }
         const FLT = arc([43.0642, 141.3469], [35.6812, 139.7671], -1.5);
@@ -931,7 +995,7 @@
             { day: 5, s: SKN_TOHOKU, l: [], f: [] },
             { day: 7, s: SKN_TOHOKU, l: [...OU, ...GONO], f: [] },
             { day: 8, s: SKN_TOHOKU, l: [...OU, ...GONO, ...HACHI], f: [] },
-            { day: 10, s: [...SKN_TOHOKU, ...SKN_HKD], l: [...OU, ...GONO, ...HACHI], f: [] },
+            { day: 10, s: [...SKN_TOHOKU, ...SKN_HKD], l: [...OU, ...GONO, ...HACHI, ...HOKUTO], f: [] },
             { day: 11, s: [...SKN_TOHOKU, ...SKN_HKD], l: [...OU, ...GONO, ...HACHI, ...HOKUTO], f: [] },
             { day: 12, s: [...SKN_TOHOKU, ...SKN_HKD], l: [...OU, ...GONO, ...HACHI, ...HOKUTO, ...OTARU_L], f: [] },
             { day: 13, s: [...SKN_TOHOKU, ...SKN_HKD], l: [...OU, ...GONO, ...HACHI, ...HOKUTO, ...OTARU_L], f: FLT.slice(0, 10) },
@@ -951,12 +1015,30 @@
             morioka: { lat: 39.7014, lng: 141.1349, name: 'Morioka' },
             aomori: { lat: 40.8244, lng: 140.7400, name: 'Aomori' },
             goshogawara: { lat: 40.8065, lng: 140.4390, name: 'Goshogawara' },
-            hachinohe: { lat: 40.5122, lng: 141.4884, name: 'Hachinohe' },
-            hirosaki: { lat: 40.6031, lng: 140.4631, name: 'Hirosaki' },
-            hakodate: { lat: 41.7688, lng: 140.7289, name: 'Hakodate' },
             sapporo: { lat: 43.0642, lng: 141.3469, name: 'Sapporo' },
-            otaru: { lat: 43.1907, lng: 140.9947, name: 'Otaru' },
         };
+
+        const POIS = [
+            { lat: 40.5122, lng: 141.4884, name: 'Hachinohe (Enburi)', color: '#ef4444' },
+            { lat: 40.6031, lng: 140.4631, name: 'Hirosaki (Neputa)', color: '#ef4444' },
+            { lat: 41.7688, lng: 140.7289, name: 'Hakodate (Transit)', color: '#ef4444' },
+            { lat: 43.1907, lng: 140.9947, name: 'Otaru / Lake Toya', color: '#ef4444' },
+        ];
+        POIS.forEach(p => {
+            L.circleMarker([p.lat, p.lng], { radius: 4, fillColor: p.color, color: p.color, weight: 1.5, opacity: 0.8, fillOpacity: 0.7 }).addTo(map)
+                .bindTooltip(p.name, { className: 'ct', permanent: false, direction: 'top' });
+        });
+
+        const FILM_SITES = [
+            { lat: 35.7050, lng: 139.6496, name: 'Mabashi Inari Shrine (Tokyo In Film)' },
+            { lat: 35.7049, lng: 139.6497, name: 'Live Music JIROKICHI (Tokyo In Film)' },
+            { lat: 35.7334, lng: 139.8827, name: 'KOIWA BUSH BASH (Tokyo In Film)' }
+        ];
+        FILM_SITES.forEach(s => {
+            L.circleMarker([s.lat, s.lng], { radius: 4, fillColor: '#10b981', color: '#10b981', weight: 1.5, opacity: 0.8, fillOpacity: 0.7 }).addTo(map)
+                .bindTooltip(`<b>${s.name}</b>`, { className: 'ct', permanent: false, direction: 'top' });
+        });
+
         const cMkrs = {};
         Object.entries(CITIES).forEach(([k, c]) => {
             const m = L.circleMarker([c.lat, c.lng], { radius: 6, fillColor: '#ec4899', color: 'rgba(236,72,153,0.3)', weight: 7, opacity: 1, fillOpacity: 0.9 }).addTo(map);
@@ -989,7 +1071,7 @@
       <div class="card-top">
         <div class="day-num">${d.n}</div>
         <div class="card-meta"><div class="card-date">${d.date}</div><div class="card-loc">${d.loc}</div></div>
-        <div class="card-em">${d.emoji}</div>
+        
       </div>
       <div class="card-body">
         <div class="card-ttl">${d.title}</div>
@@ -1031,7 +1113,7 @@
             document.getElementById('ib-day').textContent = `Day ${n} \u00b7 ${day.date}`;
             document.getElementById('ib-loc').textContent = day.loc;
             document.getElementById('ib-ttl').textContent = day.title;
-            document.getElementById('info-prose').innerHTML = day.prose || '';
+            document.getElementById('info-prose').innerHTML = (day.img ? `<img src="${day.img}" style="width:100%; border-radius:8px; margin-bottom:15px; border:1px solid var(--border);">` : '') + (day.prose || '');
             const img = document.getElementById('info-img');
             if (day.img && img.src !== day.img) { img.style.opacity = 0; setTimeout(() => { img.src = day.img; img.alt = day.loc; img.style.opacity = 1; }, 200); }
             const pct = ((n - 1) / (ALL.length - 1)) * 100;
