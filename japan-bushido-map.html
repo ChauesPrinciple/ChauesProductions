@@ -475,6 +475,68 @@
             border-top: 2px dashed
         }
 
+        .card-prose-mb {
+            display: none;
+            padding: 0 14px 14px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: rgba(0, 0, 0, 0.7);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            margin-top: 4px;
+            padding-top: 12px;
+        }
+
+        .leaflet-control-zoom a {
+            background: var(--card) !important;
+            color: #ccc !important;
+            border-color: var(--border) !important
+        }
+
+        .leaflet-control-zoom a:hover {
+            background: var(--card) !important;
+            color: #fff !important
+        }
+
+        @media(max-width:760px) {
+
+            #app,
+            body {
+                flex-direction: column !important;
+            }
+
+            #sidebar {
+                width: 100% !important;
+                min-width: 100% !important;
+                height: 50vh !important;
+            }
+
+            #map-wrap {
+                width: 100% !important;
+                height: 50vh !important;
+                flex: none !important;
+            }
+
+            .day-card.active .card-prose-mb {
+                display: block;
+            }
+
+            #info {
+                display: none !important;
+            }
+
+            #trip-nav {
+                position: fixed;
+                bottom: 12px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 1000;
+            }
+
+            #legend {
+                bottom: 50px;
+            }
+        }
+
         #trip-nav {
             position: absolute;
             bottom: 14px;
@@ -798,7 +860,14 @@
         <ul class="evts">${d.events.map(e => `<li>${e}</li>`).join('')}</ul>
       </div>
       <div class="card-prose-mb">${d.prose || ''}</div>`;
-                card.addEventListener('click', () => activate(d.n, true));
+                card.addEventListener('click', () => {
+                    const isActive = card.classList.contains('active');
+                    if (window.innerWidth <= 760 && isActive) {
+                        card.classList.remove('active');
+                    } else {
+                        activate(d.n, true);
+                    }
+                });
                 card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(d.n, true); } });
                 wrap.appendChild(card);
             });
