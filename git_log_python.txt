@@ -1,0 +1,10 @@
+a6aca6dd0a7570b6941119517c3b2efbab9f379f||Align map route endpoints exactly with city markers
+19bf929c4c893aaa81b992a11abd13fcba646f60||Fix Aomori-to-Hakodate route gap and contrast return flight color
+a65e43de7dfb8a7ea1ecfdbe9a077a94cb355392||Update Japan itinerary map prose, colors, and landing page links
+2abf56b5cdb2189951fffa1779aa436ce7500924||Cleanup: fix stale URLs and add JP landing page
+9ae490269d43d7d8de461e4b08d219c37037fede||Bump CSS to v=5 to force reload of hover fix
+447478da450dff004b70b6b60d537f36ce9368f4||Fix all Home links to point to tokyo-in-film.html instead of index.html
+4663230aac63fbff28705f014be865f37dcb2f83||EMERGENCY: Restore Chaues Productions index.html, move Tokyo in Film to tokyo-in-film.html
+0a7f4abecaf1aa5326c4275329234f8e77e91105||Fix dropdown: add CSS hover fallback so dropdown works without JS
+6566358e7fc716d4c5167d41db76f5c7f93a28ad||Emergency: Restore accidentally deleted big-combo.jpg
+9f5aada7c14365855df733f7d4e51eb6e0e95445||Fix: Inline dropdown JS to bypass caching issues on live site

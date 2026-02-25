@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rassera! — Japan Summer 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lato:ital,wght@0,300;1,300&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --bg: #07101f;
+            --panel: #0b1628;
+            --card: #111d35;
+            --border: rgba(255, 255, 255, 0.06);
+            --amber: #f59e0b;
+            --amber-dim: rgba(245, 158, 11, 0.12);
+            --amber-text: rgba(245, 158, 11, 0.55);
+            --text: #e2e8f0;
+            --muted: #64748b;
+            --prose: #b0bcc9;
+            --festival: #ef4444;
+            --partner: #a78bfa;
+            --cultural: #34d399;
+            --travel: #f59e0b;
+            --arrival: #f59e0b;
+            --finale: #fb923c;
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text)
+        }
+
+        #app {
+            display: flex;
+            height: 100vh
+        }
+
+        #sidebar {
+            width: 370px;
+            min-width: 370px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: var(--panel);
+            border-right: 1px solid var(--border);
+            z-index: 10
+        }
+
+        #hdr {
+            padding: 18px 22px 14px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg)
+        }
+
+        .eyebrow {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--amber);
+            margin-bottom: 5px
+        }
+
+        .trip-h {
+            font-size: 17px;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.15
+        }
+
+        .trip-d {
+            font-size: 10px;
+            color: var(--muted);
+            margin-top: 3px
+        }
+
+        #prog-track {
+            height: 2px;
+            background: rgba(255, 255, 255, 0.05);
+            margin-top: 12px;
+            border-radius: 1px;
+            overflow: hidden
+        }
+
+        #prog-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--amber), #fb7185);
+            width: 0%;
+            transition: width 0.5s ease
+        }
+
+        #day-ctr {
+            font-size: 9px;
+            color: var(--muted);
+            margin-top: 5px;
+            letter-spacing: .3px
+        }
+
+        #timeline {
+            flex: 1;
+            overflow-y: auto;
+            padding: 6px 0 30px;
+            scroll-behavior: smooth
+        }
+
+        #timeline::-webkit-scrollbar {
+            width: 3px
+        }
+
+        #timeline::-webkit-scrollbar-thumb {
+            background: var(--amber-dim);
+            border-radius: 2px
+        }
+
+        .sec-label {
+            padding: 14px 22px 5px;
+            font-size: 8.5px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--muted)
+        }
+
+        .day-card {
+            margin: 3px 10px;
+            border-radius: 10px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            overflow: hidden;
+            position: relative
+        }
+
+        .day-card:hover {
+            border-color: rgba(245, 158, 11, 0.18);
+            background: #131f3c
+        }
+
+        .day-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            transition: width 0.2s
+        }
+
+        .day-card.arrival::before,
+        .day-card.travel::before {
+            background: var(--amber)
+        }
+
+        .day-card.partner::before {
+            background: var(--partner)
+        }
+
+        .day-card.cultural::before {
+            background: var(--cultural)
+        }
+
+        .day-card.festival::before {
+            background: var(--festival)
+        }
+
+        .day-card.finale::before {
+            background: var(--finale)
+        }
+
+        .day-card.active {
+            border-color: rgba(245, 158, 11, 0.35);
+            background: #152342;
+            transform: translateX(3px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4)
+        }
+
+        .day-card.active::before {
+            width: 4px
+        }
+
+        .card-img-wrap {
+            position: relative;
+            overflow: hidden;
+            height: 80px
+        }
+
+        .card-img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            display: block;
+            opacity: 0.55;
+            transition: opacity 0.3s;
+            filter: saturate(0.7)
+        }
+
+        .day-card.active .card-img {
+            opacity: 0.85;
+            filter: saturate(1)
+        }
+
+        .card-img-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60%;
+            background: linear-gradient(transparent, var(--card))
+        }
+
+        .day-card.active .card-img-overlay {
+            background: linear-gradient(transparent, #152342)
+        }
+
+        .card-top {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 9px 12px 6px
+        }
+
+        .day-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            background: var(--amber-dim);
+            color: var(--amber-text);
+            border: 1px solid rgba(245, 158, 11, 0.18);
+            flex-shrink: 0;
+            transition: all 0.2s
+        }
+
+        .day-card.active .day-num {
+            background: var(--amber);
+            color: #000;
+            border-color: var(--amber)
+        }
+
+        .card-meta {
+            flex: 1;
+            min-width: 0
+        }
+
+        .card-date {
+            font-size: 9px;
+            color: var(--muted);
+            margin-bottom: 1px
+        }
+
+        .card-loc {
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .card-em {
+            font-size: 16px;
+            flex-shrink: 0
+        }
+
+        .card-body {
+            padding: 0 12px 10px
+        }
+
+        .card-ttl {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--amber);
+            margin-bottom: 5px;
+            line-height: 1.3
+        }
+
+        .evts {
+            list-style: none
+        }
+
+        .evts li {
+            font-size: 10.5px;
+            color: var(--muted);
+            padding: 1.5px 0 1.5px 10px;
+            position: relative;
+            line-height: 1.5
+        }
+
+        .evts li::before {
+            content: '·';
+            position: absolute;
+            left: 0;
+            color: var(--amber);
+            font-weight: 900
+        }
+
+        #map-wrap {
+            flex: 1;
+            position: relative
+        }
+
+        #map {
+            width: 100%;
+            height: 100%
+        }
+
+        #info {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 290px;
+            z-index: 900;
+            display: flex;
+            flex-direction: column;
+            pointer-events: none
+        }
+
+        #info-img-wrap {
+            flex: 0 0 190px;
+            overflow: hidden;
+            position: relative
+        }
+
+        #info-img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            display: block;
+            transition: opacity 0.5s;
+            filter: saturate(0.85)
+        }
+
+        #info-img-grad {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 90px;
+            background: linear-gradient(transparent, rgba(7, 16, 31, 0.98))
+        }
+
+        #info-text {
+            background: rgba(7, 16, 31, 0.93);
+            backdrop-filter: blur(18px);
+            border-left: 1px solid var(--border);
+            padding: 16px 20px 20px;
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column
+        }
+
+        #info-text::-webkit-scrollbar {
+            width: 3px
+        }
+
+        #info-text::-webkit-scrollbar-thumb {
+            background: var(--amber-dim);
+            border-radius: 2px
+        }
+
+        .info-day-lbl {
+            font-size: 8.5px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--amber);
+            margin-bottom: 4px
+        }
+
+        .info-loc-lbl {
+            font-size: 21px;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1;
+            margin-bottom: 2px
+        }
+
+        .info-ttl-lbl {
+            font-size: 10.5px;
+            color: var(--muted);
+            line-height: 1.4;
+            margin-bottom: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border)
+        }
+
+        #info-prose {
+            flex: 1
+        }
+
+        .prose-p {
+            font-family: 'Lato', sans-serif;
+            font-size: 12.5px;
+            font-weight: 300;
+            color: var(--prose);
+            line-height: 1.75;
+            margin-bottom: 10px
+        }
+
+        .prose-p:last-child {
+            margin-bottom: 0
+        }
+
+        .prose-p strong {
+            color: #d4dde8;
+            font-weight: 400;
+            font-style: italic
+        }
+
+        #legend {
+            position: absolute;
+            bottom: 24px;
+            left: 16px;
+            z-index: 1000;
+            background: rgba(7, 16, 31, 0.88);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px 14px;
+            pointer-events: none
+        }
+
+        .leg-h {
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 7px
+        }
+
+        .leg-r {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+            font-size: 10px;
+            color: var(--text)
+        }
+
+        .leg-l {
+            width: 22px;
+            height: 2px;
+            flex-shrink: 0
+        }
+
+        .leg-ld {
+            width: 22px;
+            height: 0;
+            border-top: 2px dashed;
+            flex-shrink: 0
+        }
+
+        .ct {
+            background: rgba(7, 16, 31, 0.92) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: #fff !important;
+            border-radius: 6px !important;
+            font-family: 'Inter', sans-serif !important;
+            font-size: 11px !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
+            padding: 5px 9px !important
+        }
+
+        .leaflet-control-attribution {
+            background: rgba(7, 16, 31, 0.7) !important;
+            color: var(--muted) !important;
+            font-size: 9px !important;
+            padding: 2px 6px !important
+        }
+
+        .leaflet-control-attribution a {
+            color: var(--muted) !important
+        }
+
+        .leaflet-attribution-flag {
+            display: none !important
+        }
+
+        .leaflet-control-zoom a {
+            background: rgba(11, 22, 40, 0.92) !important;
+            color: #ccc !important;
+            border-color: var(--border) !important
+        }
+
+        .leaflet-control-zoom a:hover {
+            background: var(--card) !important;
+            color: #fff !important
+        }
+
+        @media(max-width:760px) {
+            #app {
+                flex-direction: column
+            }
+
+            #sidebar {
+                width: 100%;
+                min-width: 100%;
+                height: 42vh
+            }
+
+            #map-wrap {
+                height: 58vh
+            }
+
+            #info {
+                display: none
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div id="sidebar">
+            <div id="hdr">
+                <div class="eyebrow">Chaues Productions · Group 8–12</div>
+                <div class="trip-h">Rassera! — Japan Summer 2026</div>
+                <div class="trip-d">July 31 – August 13, 2026 · 14 days</div>
+                <div id="prog-track">
+                    <div id="prog-fill"></div>
+                </div>
+                <div id="day-ctr">Day 1 of 14</div>
+            </div>
+            <div id="timeline"></div>
+        </div>
+        <div id="map-wrap">
+            <div id="map"></div>
+            <div id="info">
+                <div id="info-img-wrap">
+                    <img id="info-img" src="" alt="" loading="lazy" />
+                    <div id="info-img-grad"></div>
+                </div>
+                <div id="info-text">
+                    <div class="info-day-lbl" id="ib-day">Day 1 · Thu Jul 31</div>
+                    <div class="info-loc-lbl" id="ib-loc">Tokyo</div>
+                    <div class="info-ttl-lbl" id="ib-ttl">Arrive Tokyo</div>
+                    <div id="info-prose"></div>
+                </div>
+            </div>
+            <div id="legend">
+                <div class="leg-h">Route</div>
+                <div class="leg-r">
+                    <div class="leg-l" style="background:var(--amber)"></div>Shinkansen
+                </div>
+                <div class="leg-r">
+                    <div class="leg-l" style="background:#d97706"></div>Local / Ltd. Express
+                </div>
+                <div class="leg-r">
+                    <div class="leg-ld" style="border-color:rgba(245,158,11,0.45)"></div>Return Flight
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const I = {
+            tokyo_arrive: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80',
+            tokyo_night: 'https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?w=600&q=80',
+            tokyo_street: 'https://images.unsplash.com/photo-1513407030348-c983a97b98d8?w=600&q=80',
+            racing: 'https://images.unsplash.com/photo-1504215680853-026ed2a45def?w=600&q=80',
+            shinkansen: 'https://images.unsplash.com/photo-1553342385-111fd6bc6ab3?w=600&q=80',
+            morioka: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80',
+            nebuta: 'https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?w=600&q=80',
+            castle: 'https://images.unsplash.com/photo-1493780474015-ba834fd0ce2f?w=600&q=80',
+            coast: 'https://images.unsplash.com/photo-1492571350019-22de08371fd3?w=600&q=80',
+            fireworks: 'https://images.unsplash.com/photo-1594029242614-66a0e86acb97?w=600&q=80',
+            hokkaido: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',
+            sapporo: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',
+            otaru: 'https://images.unsplash.com/photo-1476514525035-f6c0fd5bab88?w=600&q=80',
+            vintage: 'https://images.unsplash.com/photo-1535016120720-40c646be5580?w=600&q=80',
+        };
+
+        const SECTIONS = [
+            {
+                label: 'TOKYO — OPENING', days: [
+                    {
+                        n: 1, date: 'Thu Jul 31', loc: 'Tokyo', emoji: '✈️', type: 'arrival',
+                        title: 'Arrive Tokyo', img: I.tokyo_arrive,
+                        lat: 35.6812, lng: 139.7671, zoom: 12, city: 'tokyo',
+                        events: [
+                            'Land Haneda or Narita — check in to Sequence Miyashita Park, Shibuya',
+                            'Welcome lunch: Udatsu Sushi \u26a0\ufe0f confirm group capacity',
+                            'Easy evening — ramen, Kabukicho or Shibuya Crossing',
+                            'Get on Japan time by walking, not sleeping'
+                        ],
+                        prose: `<p class="prose-p">Landing in Tokyo is always a calibration — the city runs at a frequency you haven't encountered, and the first twelve hours don't align with anything. We check into <strong>Sequence Miyashita Park</strong> in Shibuya — the hotel sits directly above Miyashita Park and puts you inside the culture rather than across the street from it. Shibuya is home base for the opening days.</p><p class="prose-p">We open at <strong>Udatsu</strong>: counter omakase, Chef Toru Udatsu, one of Tokyo's serious sushiya. You sit, you eat what appears, you stop trying to frame it. The evening is deliberately loose — Shibuya Crossing at dusk is not a tourist gesture, it's a functional portrait of organized mass. Get on Japan time by moving, not sleeping.</p>`
+                    },
+                    {
+                        n: 2, date: 'Fri Aug 1', loc: 'Tokyo', emoji: '🎭', type: 'partner',
+                        title: 'TeamLab · BunBun · Shibuya Sky', img: I.tokyo_night,
+                        lat: 35.6812, lng: 139.7671, zoom: 12, city: 'tokyo',
+                        events: [
+                            'Morning: TeamLab — book timed entry in advance',
+                            'Optional: Kimono dressing/sale with local business partner',
+                            'Midday–afternoon: Tokyo BunBun acting partner — full commitment',
+                            'Evening: Shibuya Sky night viewing — book in advance (Scramble Square rooftop)'
+                        ],
+                        prose: `<p class="prose-p"><strong>TeamLab</strong> opens the day — full-body immersive installation art, the kind of environment where the boundary between viewer and image dissolves entirely. Book timed entry ahead; it sells out. There's also an optional stop for <strong>kimono dressing</strong> with a local business: a working engagement, not a tourist photo op.</p><p class="prose-p"><strong>BunBun</strong> operates in the register where language stops being useful — physical, present, without the scaffolding of shared vocabulary. Acting in a foreign country strips everything to the body. The whole group enters this one; no half-measures, no parallel scheduling.</p><p class="prose-p">The night closes at <strong>Shibuya Sky</strong> — the rooftop observation deck on Scramble Square, 230 meters above the crossing. Tokyo at night from that altitude is the city making its full argument. Book in advance. The unobstructed glass floor looks straight down onto Shibuya Crossing.</p>`
+                    },
+                    {
+                        n: 3, date: 'Sat Aug 2', loc: 'Tokyo', emoji: '🏎️', type: 'partner',
+                        title: 'Bonsai Racing — Confirmed Partner', img: I.racing,
+                        lat: 35.6812, lng: 139.7671, zoom: 12, city: 'tokyo',
+                        events: [
+                            'Full day with Bonsai Racing partner',
+                            'Evening at leisure in Tokyo'
+                        ],
+                        prose: `<p class="prose-p">Racing has a visual grammar — focal length, spatial compression, the problem of representing speed in a fixed frame. Bonsai is the Japanese execution of it, and a confirmed production partner not because a box was checked but because what happens there produces material worth keeping.</p><p class="prose-p">Full day. Properly scheduled into the trip architecture. What gets documented here is part of the project.</p>`
+                    },
+                ]
+            },
+            {
+                label: 'JOURNEY NORTH', days: [
+                    {
+                        n: 4, date: 'Sun Aug 3', loc: 'Morioka', emoji: '🥁', type: 'travel',
+                        title: 'Tokyo → Morioka · Sansa Festival', img: I.shinkansen,
+                        lat: 39.7014, lng: 141.1349, zoom: 13, city: 'morioka',
+                        events: [
+                            'Tohoku Shinkansen ~2h20m — reserve group block (JR Pass)',
+                            '\u26a0\ufe0f Possible stop: Ebisu [brewery/attraction] in Fukushima — user to confirm',
+                            'Kitakami River walk — Mt. Iwate over the city',
+                            'Azumaya: wanko soba — slam bowls until you tap out',
+                            'Nagasawa Coffee or Clammbon — Tohoku third-wave',
+                            'EVENING: Morioka Sansa Festival — join the procession at close'
+                        ],
+                        prose: `<p class="prose-p">The Tohoku Shinkansen runs northeast and within two hours the Tokyo skyline dissolves entirely into cedar ridges and terraced fieldwork. <strong>Morioka</strong> was the NYT's #2 of 52 Places on Earth in 2023 — not because it was constructed for tourism but because it's compact, real, and still functions primarily for the people who live there. The Kitakami River splits the city. Mt. Iwate rises above the treeline like a thesis statement.</p><p class="prose-p">The <strong>Sansa Festival</strong> is the reason we stop here tonight — the world's largest taiko drum procession, 10,000 performers moving through the streets. At the close of the night the procession opens to anyone who wants to join it. Walk into it.</p>`
+                    },
+                    {
+                        n: 5, date: 'Mon Aug 4', loc: 'Aomori', emoji: '🎏', type: 'travel',
+                        title: 'Morioka → Aomori · Nebuta Night 3', img: I.nebuta,
+                        lat: 40.8244, lng: 140.7400, zoom: 13, city: 'aomori',
+                        events: [
+                            'Shinkansen Morioka → Aomori ~1hr (JR Pass)',
+                            'Check in — first parade night, arrive with energy',
+                            'A-FACTORY waterfront — apple cider, bay views',
+                            'Rassera Land — floats up close at builder huts',
+                            '6:45pm: Nebuta Night 3 — 20 large nebutas',
+                            'Haneto costume ~\u00a54,000 — join the procession'
+                        ],
+                        prose: `<p class="prose-p">One more hour north and the shinkansen arrives in Aomori — the northern terminus of Honshu, end of the main island. The city has built its entire civic identity around this festival. The <strong>nebuta</strong> are warrior-figure lantern floats the size of shipping containers, internally wired, pulled through streets on wheeled platforms while Haneto dancers circle and the crowd chants <strong>Rassera</strong>.</p><p class="prose-p">Tonight is the first parade night for the group. Rent the costume. Get into the procession. The Haneto dance is not performative tourism — it's the participation structure the festival was designed around. You're supposed to be in it.</p>`
+                    },
+                ]
+            },
+            {
+                label: 'AOMORI · NEBUTA FESTIVAL', days: [
+                    {
+                        n: 6, date: 'Tue Aug 5', loc: 'Aomori', emoji: '🍣', type: 'cultural',
+                        title: 'Aomori Cultural Day · Nebuta Night 4', img: I.nebuta,
+                        lat: 40.8244, lng: 140.7400, zoom: 13, city: 'aomori',
+                        events: [
+                            '7am: Nokke-don at Furukawa Market — build your own sashimi bowl',
+                            'Nebuta no Ie Wa Rasse — float museum, Haneto costume try-on',
+                            'Aomori Museum of Art — Yoshitomo Nara\'s Aomori Dog',
+                            'Sannai-Maruyama Jomon Site (UNESCO, bus ~20min)',
+                            '6:45pm: Nebuta Night 4 — 20 large nebutas'
+                        ],
+                        prose: `<p class="prose-p"><strong>Furukawa Market</strong> opens before dawn for fishing families. By 7am the Nokke-don stalls are running — you buy a bowl of rice and choose toppings from whatever came off the boats this morning: sea urchin, salmon roe, scallop, squid. One of the most direct eating experiences in Japan.</p><p class="prose-p"><strong>Wa Rasse</strong> is one of the only places you can read a nebuta float at close range — the internal wire armature, the layered washi paper, the engineering of light distribution. <strong>Sannai-Maruyama</strong> is a Jomon settlement 5,500 years old sitting adjacent to the city, mostly unvisited, UNESCO-listed, genuinely worth the bus ride. Parade again at 6:45.</p>`
+                    },
+                    {
+                        n: 7, date: 'Wed Aug 6', loc: 'Goshogawara', emoji: '🔴', type: 'festival',
+                        title: 'Hirosaki → Goshogawara · Tachineputa Overnight', img: I.castle,
+                        lat: 40.8065, lng: 140.4390, zoom: 13, city: 'goshogawara',
+                        events: [
+                            'Morning: Hirosaki Castle (Edo original) + MOCA (converted brewery)',
+                            'Gono Line to Goshogawara (~40min from Hirosaki)',
+                            'Tachineputa no Yakata — 23m giants year-round',
+                            '19:00–21:00: Goshogawara Tachineputa — "Yattemare!"',
+                            'Floats 23m tall, 19 tons — stand at corners for the pivot',
+                            '\u26a0\ufe0f Overnight — last train to Aomori departs 19:33'
+                        ],
+                        prose: `<p class="prose-p"><strong>Hirosaki Castle</strong> is one of twelve original Edo-period fortresses still standing in Japan. The rest burned or were demolished in the Meiji modernization. The MOCA occupies a converted sake brewery and takes its programming seriously. Both are worth the morning — but we're in transit.</p><p class="prose-p">The afternoon Gono Line carries us west across the Tsugaru plains to <strong>Goshogawara</strong>, where the Tachineputa floats stand 23 meters tall and weigh 19 tons each, navigating streets that were designed for none of that. Best position: a corner of the parade route. Watch the rope teams heave, the float tilt, and 19 tons pivot through an alley. The chant is <strong>Yattemare</strong>. We sleep here tonight — there's no train back to Aomori after the parade starts.</p>`
+                    },
+                    {
+                        n: 8, date: 'Thu Aug 7', loc: 'Hachinohe', emoji: '🦅', type: 'festival',
+                        title: 'Hachinohe Coast · Nebuta Award Night', img: I.coast,
+                        lat: 40.5122, lng: 141.4884, zoom: 12, city: 'hachinohe',
+                        events: [
+                            'Goshogawara → Hachinohe ~2hrs (JR Pass, confirm routing)',
+                            'Kabushima Shrine — 30,000 tame gulls, 92 stairs, ocean views',
+                            'Tanesashi Coast — rugged Pacific coastline trail',
+                            'Miroku Yokocho izakaya — fresh seafood lunch',
+                            'Hachinohe → Aomori ~40min',
+                            '6:45pm: Nebuta Night 5 — AWARD NIGHT'
+                        ],
+                        prose: `<p class="prose-p"><strong>Hachinohe</strong> runs on the Pacific — fishing port culture, rougher and colder in character than the festival cities to the west. <strong>Kabushima Shrine</strong> hosts the largest colony of black-tailed gulls in Japan. They've been there long enough to register humans as furniture; 30,000 birds don't move for you. Ninety-two stone stairs, open ocean, umbrella recommended.</p><p class="prose-p"><strong>Tanesashi Coast</strong> is serious Pacific coastline and one of the less-visited stretches on the east face of Honshu. We're back in Aomori before dark for <strong>Award Night</strong> — the parade where the season's winning floats make their final ceremonial procession. This one carries additional weight. It's the one the city built toward.</p>`
+                    },
+                    {
+                        n: 9, date: 'Fri Aug 8', loc: 'Aomori', emoji: '🎆', type: 'finale',
+                        title: 'Nebuta Finale — Marine Procession', img: I.fireworks,
+                        lat: 40.8244, lng: 140.7400, zoom: 13, city: 'aomori',
+                        events: [
+                            'Morning: rest, final market run, pack',
+                            '1:00pm: Final daytime parade (~15 nebutas)',
+                            'Afternoon: luggage to station lockers',
+                            '7:15pm: Marine Procession — floats on boats in Aomori Bay',
+                            'Fireworks over the bay'
+                        ],
+                        prose: `<p class="prose-p">August 8 the festival turns to face the bay. The float-on-boats procession is not standard Japanese pageantry: it's an internally lit 23-meter warrior lantern, mounted on water at night, with Aomori's fireworks launching overhead. If you carry one image from this trip intact twenty years from now, it will be this one.</p><p class="prose-p">The <strong>1pm daytime parade</strong> is smaller and more navigable — a good final pass when you can actually see the floats without the crowd pressure of evening. Pack before the fireworks start. Move light. This is the last night in Aomori and the end of the festival segment.</p>`
+                    },
+                ]
+            },
+            {
+                label: 'HOKKAIDO — RAIL NORTH', days: [
+                    {
+                        n: 10, date: 'Sat Aug 9', loc: 'Sapporo', emoji: '🦀', type: 'travel',
+                        title: 'Aomori → Hakodate → Sapporo · Rail', img: I.hokkaido,
+                        lat: 43.0642, lng: 141.3469, zoom: 12, city: 'sapporo',
+                        events: [
+                            'Hokkaido Shinkansen: Shin-Aomori → Shin-Hakodate-Hokuto ~1hr (JR Pass)',
+                            'SEIKAN TUNNEL — 54km undersea, world\'s longest rail tunnel',
+                            'Optional: Hakodate morning market + Goryokaku star fort',
+                            'Ltd. express Hokuto: Hakodate → Sapporo ~3.5hrs',
+                            'Nijo Market — uni ikura donburi',
+                            'Susukino: miso ramen at Ramen Alley'
+                        ],
+                        prose: `<p class="prose-p">The Hokkaido Shinkansen descends into the <strong>Seikan Tunnel</strong> 240 meters below the Tsugaru Strait — 54 kilometers underwater, the longest railway tunnel in the world. The transit itself is worth noting. The island arrives quietly.</p><p class="prose-p"><strong>Hakodate</strong> is an optional stop with a serious morning market and <strong>Goryokaku</strong>, a Western-style star fort built in 1864 by a Japan still calibrating what century it was entering. The limited express continues three and a half hours to Sapporo. Miso ramen was invented here. The beer garden does Genghis Khan lamb BBQ at a scale that makes a statement.</p>`
+                    },
+                    {
+                        n: 11, date: 'Sun Aug 10', loc: 'Sapporo', emoji: '🍺', type: 'cultural',
+                        title: 'Sapporo', img: I.sapporo,
+                        lat: 43.0642, lng: 141.3469, zoom: 12, city: 'sapporo',
+                        events: [
+                            'Sapporo Beer Museum — Akarenga 1890 brick brewery (free)',
+                            'Beer garden: all-you-can-eat Genghis Khan lamb BBQ',
+                            'Odori Park — Hokkaido\'s central axis',
+                            'Hokkai Bon Odori — Obon circle dances (confirm 2026 dates)',
+                            'Susukino: soup curry, late bars'
+                        ],
+                        prose: `<p class="prose-p">Sapporo was grid-planned by American agricultural engineers in the 1870s, which is why it reads as spacious and navigable in contrast to every other Japanese city. The <strong>Beer Museum</strong> occupies the original 1890 Akarenga brick brewery — the building makes the argument before anything is poured. <strong>Odori Park</strong> is the horizontal axis of the city.</p><p class="prose-p">If <strong>Hokkai Bon Odori</strong> runs in August 2026, the circle dances are Obon-origin — for the dead, for the summer, for the turning of the season. Susukino runs late and has soup curry, which is Hokkaido's specific contribution to Japanese food culture.</p>`
+                    },
+                    {
+                        n: 12, date: 'Mon Aug 11', loc: 'Otaru', emoji: '🚤', type: 'cultural',
+                        title: 'Otaru Day Trip', img: I.otaru,
+                        lat: 43.1907, lng: 140.9947, zoom: 13, city: 'otaru',
+                        events: [
+                            '~35min from Sapporo by train',
+                            'Otaru Canal — intact brick warehouse district',
+                            'Blue Cave cruise — sea caves off the Otaru coast',
+                            'Sushiya-dori — omakase lunch at the port',
+                            'Yoichi Nikka Distillery (~25min further — tasting)'
+                        ],
+                        prose: `<p class="prose-p"><strong>Otaru</strong> is 35 minutes west and the canal district is genuinely intact — brick warehouses from the herring trade era, low bridges, salt water. The <strong>Blue Cave</strong> is accessed by boat from the port and the way the light hits the basalt inside reads as implausible. The cave is real. Go early.</p><p class="prose-p"><strong>Sushiya-dori</strong> exists because it's at the port — not because tourists found it. <strong>Nikka Distillery</strong> in Yoichi is another 25 minutes and predates Suntory: Masataka Taketsuru built it in 1934 using methods from Scotland, in a Hokkaido valley that matched the climate. The whisky is the proof of his thesis.</p>`
+                    },
+                ]
+            },
+            {
+                label: 'TOKYO — CLOSING', days: [
+                    {
+                        n: 13, date: 'Tue Aug 12', loc: 'Tokyo', emoji: '🌃', type: 'travel',
+                        title: 'Sapporo → Tokyo · Return', img: I.tokyo_night,
+                        lat: 35.6812, lng: 139.7671, zoom: 12, city: 'tokyo',
+                        events: [
+                            'Flight: New Chitose → Haneda ~1.5hrs (rail return is 8hrs)',
+                            'Check in — closing hotel base',
+                            'Evening: Golden Gai, Shinjuku, Shibuya'
+                        ],
+                        prose: `<p class="prose-p">The return from New Chitose is 90 minutes by air. The train alternative is the better part of eight hours. We fly. Arriving back into Tokyo on the closing leg always registers as re-entry — the scale recalibrates after ten days in smaller northern spaces.</p><p class="prose-p">The closing hotel base, final check-in. <strong>Golden Gai</strong> is still Golden Gai: forty-some narrow drinking alleys in Shinjuku, each bar seating eight people maximum, running since the postwar black market that founded it. The evening belongs to wherever momentum takes it.</p>`
+                    },
+                    {
+                        n: 14, date: 'Wed Aug 13', loc: 'Tokyo', emoji: '🎌', type: 'cultural',
+                        title: 'Tokyo Closing Day', img: I.vintage,
+                        lat: 35.6812, lng: 139.7671, zoom: 12, city: 'tokyo',
+                        events: [
+                            'Koenji — underground vintage/thrift, 60+ stores, alternative culture',
+                            'OR: Shimokitazawa (vinyl + vintage), Akihabara, Ginza',
+                            'Final bucket-list lunch — book ahead',
+                            'Shibuya Crossing at dusk — closing shot',
+                            'Departure'
+                        ],
+                        prose: `<p class="prose-p"><strong>Koenji</strong> is what Harajuku was before it got curated for tourism: sixty-plus vintage stores in walking distance, Japanese clothing from the 1970s through the 90s, no performance for outsiders, dense and unpretentious. <strong>Shimokitazawa</strong> runs the same impulse with more vinyl and live music.</p><p class="prose-p">Final lunch needs a reservation. <strong>Shibuya Crossing at dusk</strong> is the closing shot: stand at the center while the city edits itself around you. This is how we close the frame.</p>`
+                    },
+                ]
+            }
+        ];
+
+        const ALL = [];
+        SECTIONS.forEach(s => s.days.forEach(d => ALL.push(d)));
+
+        // ROUTES
+        const SKN_TOHOKU = [
+            [35.6812, 139.7671], [35.9077, 139.6239], [36.3658, 140.4712],
+            [37.7500, 140.4673], [38.2682, 140.8694], [38.9143, 141.1138],
+            [39.4067, 141.1174], [39.7014, 141.1349], [40.1974, 141.3854],
+            [40.5122, 141.4884], [40.7724, 140.6916], [40.8244, 140.7400]
+        ];
+        const OU = [[40.8244, 140.7400], [40.7333, 140.6278], [40.6031, 140.4631]];
+        const GONO = [[40.6031, 140.4631], [40.7200, 140.4380], [40.8065, 140.4390]];
+        const HACHI = [[40.8065, 140.4390], [40.8244, 140.7400], [40.5122, 141.4884], [40.8244, 140.7400]];
+        const SKN_HKD = [[40.7724, 140.6916], [41.0500, 140.6200], [41.4500, 140.6400], [41.9344, 140.6855]];
+        const HOKUTO = [[41.7688, 140.7289], [42.1000, 140.9800], [42.5256, 140.3714], [42.7544, 141.6540], [43.0642, 141.3469]];
+        const OTARU_L = [[43.0642, 141.3469], [43.0900, 141.1500], [43.1907, 140.9947]];
+        function arc(a, b, c, n) { c = c || 1; n = n || 20; const r = []; for (let i = 0; i <= n; i++) { const t = i / n; r.push([a[0] + (b[0] - a[0]) * t + Math.sin(Math.PI * t) * c, a[1] + (b[1] - a[1]) * t]); } return r; }
+        const FLT = arc([42.7752, 141.6922], [35.5494, 139.7798], -1.5);
+
+        // MAP
+        const BOUNDS = L.latLngBounds([34.8, 138.5], [44.5, 143.5]);
+        const map = L.map('map', { center: [40.0, 140.8], zoom: 7, minZoom: 6, maxZoom: 16, zoomControl: false, maxBounds: BOUNDS, maxBoundsViscosity: 0.85 });
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://openstreetmap.org">OSM</a> &copy; <a href="https://carto.com">CARTO</a>',
+            subdomains: 'abcd', maxZoom: 19
+        }).addTo(map);
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+        const dim = { color: '#334155', weight: 1.5, opacity: 0.4 };
+        const loc = { color: '#1e3a5f', weight: 1.2, opacity: 0.45 };
+        L.polyline(SKN_TOHOKU, dim).addTo(map);
+        L.polyline(OU, loc).addTo(map);
+        L.polyline(GONO, loc).addTo(map);
+        L.polyline(SKN_HKD, dim).addTo(map);
+        L.polyline(HOKUTO, loc).addTo(map);
+        L.polyline(OTARU_L, loc).addTo(map);
+        L.polyline(FLT, { color: 'rgba(245,158,11,0.15)', weight: 1.5, dashArray: '4,6' }).addTo(map);
+
+        const aSkn = L.polyline([], { color: '#f59e0b', weight: 3.5, opacity: 0.95, lineCap: 'round' }).addTo(map);
+        const aLoc = L.polyline([], { color: '#d97706', weight: 2.5, opacity: 0.9, lineCap: 'round' }).addTo(map);
+        const aFlt = L.polyline([], { color: '#f59e0b', weight: 2, opacity: 0.75, dashArray: '5,7' }).addTo(map);
+
+        const SEG = {
+            4: { s: SKN_TOHOKU.slice(0, 7), l: [], f: [] },
+            5: { s: SKN_TOHOKU, l: [], f: [] },
+            7: { s: SKN_TOHOKU, l: [...OU, ...GONO], f: [] },
+            8: { s: SKN_TOHOKU, l: [...OU, ...GONO, ...HACHI], f: [] },
+            10: { s: [...SKN_TOHOKU, ...SKN_HKD], l: HOKUTO, f: [] },
+            12: { s: [...SKN_TOHOKU, ...SKN_HKD], l: [...HOKUTO, ...OTARU_L], f: [] },
+            13: { s: [...SKN_TOHOKU, ...SKN_HKD], l: [...HOKUTO, ...OTARU_L], f: FLT.slice(0, 10) },
+            14: { s: [...SKN_TOHOKU, ...SKN_HKD], l: [...HOKUTO, ...OTARU_L], f: FLT },
+        };
+        function updateRoute(n) {
+            let s = [], l = [], f = [];
+            Object.keys(SEG).map(Number).sort((a, b) => a - b).forEach(t => { if (n >= t) { s = SEG[t].s; l = SEG[t].l; f = SEG[t].f; } });
+            aSkn.setLatLngs(s); aLoc.setLatLngs(l); aFlt.setLatLngs(f);
+        }
+
+        const CITIES = {
+            tokyo: { lat: 35.6812, lng: 139.7671, name: 'Tokyo' },
+            morioka: { lat: 39.7014, lng: 141.1349, name: 'Morioka' },
+            aomori: { lat: 40.8244, lng: 140.7400, name: 'Aomori' },
+            goshogawara: { lat: 40.8065, lng: 140.4390, name: 'Goshogawara' },
+            hachinohe: { lat: 40.5122, lng: 141.4884, name: 'Hachinohe' },
+            hirosaki: { lat: 40.6031, lng: 140.4631, name: 'Hirosaki' },
+            hakodate: { lat: 41.7688, lng: 140.7289, name: 'Hakodate' },
+            sapporo: { lat: 43.0642, lng: 141.3469, name: 'Sapporo' },
+            otaru: { lat: 43.1907, lng: 140.9947, name: 'Otaru' },
+        };
+        const cMkrs = {};
+        Object.entries(CITIES).forEach(([k, c]) => {
+            const m = L.circleMarker([c.lat, c.lng], { radius: 6, fillColor: '#f59e0b', color: 'rgba(245,158,11,0.3)', weight: 7, opacity: 1, fillOpacity: 0.9 }).addTo(map);
+            m.bindTooltip(`<b>${c.name}</b>`, { className: 'ct', permanent: false, direction: 'top' });
+            m.on('click', () => {
+                const daysInCity = ALL.filter(x => x.city === k);
+                if (daysInCity.length > 0) {
+                    const closestDay = daysInCity.reduce((prev, curr) => Math.abs(curr.n - activeDay) < Math.abs(prev.n - activeDay) ? curr : prev);
+                    scrollTo(closestDay.n);
+                }
+            });
+            cMkrs[k] = m;
+        });
+
+        // BUILD TIMELINE
+        const tl = document.getElementById('timeline');
+        SECTIONS.forEach(sec => {
+            const wrap = document.createElement('div');
+            const lbl = document.createElement('div');
+            lbl.className = 'sec-label'; lbl.textContent = sec.label; wrap.appendChild(lbl);
+            sec.days.forEach(d => {
+                const card = document.createElement('div');
+                card.className = `day-card ${d.type}`; card.id = `d${d.n}`; card.dataset.n = d.n;
+                card.innerHTML = `
+      ${d.img ? `<div class="card-img-wrap"><img class="card-img" src="${d.img}" alt="${d.loc}" loading="lazy"><div class="card-img-overlay"></div></div>` : ''}
+      <div class="card-top">
+        <div class="day-num">${d.n}</div>
+        <div class="card-meta"><div class="card-date">${d.date}</div><div class="card-loc">${d.loc}</div></div>
+        <div class="card-em">${d.emoji}</div>
+      </div>
+      <div class="card-body">
+        <div class="card-ttl">${d.title}</div>
+        <ul class="evts">${d.events.map(e => `<li>${e}</li>`).join('')}</ul>
+      </div>`;
+                card.addEventListener('click', () => activate(d.n, true));
+                wrap.appendChild(card);
+            });
+            tl.appendChild(wrap);
+        });
+
+        let activeDay = 0, lastCity = '';
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) { const n = parseInt(e.target.dataset.n); if (n !== activeDay) activate(n, false); } });
+        }, { root: document.getElementById('timeline'), rootMargin: '-10% 0px -70% 0px', threshold: 0 });
+        document.querySelectorAll('.day-card').forEach(c => obs.observe(c));
+
+        function activate(n, scroll) {
+            activeDay = n;
+            const day = ALL.find(d => d.n === n); if (!day) return;
+            document.querySelectorAll('.day-card').forEach(c => c.classList.remove('active'));
+            const card = document.getElementById(`d${n}`);
+            if (card) { card.classList.add('active'); if (scroll) card.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+            if (day.city !== lastCity) {
+                map.flyTo([day.lat, day.lng], day.zoom, { duration: 1.1, easeLinearity: 0.25 });
+                lastCity = day.city;
+                Object.entries(cMkrs).forEach(([k, m]) => m.setStyle(k === day.city
+                    ? { radius: 9, fillColor: '#f59e0b', color: 'rgba(245,158,11,0.6)', weight: 10, fillOpacity: 1 }
+                    : { radius: 6, fillColor: '#f59e0b', color: 'rgba(245,158,11,0.3)', weight: 7, fillOpacity: 0.9 }));
+            }
+            updateRoute(n);
+            document.getElementById('ib-day').textContent = `Day ${n} \u00b7 ${day.date}`;
+            document.getElementById('ib-loc').textContent = day.loc;
+            document.getElementById('ib-ttl').textContent = day.title;
+            document.getElementById('info-prose').innerHTML = day.prose || '';
+            const img = document.getElementById('info-img');
+            if (day.img && img.src !== day.img) { img.style.opacity = 0; setTimeout(() => { img.src = day.img; img.alt = day.loc; img.style.opacity = 1; }, 200); }
+            const pct = ((n - 1) / (ALL.length - 1)) * 100;
+            document.getElementById('prog-fill').style.width = pct + '%';
+            document.getElementById('day-ctr').textContent = `Day ${n} of ${ALL.length}`;
+        }
+        function scrollTo(n) { const c = document.getElementById(`d${n}`); if (c) c.scrollIntoView({ behavior: 'smooth', block: 'center' }); activate(n, false); }
+        setTimeout(() => activate(1, false), 300);
+    </script>
+</body>
+
+</html>

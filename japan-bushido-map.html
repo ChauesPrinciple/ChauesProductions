@@ -121,7 +121,7 @@
         #timeline {
             flex: 1;
             overflow-y: auto;
-            padding: 8px 0;
+            padding: 8px 0 60vh;
             background: var(--bg);
         }
 
@@ -309,6 +309,18 @@
 
         .leaflet-container {
             background: var(--bg) !important
+        }
+
+        .leaflet-control-attribution {
+            font-size: 8px !important;
+            background: rgba(255, 255, 255, 0.4) !important;
+            padding: 1px 5px !important;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+        }
+
+        .leaflet-control-attribution:hover {
+            opacity: 1;
         }
 
         .ct {
@@ -502,6 +514,48 @@
             color: #fff !important
         }
 
+        .cta-card {
+            margin: 24px 16px 12px;
+            padding: 28px 20px;
+            background: linear-gradient(135deg, rgba(185, 28, 28, 0.1), rgba(185, 28, 28, 0.04));
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .cta-card h3 {
+            font-size: 16px;
+            color: var(--accent);
+            margin: 0 0 8px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-card p {
+            font-size: 12px;
+            color: var(--muted);
+            margin: 0 0 16px;
+            line-height: 1.5;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 10px 28px;
+            background: var(--accent);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(185, 28, 28, 0.4);
+        }
+
         @media(max-width:760px) {
 
             #app,
@@ -514,6 +568,10 @@
                 min-width: 100% !important;
                 height: 50vh !important;
                 height: 50dvh !important;
+            }
+
+            #timeline {
+                padding-bottom: 25vh !important;
             }
 
             #map-wrap {
@@ -689,7 +747,7 @@
                         title: 'Tokyo: Temples, Steel, and Neon', img: I.tokyo_explore,
                         lat: 35.6812, lng: 139.7671, zoom: 12, city: 'tokyo',
                         events: ['Morning: Meiji Jingu Shrine (forest in the city)', 'Harajuku and Omotesando walk', 'Afternoon: Sword Museum (Japanese Sword Museum, Sumida)', 'Akihabara or Yanaka old district', 'Evening: Shinjuku Golden Gai or Kabukicho'],
-                        prose: `<p class="prose-p"><strong>Meiji Jingu</strong> is a Shinto shrine wrapped in 170,000 trees in the center of Tokyo. The forest was planted in 1920 and has since grown into old-growth density. Walking through it is a decompression chamber between the city and the shrine. The transition is the point.</p><p class="prose-p">The <strong>Japanese Sword Museum</strong> in Sumida holds one of the finest collections of katana in the world. Before you hold one at Yushinkan in Kyoto, you see what centuries of blade-making aesthetics produced. The curvature, the grain of the steel, the hamon line \u2014 these are not decorative. They are engineering decisions preserved across generations. This day gives context to everything that follows.</p>`
+                        prose: `<p class="prose-p"><strong>Meiji Jingu</strong> is a Shinto shrine wrapped in 170,000 trees in the center of Tokyo. The forest was planted in 1920 and has since grown into old-growth density. Walking through it is a decompression chamber between the city and the shrine. The transition is the point.</p><p class="prose-p">The <strong>Japanese Sword Museum</strong> in Sumida holds one of the finest collections of katana in the world. Before you hold one at Yushinkan in Kyoto, you see what centuries of blade-making aesthetics produced. The curvature, the grain of the steel, the hamon line \u2014 these are engineering decisions preserved across generations. If you have read Musashi\u2019s <em>Book of Five Rings</em>, this is where that text becomes physical. This day gives context to everything that follows.</p>`
                     },
                     {
                         n: 3, date: 'Day 3', loc: 'Tokyo', type: 'partner',
@@ -714,14 +772,14 @@
                         title: 'Kyoto: Temples and Tea',
                         lat: 34.9858, lng: 135.7588, zoom: 13, city: 'kyoto',
                         events: ['Morning: Kinkaku-ji (Golden Pavilion) or Ryoan-ji rock garden', 'Arashiyama Bamboo Grove', 'Afternoon: tea ceremony experience', 'Nishiki Market: Kyoto\'s Kitchen', 'Evening: prepare for tomorrow\'s training'],
-                        prose: `<p class="prose-p">A full day in Kyoto before the dojo. <strong>Ryoan-ji</strong> is the most famous Zen rock garden in Japan: fifteen stones arranged so that you can never see all of them from any single vantage point. The garden is a koan. <strong>Arashiyama</strong> bamboo grove does what photographs promise \u2014 the scale is real, the light filters through ten thousand stalks, and it is quieter than you expect.</p><p class="prose-p">The <strong>tea ceremony</strong> is not about tea. It is about controlled movement, attention to every gesture, and the discipline of doing one small thing with total presence. It is the aesthetic root of what you will practice with a sword tomorrow. <strong>Nishiki Market</strong> runs five blocks through Kyoto\u2019s center and has operated for 400 years. Eat through it slowly.</p>`
+                        prose: `<p class="prose-p">A full day in Kyoto before the dojo. <strong>Ryoan-ji</strong> is the most famous Zen rock garden in Japan: fifteen stones arranged so that you can never see all of them from any single vantage point. The garden is a koan. <strong>Arashiyama</strong> bamboo grove does what photographs promise \u2014 the scale is real, the light filters through ten thousand stalks, and it is quieter than you expect.</p><p class="prose-p">The <strong>tea ceremony</strong> is not about tea. It is about controlled movement, attention to every gesture, and the discipline of doing one small thing with total presence. Nitobe Inaz\u014d called this \u201cthe religion of the art of life\u201d in <em>Bushido: The Soul of Japan</em>. It is the aesthetic root of what you will practice with a sword tomorrow. <strong>Nishiki Market</strong> runs five blocks through Kyoto\u2019s center and has operated for 400 years. Eat through it slowly.</p>`
                     },
                     {
                         n: 6, date: 'Day 6', loc: 'Kyoto', type: 'partner',
                         title: 'Yushinkan Kyoto: Samurai Training with the Modern-day Musashi',
                         lat: 34.9858, lng: 135.7588, zoom: 13, city: 'kyoto',
                         events: ['Yushinkan Kyoto: operating dojo, real katana', '120-minute training session with Sensei Yushin', 'Proper training gear (keikogi and hakama)', 'Kata training, sword handling, tameshigiri (cutting)', 'Real katana swords, real technique, real dojo', 'Evening: Kyoto at leisure'],
-                        prose: `<p class="prose-p"><strong>Yushinkan Kyoto</strong> is an operating dojo run by <strong>Sensei Yushin</strong>, known as the Modern-day Musashi. This is not a costume photo op. You wear proper training gear, hold real katana swords, and train the way samurai actually trained. The 120-minute session covers kata (forms), correct sword handling, and culminates in <strong>tameshigiri</strong> \u2014 cutting through rolled tatami mats with a live blade.</p><p class="prose-p">The dojo holds a 5.0 rating across 957 reviews for a reason: Sensei Yushin and his instructors deliver the real thing with infectious energy. The experience of handling a katana correctly and cutting through an object cleanly is something that stays with you. This is the confirmed expert partner for the <strong>Bushido</strong> itinerary and the day that gives the trip its name.</p><p class="prose-p">Yushinkan also offers authentic Japanese katana for sale, selected by Sensei Yushin himself, suitable for both cutting practice and display. They handle international shipping.</p>`
+                        prose: `<p class="prose-p"><strong>Yushinkan Kyoto</strong> is an operating dojo run by <strong>Sensei Yushin</strong>, known as the Modern-day Musashi. This is not a costume photo op. You wear proper training gear, hold real katana swords, and train the way samurai actually trained. The 120-minute session covers kata (forms), correct sword handling, and culminates in <strong>tameshigiri</strong> \u2014 cutting through rolled tatami mats with a live blade.</p><p class="prose-p">If you have read Takehiko Inoue\u2019s <em>Vagabond</em> or Musashi\u2019s <em>Book of Five Rings</em>, this is the day that moves from page to practice. Sensei Yushin and his instructors deliver the real thing with infectious energy. The experience of handling a katana correctly and cutting through an object cleanly is something that stays with you. This is the confirmed expert partner for the <strong>Bushido</strong> itinerary and the day that gives the trip its name.</p><p class="prose-p">Yushinkan also offers authentic Japanese katana for sale, selected by Sensei Yushin himself, suitable for both cutting practice and display. They handle international shipping.</p>`
                     },
                 ]
             },
@@ -739,7 +797,7 @@
                         title: 'Begin the Kumano Kodo',
                         lat: 33.9833, lng: 135.6833, zoom: 11, city: 'hongu',
                         events: ['Dawn: morning prayer service with the monks', 'Depart Koyasan for Tanabe / Nakahechi trailhead', 'Optional: Musuhi Budojo budo tourism session (karate, kobudo, kenjutsu)', 'Begin Nakahechi route: the Imperial Pilgrimage', 'Forest trail through cedar and hinoki cypress', 'Overnight: trail accommodation'],
-                        prose: `<p class="prose-p">The <strong>Kumano Kodo</strong> is one of only two pilgrimage trails in the world designated as UNESCO World Heritage Sites (the other is the Camino de Santiago in Spain). For over a thousand years, emperors, samurai, and commoners walked this same path through the mountains of the Kii Peninsula to reach the three Grand Shrines of Kumano.</p><p class="prose-p">At the trailhead sits <strong>Musuhi Budojo</strong>, a martial arts dojo offering budo tourism experiences. Instructor <strong>Matsufune Asami</strong> brings 19 years of karate-do plus kenjutsu, taijutsu, and Okinawan kobudo. This is the Bushido thread continuing: from BunBun in Tokyo, to the katana in Kyoto, to the dojo on the mountain path.</p><p class="prose-p">We walk the <strong>Nakahechi route</strong>, the Imperial Pilgrimage path. The trail passes through old-growth cedar forest, over mountain passes, and through small villages that have served pilgrims for centuries. The walking is real.</p>`
+                        prose: `<p class="prose-p">The <strong>Kumano Kodo</strong> is one of only two pilgrimage trails in the world designated as UNESCO World Heritage Sites (the other is the Camino de Santiago in Spain). For over a thousand years, emperors, samurai, and commoners walked this same path through the mountains of the Kii Peninsula to reach the three Grand Shrines of Kumano. The connection to the warrior path is direct: samurai walked this trail as spiritual preparation, and Musashi himself wandered similar mountain paths as part of his <em>musha shugyo</em> \u2014 the warrior\u2019s pilgrimage.</p><p class="prose-p">At the trailhead sits <strong>Musuhi Budojo</strong>, a martial arts dojo offering budo tourism experiences. Instructor <strong>Matsufune Asami</strong> brings 19 years of karate-do plus kenjutsu, taijutsu, and Okinawan kobudo. This is the Bushido thread continuing: from BunBun in Tokyo, to the katana in Kyoto, to the dojo on the mountain path.</p><p class="prose-p">We walk the <strong>Nakahechi route</strong>, the Imperial Pilgrimage path. The trail passes through old-growth cedar forest, over mountain passes, and through small villages that have served pilgrims for centuries. The walking is real.</p>`
                     },
                     {
                         n: 9, date: 'Day 9', loc: 'Kumano Kodo', type: 'cultural',
@@ -764,7 +822,7 @@
                         title: 'Return to Tokyo', img: I.tokyo_arrive,
                         lat: 35.6812, lng: 139.7671, zoom: 11, city: 'tokyo',
                         events: ['JR limited express to Shin-Osaka or Nagoya', 'Tokaido Shinkansen back to Tokyo', 'Arrive Tokyo evening', 'Final night at leisure'],
-                        prose: `<p class="prose-p">The return follows the rail corridor from the Kii coast through <strong>Shin-Osaka</strong> or <strong>Nagoya</strong> and back onto the Tokaido Shinkansen to Tokyo. The trip reverses its own geometry: the bullet train that carried you south now brings you back, but the distance feels different after what you walked.</p><p class="prose-p">The final night is open. Tokyo absorbs you back without ceremony, which is appropriate. The trip does not end with a grand gesture. It ends with the city that was always here, waiting for you to return with what you carried out of the mountains.</p>`
+                        prose: `<p class="prose-p">The return follows the rail corridor from the Kii coast through <strong>Shin-Osaka</strong> or <strong>Nagoya</strong> and back onto the Tokaido Shinkansen to Tokyo. The trip reverses its own geometry: the bullet train that carried you south now brings you back, but the distance feels different after what you walked.</p><p class="prose-p">The final night is open. Tokyo absorbs you back without ceremony, which is appropriate. Musashi wrote that the Way is in training, not in the destination. The trip does not end with a grand gesture. It ends with the city that was always here, waiting for you to return with what you carried out of the mountains.</p>`
                     },
                 ]
             },
@@ -775,7 +833,7 @@
         const KOYA_LINE = [[34.9858, 135.7588], [34.6685, 135.5024], [34.3133, 135.6067], [34.2130, 135.5850]];
         const KUMANO_TRAIL = [[34.2130, 135.5850], [34.0500, 135.6200], [33.9833, 135.6833], [33.9200, 135.7200], [33.8400, 135.7700]];
         const HONGU_SHINGU = [[33.8400, 135.7700], [33.7800, 135.8500], [33.7500, 135.9200], [33.7264, 135.9875]];
-        const RETURN_RAIL = [[33.7264, 135.9875], [34.2500, 136.1800], [34.7334, 135.5000]];
+        const RETURN_RAIL = [[33.7264, 135.9875], [34.0700, 136.1900], [34.4500, 136.5100], [34.7200, 136.7100], [35.1706, 136.8816]];
 
         const BOUNDS = L.latLngBounds([32.5, 133.5], [36.5, 141.0]);
         const map = L.map('map', { center: [34.5, 136.8], zoom: 7, minZoom: 6, maxZoom: 16, zoomControl: false, maxBounds: BOUNDS, maxBoundsViscosity: 0.85 });
@@ -792,7 +850,7 @@
         L.polyline(KOYA_LINE, loc).addTo(map);
         L.polyline(KUMANO_TRAIL, trailDim).addTo(map);
         L.polyline(HONGU_SHINGU, { color: '#cbd5e1', weight: 1.2, opacity: 0.4 }).addTo(map);
-        L.polyline([...RETURN_RAIL, ...TOKAIDO.slice(0).reverse()], dim).addTo(map);
+        L.polyline([...RETURN_RAIL, [35.5076, 139.6172], [35.6812, 139.7671]], dim).addTo(map);
 
         const aSkn = L.polyline([], { color: '#b91c1c', weight: 3.5, opacity: 0.95, lineCap: 'round' }).addTo(map);
         const aLoc = L.polyline([], { color: '#7c3aed', weight: 3.5, opacity: 0.95, lineCap: 'round' }).addTo(map);
@@ -806,7 +864,7 @@
             { day: 8, s: TOKAIDO, l: KOYA_LINE, t: KUMANO_TRAIL.slice(0, 3), r: [] },
             { day: 9, s: TOKAIDO, l: KOYA_LINE, t: KUMANO_TRAIL, r: [] },
             { day: 10, s: TOKAIDO, l: KOYA_LINE, t: KUMANO_TRAIL, r: HONGU_SHINGU },
-            { day: 11, s: [...TOKAIDO, ...RETURN_RAIL.slice(0).reverse()], l: KOYA_LINE, t: KUMANO_TRAIL, r: HONGU_SHINGU },
+            { day: 11, s: [...RETURN_RAIL, [35.5076, 139.6172], [35.6812, 139.7671]], l: KOYA_LINE, t: KUMANO_TRAIL, r: HONGU_SHINGU },
         ];
 
         function updateRoute(n) {
@@ -881,10 +939,18 @@
             tl.appendChild(wrap);
         });
 
+        /* CTA CARD */
+        const cta = document.createElement('div');
+        cta.className = 'cta-card';
+        cta.innerHTML = '<h3>Join This Trip</h3><p>Walk the warrior\u2019s path from Tokyo to the Kii Peninsula with a filmmaker and literature professor. We read Musashi, walk the Kumano Kodo, and train with real swords. Limited group size.</p><a href="https://docs.google.com/forms/d/e/1FAIpQLSfdWWbpqfl-k4JKedyTJF-JhbWG8_l2zguDloL9ea1veMnNxw/viewform" target="_blank" rel="noopener noreferrer" class="cta-btn">Express Interest \u2192</a>';
+        tl.appendChild(cta);
+
         let activeDay = 0, lastCity = '';
+        let scrollCooldown = false;
         const obs = new IntersectionObserver(entries => {
-            entries.forEach(e => { if (e.isIntersecting) { const n = parseInt(e.target.dataset.n); if (n !== activeDay) activate(n, false); } });
-        }, { root: document.getElementById('timeline'), rootMargin: '-10% 0px -70% 0px', threshold: 0 });
+            if (scrollCooldown) return;
+            entries.forEach(e => { if (e.isIntersecting) { const n = parseInt(e.target.dataset.n); if (n !== activeDay) { scrollCooldown = true; activate(n, false); setTimeout(() => { scrollCooldown = false; }, 400); } } });
+        }, { root: document.getElementById('timeline'), rootMargin: '-20% 0px -75% 0px', threshold: 0 });
         document.querySelectorAll('.day-card').forEach(c => obs.observe(c));
 
         function activate(n, scroll) {
@@ -894,7 +960,8 @@
             const card = document.getElementById(`d${n}`);
             if (card) { card.classList.add('active'); if (scroll) card.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
             if (day.city !== lastCity) {
-                map.flyTo([day.lat, day.lng], day.zoom, { duration: 1.1, easeLinearity: 0.25 });
+                const flyZoom = Math.min(day.zoom, 9);
+                map.flyTo([day.lat, day.lng], flyZoom, { duration: 1.1, easeLinearity: 0.25 });
                 lastCity = day.city;
                 Object.entries(cMkrs).forEach(([k, m]) => m.setStyle(k === day.city
                     ? { radius: 9, fillColor: '#b91c1c', color: 'rgba(185,28,28,0.6)', weight: 10, fillOpacity: 1 }

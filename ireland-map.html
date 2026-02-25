@@ -113,7 +113,7 @@
         #timeline {
             flex: 1;
             overflow-y: auto;
-            padding: 12px 0 80px;
+            padding: 12px 0 60vh;
             scroll-behavior: smooth
         }
 
@@ -577,6 +577,69 @@
             color: #fff !important
         }
 
+        #map .leaflet-tile-pane {
+            filter: sepia(0.15) hue-rotate(70deg) saturate(1.4) brightness(0.95);
+        }
+
+        .leaflet-control-attribution {
+            font-size: 8px !important;
+            background: rgba(0, 0, 0, 0.3) !important;
+            color: rgba(255, 255, 255, 0.5) !important;
+            padding: 1px 5px !important;
+            opacity: 0.4;
+            transition: opacity 0.2s;
+        }
+
+        .leaflet-control-attribution:hover {
+            opacity: 1;
+        }
+
+        .leaflet-control-attribution a {
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
+
+        .cta-card {
+            margin: 24px 16px 12px;
+            padding: 28px 20px;
+            background: linear-gradient(135deg, rgba(5, 150, 105, 0.15), rgba(52, 211, 153, 0.08));
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .cta-card h3 {
+            font-size: 16px;
+            color: var(--accent);
+            margin: 0 0 8px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-card p {
+            font-size: 12px;
+            color: var(--muted);
+            margin: 0 0 16px;
+            line-height: 1.5;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 10px 28px;
+            background: var(--accent);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(5, 150, 105, 0.4);
+        }
+
         @media(max-width:760px) {
             body {
                 flex-direction: column !important;
@@ -587,6 +650,10 @@
                 min-width: 100% !important;
                 height: 50vh !important;
                 height: 50dvh !important;
+            }
+
+            #timeline {
+                padding-bottom: 25vh !important;
             }
 
             #map-wrap {
@@ -689,13 +756,13 @@
                         n: 1, date: 'Day 1', loc: 'Dublin', type: 'arrival', title: 'Dublin Arrival \u2014 The Sacralized King', img: I.bog,
                         lat: 53.3498, lng: -6.2603, zoom: 12, city: 'dublin',
                         events: ['Land at DUB, collect mid-sized SUV', 'National Museum of Ireland \u2014 Archaeology', '"Kingship and Sacrifice" exhibit: Old Croghan Man & Clonycavan Man', 'Bog bodies of failed kings: 6\'6" warriors ritually stabbed & drowned', 'Stay: South Dublin (Rathmines or D\u00fan Laoghaire)'],
-                        prose: '<p class="prose-p">Proceed directly to the <strong>National Museum of Ireland \u2014 Archaeology</strong> and the <strong>"Kingship and Sacrifice"</strong> exhibit. Focus on <strong>Old Croghan Man and Clonycavan Man</strong>\u2014the bog bodies of failed kings, 6\'6" warriors with manicured nails and gripped-beast swords, ritually stabbed and drowned after losing sovereignty.</p><p class="prose-p">This is your baseline: <strong>the high-status warrior who is destroyed when he fails the goddess</strong>. The peat preserved everything\u2014the wounds, the bound arms, the last meal of buttermilk and cereals. Two thousand years in the dark, and the violence is still readable on the skin. Everything on this trip descends from this room.</p>'
+                        prose: '<p class="prose-p">We begin at the <strong>National Museum of Ireland \u2014 Archaeology</strong> and the <strong>"Kingship and Sacrifice"</strong> exhibit. Standing in front of <strong>Old Croghan Man and Clonycavan Man</strong> is the moment the trip becomes real. These are Iron Age kings\u2014tall, powerful men who were ritually killed when they failed the land. The peat preserved everything: the wounds, the bound arms, the last meal of buttermilk and cereals. Two thousand years in the dark, and the violence is still readable on the skin.</p><p class="prose-p">This room sets the thesis for everything that follows. The warrior who was sacred when he succeeded and destroyed when he failed\u2014that arc runs through every site we visit, from the old-growth forests of Wicklow to the faction-fight fields of Munster. If you have read Seamus Heaney\'s <em>Bog Poems</em>, this is where those poems live.</p>'
                     },
                     {
                         n: 2, date: 'Day 2', loc: 'Dublin', type: 'cultural', title: 'Urban Grit & Viking Marshland',
                         lat: 53.3498, lng: -6.2603, zoom: 13, city: 'dublin',
                         events: ['The Liberties: scout 18th-century "Liberty Boys" street fighting territory', 'Fujifilm X-T2 Classic Chrome simulation: desaturated grit', 'Filming over Viking-era marshland\u2014layers of drained bog', 'Optional: local HEMA group session to prime mechanics', 'Stay: South Dublin'],
-                        prose: '<p class="prose-p"><strong>The Liberties</strong> is the oldest neighbourhood in Dublin and the 18th-century territory of the <strong>"Liberty Boys"</strong>\u2014street gangs who fought pitched battles with shillelaghs and stones in the Coombe. Use the Fujifilm X-T2\'s <strong>Classic Chrome</strong> simulation to capture the desaturated grit\u2014but know you are filming over <strong>Viking-era marshland</strong>, layers of drained bog where the city sinks into its own foundation.</p><p class="prose-p">The street-fighting tradition here predates the faction fights by a century. The violence was territorial, ritualized, and celebrated. The paving stones you walk on cover the same waterlogged earth that preserved the bog bodies in the museum.</p>'
+                        prose: '<p class="prose-p">We walk <strong>The Liberties</strong>, Dublin\'s oldest neighbourhood and the 18th-century territory of the <strong>"Liberty Boys"</strong>\u2014street gangs who fought pitched battles with shillelaghs and stones in the Coombe. The streets sit on <strong>Viking-era marshland</strong>, layers of drained bog where the city literally sinks into its own foundation. The paving stones you walk on cover the same waterlogged earth that preserved the bog bodies in the museum.</p><p class="prose-p">The street-fighting tradition here predates the rural faction fights by a century. If you are interested in filming, this is extraordinary terrain\u2014gritty, layered, atmospheric. For everyone, it is a walk through the living archaeology of urban violence that connects directly to the martial culture we trace south into Wicklow and beyond.</p>'
                     },
                 ]
             },
@@ -705,25 +772,25 @@
                         n: 3, date: 'Day 3', loc: 'Dublin \u2192 Shillelagh', type: 'travel', title: 'Through the Defensive Landscape', img: I.blackthorn,
                         lat: 53.0117, lng: -6.3275, zoom: 11, city: 'dublin',
                         events: ['Drive R755 through the Wicklow Mountains', 'Glendalough: 6th-century Round Tower\u2014defensive architecture masterclass', 'St. Kevin\'s Bed: Bronze Age cave where the saint lived', 'The Deer Stone: bullaun stone where women knelt to pray', 'Stay: Shillelagh village'],
-                        prose: '<p class="prose-p">Drive the <strong>R755</strong> through the Wicklow Mountains\u2014the road itself is a transit through defensive landscape, granite passes that funnelled every invasion since the Vikings. <strong>Glendalough</strong> sits in a glacial valley: the 6th-century Round Tower is a masterclass in scale and lighting for your camera. But the layer beneath the Christian settlement is <strong>older, darker, more territorial</strong>.</p><p class="prose-p"><strong>St. Kevin\'s Bed</strong> is a Bronze Age cave 30 feet above the upper lake where the saint supposedly lived in solitude. The <strong>Deer Stone</strong> is a bullaun stone where women once knelt to pray for children. The sacred sites predate Christianity by millennia\u2014Kevin just moved in.</p>'
+                        prose: '<p class="prose-p">We drive the <strong>R755</strong> through the Wicklow Mountains\u2014granite passes that funnelled every invasion since the Vikings. <strong>Glendalough</strong> sits in a glacial valley with a 6th-century Round Tower rising above two dark lakes. The monastic settlement is beautiful, but the layer beneath it is older and more territorial.</p><p class="prose-p"><strong>St. Kevin\'s Bed</strong> is a Bronze Age cave 30 feet above the upper lake. The <strong>Deer Stone</strong> is a bullaun stone where women once knelt to pray for children. These sacred sites predate Christianity by millennia\u2014Kevin just moved in. We end the day in Shillelagh, the village that gave the weapon its name. Everything from here forward connects to the blackthorn stick, the landscape that grew it, and the people who fought with it.</p>'
                     },
                     {
                         n: 4, date: 'Day 4', loc: 'Shillelagh', type: 'partner', title: 'The Loaded Grip & The Lunantishees',
                         lat: 52.7500, lng: -6.5333, zoom: 13, city: 'shillelagh',
                         events: ['Morning: 1-on-1 Bataireacht tactical session', 'Lead-hand "loaded" grip and high-guard defensive mechanics', 'Weapon source: blackthorn (Straif in Ogham)', 'Tree of the Morrigan and the Cailleach', 'Afternoon: Coolattin Woods\u2014old-growth blackthorn & oak', 'Lunantishees: moon fairies who guard the trees'],
-                        prose: '<p class="prose-p">Private instruction in <strong>Bataireacht</strong>\u2014Irish Stick Fighting. Technical focus: the <strong>lead-hand "loaded" grip</strong> and high-guard defensive mechanics, the physics of managing reach with a blackthorn stick.</p><p class="prose-p">Your weapon source is <strong>blackthorn (<em>Straif</em> in Ogham)\u2014the "keeper and increaser of dark secrets."</strong> It is the tree of the <strong>Morrigan</strong> and the <strong>Cailleach</strong>, who strikes the ground with her blackthorn staff to summon winter. The thorns cause <strong>"blackthorn arthritis"</strong>\u2014septic wounds that dig deeper, the tips breaking off and migrating. This is the <strong>physical malice</strong> behind the folklore.</p><p class="prose-p"><strong>Coolattin Woods</strong> are the old-growth forests that supplied the blackthorn and oak. But the <strong>lunantishees</strong>\u2014moon fairies who are "no friends to humans"\u2014guard these trees. Harvest only at full moon, or they curse your bloodline.</p>'
+                        prose: '<p class="prose-p">We train in <strong>Bataireacht</strong>\u2014Irish Stick Fighting\u2014with private instruction. You learn the lead-hand loaded grip, the high guard, and the physics of managing reach with a blackthorn stick. This is not a demonstration. You hold the weapon, you drill the mechanics, and you feel what a controlled strike actually is.</p><p class="prose-p">The weapon itself is <strong>blackthorn</strong> (<em>Straif</em> in the Ogham alphabet)\u2014the tree of the <strong>Morr\u00edgan</strong> and the <strong>Cailleach</strong>, who strikes the ground with her blackthorn staff to summon winter. In the afternoon we walk <strong>Coolattin Woods</strong>, the old-growth forests that supplied the wood. The <strong>lunantishees</strong>\u2014moon fairies who guard these trees\u2014are part of the mythology surrounding the weapon\'s origin. The folklore and the fighting are inseparable here.</p>'
                     },
                     {
                         n: 5, date: 'Day 5', loc: 'Shillelagh', type: 'cultural', title: 'Material Science & The Chimney Cure', img: I.blackthorn,
                         lat: 52.7500, lng: -6.5333, zoom: 14, city: 'shillelagh',
                         events: ['Master Stickmaker\'s Workshop (O\'Caidhla Family)', 'Blackthorn seasoning: 3-5 years, or the accelerated chimney cure', 'Butter and dung heaps, the "cubby hole up a chimney" for 12 months', 'The S\u00edol Ealaigh bloodline: seed of the original warrior lineage', 'Rucking: conditioning on local R-roads'],
-                        prose: '<p class="prose-p">The <strong>O\'Caidhla family</strong> holds the <strong>S\u00edol Ealaigh</strong> bloodline\u2014the "seed of Ealach," the original warrior lineage that gave the village its name. Their workshop is the <strong>oral history repository</strong>, not a pub. The sound of the lathe is the sound of <strong>dying tradition</strong>.</p><p class="prose-p">Observe the <strong>blackthorn seasoning process</strong>\u20143-5 years for the O\'Caidhla method, or the <strong>accelerated folklore cure</strong>: butter and dung heaps, the "cubby hole up a chimney" for 12 months. This is the <strong>material science</strong> behind the weapon, but also the <strong>alchemy</strong>\u2014transforming living wood into dead weapon through fire, fat, and time.</p>'
+                        prose: '<p class="prose-p">We visit the <strong>O\'Caidhla family</strong> workshop. They hold the <strong>S\u00edol Ealaigh</strong> bloodline\u2014"the seed of Ealach," the original warrior lineage that gave the village its name. This is not a museum. It is a working stickmaker\'s shop where you watch the blackthorn go from raw branch to finished weapon.</p><p class="prose-p">The seasoning takes 3\u20135 years, or the accelerated chimney cure: the stick buried in butter and dung, then hung in a chimney for twelve months. Living wood becomes dead weapon through fire, fat, and time. You will understand why this object carried the weight it did\u2014and why so few people still know how to make one properly.</p>'
                     },
                     {
                         n: 6, date: 'Day 6', loc: 'Shillelagh', type: 'cultural', title: 'The Dying Lineage & The Clearances',
                         lat: 52.7500, lng: -6.5333, zoom: 13, city: 'shillelagh',
                         events: ['Deep-dive: Doyle and Antrim oral lineages', 'Coolattin estate: Fitzwilliam systematic clearances during the Famine', 'S\u00edol Ealaigh warriors became landless laborers', 'Stick-fighting as last residue of martial identity', 'The O\'Caidhla workshop as mausoleum'],
-                        prose: '<p class="prose-p">The <strong>Coolattin Woods</strong> were part of the <strong>Fitzwilliam estate</strong>, where tenants were systematically cleared during the Famine. The <strong>S\u00edol Ealaigh</strong> warriors became <strong>landless laborers</strong>, their stick-fighting tradition the last residue of martial identity after dispossession.</p><p class="prose-p">You are in the <strong>twilight of a bloodline</strong>. The Doyle system is preserved in Canada; the Antrim system fragments. What remains in Shillelagh is <strong>material culture without living practice</strong>\u2014the O\'Caidhla workshop as mausoleum. The Dying Cow Pub, or the Crossroads at Ballinakill, holds what oral tradition survives.</p>'
+                        prose: '<p class="prose-p">Today we go deeper into the history of this place. The <strong>Coolattin Woods</strong> were part of the <strong>Fitzwilliam estate</strong>, where tenants were systematically cleared during the Famine. The warriors of the S\u00edol Ealaigh became landless laborers, and their stick-fighting tradition became the last residue of a martial identity that had no other outlet.</p><p class="prose-p">What remains in Shillelagh is material culture at its twilight. The Doyle system survives in Canada; the Antrim system is fragmenting. We sit in pubs that hold what oral tradition is left and listen to people who remember things that were never written down. This is documentary fieldwork as much as travel\u2014the kind of encounter you cannot manufacture or repeat.</p>'
                     },
                 ]
             },
@@ -733,19 +800,19 @@
                         n: 7, date: 'Day 7', loc: 'Shillelagh \u2192 Cork', type: 'travel', title: 'The Rebel Push',
                         lat: 51.8969, lng: -8.4863, zoom: 12, city: 'cork',
                         events: ['2.5-hour drive south into the heart of the "Rebel County"', 'Stay: Cork City center'],
-                        prose: '<p class="prose-p">The drive south from Wicklow to <strong>Cork</strong> crosses the grain of Ireland\u2014through Carlow, Kilkenny, and the limestone uplands of Tipperary. You are leaving the <strong>source territory</strong> of the weapon and entering the <strong>performance territory</strong>\u2014where the stick was used.</p><p class="prose-p">Cork calls itself the <strong>"Rebel County"</strong> without irony. The rebellion tradition runs from the Desmond Wars through the War of Independence. The aggression is in the cadence of the speech, the pace of the streets, and the music.</p>'
+                        prose: '<p class="prose-p">We drive south through Carlow, Kilkenny, and the limestone uplands of Tipperary into <strong>Cork</strong>\u2014the "Rebel County." We are leaving the source territory of the weapon and entering the performance territory, where the stick was actually used in pitched faction fights at fairs and crossroads.</p><p class="prose-p">Cork\'s rebellion tradition runs from the Desmond Wars through the War of Independence. The aggression is in the cadence of the speech, the pace of the streets, and the music. You feel the shift the moment you arrive. The landscape changes, and so does the energy.</p>'
                     },
                     {
                         n: 8, date: 'Day 8', loc: 'Cork', type: 'cultural', title: 'Aggressive Cadence & Underground Tunnels',
                         lat: 51.8969, lng: -8.4863, zoom: 13, city: 'cork',
                         events: ['Evening: Sin \u00c9 \u2014 traditional session', 'Aggressive cadence of the music mirrors strike-rhythm of Bata drills', '19th-century underground tunnels beneath old merchant quarters', 'Ballinhassig Faction Fight of June 30, 1845\u201411 dead', 'The end of the tradition: recreational violence crushed by state force'],
-                        prose: '<p class="prose-p"><strong>Sin \u00c9</strong> is one of the best traditional music pubs in Ireland. The <strong>aggressive cadence</strong> of the music mirrors the <strong>strike-rhythm</strong> of the Bata drills\u2014the same tempo, the same controlled intensity. Beneath the city, <strong>19th-century underground tunnels</strong> run beneath the old merchant quarters\u2014Cork\'s literal underworld.</p><p class="prose-p">The <strong>Ballinhassig Faction Fight of June 30, 1845</strong>\u2014just before the Famine\u2014was one of the last major faction fights: 11 dead when police opened fire. This is the <strong>end of the tradition</strong>, the recreational violence of the "Culture of Honor" crushed by state force just as the Famine crushed the peasant class that sustained it.</p>'
+                        prose: '<p class="prose-p">We spend the evening at <strong>Sin \u00c9</strong>, one of the best traditional music pubs in Ireland. The aggressive cadence of Cork trad mirrors the strike-rhythm of the Bata drills\u2014same tempo, same controlled intensity. Beneath the city, 19th-century tunnels run under the old merchant quarters, and we explore what is accessible.</p><p class="prose-p">The historical anchor here is the <strong>Ballinhassig Faction Fight of 1845</strong>\u2014just before the Famine\u2014one of the last major faction fights, where eleven people died when police opened fire on the crowd. This is where the tradition ended: recreational violence crushed by state force at the same moment the Famine crushed the peasant class that sustained it. We read from period accounts to bring the scene to life.</p>'
                     },
                     {
                         n: 9, date: 'Day 9', loc: 'Cork / Midleton', type: 'cultural', title: 'Midleton Distillery & The American Oak',
                         lat: 51.9145, lng: -8.1728, zoom: 12, city: 'cork',
                         events: ['Day trip to Jameson Midleton Distillery', 'Pot-still distillation & ex-bourbon barrel maturation', 'Redbreast / Midleton Very Rare', 'Ex-bourbon barrels: the American thread\u2014same oak forests', 'Film: massive copper stills, industrial scale vs. rural woods', 'Return to Cork'],
-                        prose: '<p class="prose-p"><strong>Jameson Midleton Distillery</strong> is the technical deep-dive: pot-still distillation and <strong>ex-bourbon barrel maturation</strong> (Redbreast, Midleton Very Rare). The <strong>oily, spicy kick</strong> that balances your preferred bourbons.</p><p class="prose-p">The <strong>ex-bourbon barrels</strong> are the <strong>American thread</strong>\u2014the same oak forests that supplied Irish whiskey staves now supply Kentucky. Your "warm summer day" bourbon profile is the <strong>transatlantic echo</strong> of the Coolattin woods, the blackthorn and oak traveling west while the stick-fighting tradition died out at home. The massive copper stills and industrial scale provide a visual counterpoint to the rural woods of Wicklow.</p>'
+                        prose: '<p class="prose-p">We visit <strong>Jameson Midleton Distillery</strong> for the full production tour\u2014pot-still distillation and ex-bourbon barrel maturation. Tastings include <strong>Redbreast</strong> and <strong>Midleton Very Rare</strong>. The massive copper stills are visually extraordinary, and the scale of the operation is a striking contrast to the rural craft we saw in Wicklow.</p><p class="prose-p">The ex-bourbon barrels connect Ireland to the American whiskey tradition\u2014the same oak forests, the same coopering techniques, the same wood traveling west across the Atlantic alongside the Irish diaspora. It is a quieter day after the intensity of the south, and the whiskey earns it.</p>'
                     },
                 ]
             },
@@ -755,19 +822,19 @@
                         n: 10, date: 'Day 10', loc: 'Cork \u2192 Limerick', type: 'travel', title: 'Agrarian Violence & The Cailleach',
                         lat: 52.6638, lng: -8.6267, zoom: 11, city: 'limerick',
                         events: ['Drive northwest to the Shannon region', 'Day trip: Bunratty Castle & Folk Park', '19th-century rural village\u2014peak faction fighting era', 'Medieval Banquet: 15th-century castle under candlelight', 'Alternative: film the folk park\'s rural village after hours', 'Stay: Limerick'],
-                        prose: '<p class="prose-p"><strong>Bunratty Castle & Folk Park</strong> reconstructs the <strong>19th-century rural village</strong>\u2014the exact period of peak faction fighting. This is <strong>agrarian life at the height of the stick-fighting tradition</strong>: not knights, but <strong>landless laborers</strong> with blackthorn sticks, fighting for reputation in fields and at fairs.</p><p class="prose-p">The <strong>Medieval Banquet</strong> is a 15th-century castle dinner under candlelight. Use the vaulted ceilings and period performance to test the low-light limits of your Fujifilm gear\u2014but the <strong>alternative</strong> is more honest: film the <strong>folk park\'s rural village after hours</strong>, the thatched cottages and mud walls where the Culture of Honor actually lived.</p>'
+                        prose: '<p class="prose-p">We stop at <strong>Bunratty Castle \u0026 Folk Park</strong>, which reconstructs the 19th-century rural village\u2014the exact period of peak faction fighting. Walking through the thatched cottages and mud-walled farmsteads, you see the world the stick-fighters actually lived in. These were not knights. They were landless laborers who fought for reputation at fairs and crossroads with nothing but a blackthorn stick and their name.</p><p class="prose-p">The <strong>Medieval Banquet</strong> at the 15th-century castle is optional\u2014candlelight, vaulted ceilings, period performance. But the folk park itself is the more honest location, and wandering it at dusk is one of the quieter, more atmospheric moments on the trip.</p>'
                     },
                     {
                         n: 11, date: 'Day 11', loc: 'Lough Gur', type: 'cultural', title: 'The Warrior Poet & The Raped Goddess', img: I.stonecircle,
                         lat: 52.5175, lng: -8.5317, zoom: 13, city: 'limerick',
                         events: ['Day trip from Limerick to Lough Gur', '9,000 years of habitation', '\u00c1ine\'s lake\u2014fairy queen forced into marriage, bit off the Earl\'s ear', 'Ge\u00e1roid Iarla: rides from the lake every 7 years on a white horse', 'Suideach\u00e1n Bean-t\u00ed: sit in the Housekeeper\'s Chair and lose your wits', 'Grange Stone Circle: 113 stones, 40-ton central stone', 'Rannach Crom Dubh\u2014the Division of the dark sacrifice god'],
-                        prose: '<p class="prose-p"><strong>Lough Gur</strong> holds 9,000 years of habitation. The mythic layer: this is <strong>\u00c1ine\'s lake</strong>\u2014the fairy queen, goddess of love and summer, who was <strong>forced into marriage</strong> with the Earl of Desmond when he stole her cloak while she bathed. She <strong>bit off his ear</strong> (disqualifying him from kingship) and bore him a son, <strong>Ge\u00e1roid Iarla</strong>, who still rides from the lake on a white horse every seven years, his <strong>silver horseshoes</strong> slowly wearing down until he returns to restore the Desmonds.</p><p class="prose-p">\u00c1ine was also mistress to <strong>Crom Cruach</strong>, the "old black one eye of the many glooms"\u2014a deity of <strong>human sacrifice</strong>. The <strong>Suideach\u00e1n Bean-t\u00ed</strong> (Housekeeper\'s Chair) on Knockadoon is her birthing seat\u2014sit there, and tradition says you <strong>lose your wits entirely</strong>.</p><p class="prose-p"><strong>Grange Stone Circle (Lios na Grainsi)</strong> is the largest in Ireland\u2014113 stones, 4-meter central stone weighing 40 tons. This is your <strong>definitive "Warrior Poet" terrain</strong>\u2014rugged, silent, ancient. The largest stone is <strong>Rannach Crom Dubh</strong>\u2014the Division of Crom Dubh, the dark sacrifice god. Bronze Age shields were buried in this lake mud; kings were disqualified for missing ears. The circle is aligned with the <strong>summer solstice</strong>.</p>'
+                        prose: '<p class="prose-p">We spend the day at <strong>Lough Gur</strong>\u20149,000 years of continuous habitation on a lake steeped in mythology. This is <strong>\u00c1ine\'s lake</strong>\u2014the fairy queen and goddess of love, who according to legend was forced into marriage with the Earl of Desmond. She bit off his ear (disqualifying him from kingship), and their son <strong>Ge\u00e1roid Iarla</strong> is said to ride from the lake on a white horse every seven years until his silver horseshoes wear through.</p><p class="prose-p">The <strong>Grange Stone Circle</strong> is the largest in Ireland\u2014113 stones, with a central stone weighing 40 tons, aligned with the summer solstice. Standing inside it in silence is one of those moments where the scale of what you are looking at overwhelms the frame. Bronze Age shields were found buried in the lake mud nearby. This is the landscape W.B. Yeats wrote about\u2014the territory where myth and archaeology overlap and neither fully explains the other.</p>'
                     },
                     {
                         n: 12, date: 'Day 12', loc: 'Cashel \u2192 Dublin', type: 'finale', title: 'Iron Sword vs. Blackthorn Stick',
-                        lat: 52.5200, lng: -7.8897, zoom: 11, city: 'limerick',
+                        lat: 52.5200, lng: -7.8897, zoom: 9, city: 'cashel',
                         events: ['Day trip: Rock of Cashel\u2014seat of the High Kings', 'The final contrast: sacralized Iron Age warrior vs. dispossessed stick-fighter', 'The Cailleach strikes the ground with her blackthorn staff to begin winter', 'Drive to Dublin Airport, return vehicle', 'Prep for departure'],
-                        prose: '<p class="prose-p"><strong>The Rock of Cashel</strong> is the seat of the High Kings\u2014the <strong>final contrast</strong> in your visual story: the <strong>high-status warrior of the Iron Age</strong> (the bog body kings, the sacralized violence of sovereignty) vs. the <strong>marginalized "Culture of Honor" fighter</strong> of the 19th century (the stick-fighter, the recreational violence of the dispossessed).</p><p class="prose-p">The <strong>Cailleach</strong> strikes the ground with her blackthorn staff to begin winter. You have traced the weapon from <strong>fairy-guarded wood</strong> to <strong>chimney-cured stick</strong>, from <strong>S\u00edol Ealaigh lineage</strong> to <strong>dying tradition</strong>. The Rock of Cashel is where the sacralized king was destroyed when he failed\u2014the bog bodies in the museum are the <strong>negative image</strong> of the stick-fighter who fought for reputation alone.</p>'
+                        prose: '<p class="prose-p">We close the trip at the <strong>Rock of Cashel</strong>\u2014the seat of the High Kings of Munster, rising from the Tipperary plain like a stone crown. This is where the journey\'s arc completes: from the sacralized kings preserved in the bog at the National Museum to the dispossessed stick-fighters of the 19th century, the full spectrum of Irish martial identity is visible from this rock.</p><p class="prose-p">Over twelve days we have traced the weapon from fairy-guarded wood to chimney-cured stick, from ancient warrior lineage to dying tradition. The Cailleach strikes the ground with her blackthorn staff to begin winter, and this is where we leave Ireland\u2014driving northeast to Dublin Airport with the landscape still in the window. What you carry home from this trip is not a souvenir. It is a way of seeing a place that most visitors never access.</p>'
                     },
                 ]
             },
@@ -780,7 +847,7 @@
         const MIDLETON_RD = [[51.8969, -8.4863], [51.9145, -8.1728]];
         const WEST = [[51.8969, -8.4863], [52.2000, -8.6200], [52.6638, -8.6267]];
         const LOUGHGUR_RD = [[52.6638, -8.6267], [52.5175, -8.5317]];
-        const RET = [[52.6638, -8.6267], [52.5200, -7.8897], [52.8408, -6.9261], [53.1500, -6.5500], [53.3498, -6.2603]];
+        const RET = [[52.6638, -8.6267], [52.5200, -7.8897], [52.6800, -7.5500], [52.8600, -7.1500], [53.0300, -6.8200], [53.2200, -6.4400], [53.3498, -6.2603]];
 
         const BOUNDS = L.latLngBounds([51.0, -11.0], [55.5, -5.0]);
         const map = L.map('map', { center: [53.0, -7.5], zoom: 7, minZoom: 6, maxZoom: 16, zoomControl: false, maxBounds: BOUNDS, maxBoundsViscosity: 0.85 });
@@ -811,7 +878,7 @@
             { day: 9, m: [...SOUTH, ...MIDLETON_RD], s: WICKLOW },
             { day: 10, m: [...SOUTH, ...MIDLETON_RD, ...WEST], s: WICKLOW },
             { day: 11, m: [...SOUTH, ...MIDLETON_RD, ...WEST, ...LOUGHGUR_RD], s: WICKLOW },
-            { day: 12, m: [...SOUTH, ...MIDLETON_RD, ...WEST, ...LOUGHGUR_RD, ...RET], s: WICKLOW },
+            { day: 12, m: [...SOUTH, ...MIDLETON_RD, ...WEST, ...LOUGHGUR_RD, [52.6638, -8.6267], ...RET], s: WICKLOW },
         ];
         function updateRoute(n) { let seg = ROUTE_SEGS[0]; for (let i = 0; i < ROUTE_SEGS.length; i++) { if (n >= ROUTE_SEGS[i].day) seg = ROUTE_SEGS[i]; } aMain.setLatLngs(seg.m); aScenic.setLatLngs(seg.s); }
 
@@ -821,6 +888,7 @@
             shillelagh: { lat: 52.7500, lng: -6.5333, name: 'Shillelagh' },
             cork: { lat: 51.8969, lng: -8.4863, name: 'Cork' },
             limerick: { lat: 52.6638, lng: -8.6267, name: 'Limerick' },
+            cashel: { lat: 52.5200, lng: -7.8897, name: 'Rock of Cashel' },
         };
         const cMkrs = {};
         Object.entries(CITIES).forEach(([k, c]) => {
@@ -878,11 +946,19 @@
             tl.appendChild(wrap);
         });
 
+        /* CTA CARD */
+        const cta = document.createElement('div');
+        cta.className = 'cta-card';
+        cta.innerHTML = '<h3>Join This Trip</h3><p>Travel with a filmmaker and literature professor through the archaeology of Irish violence and myth. Limited group size.</p><a href="https://docs.google.com/forms/d/e/1FAIpQLSfdWWbpqfl-k4JKedyTJF-JhbWG8_l2zguDloL9ea1veMnNxw/viewform" target="_blank" rel="noopener noreferrer" class="cta-btn">Express Interest \u2192</a>';
+        tl.appendChild(cta);
+
         /* STATE */
         var activeDay = 0, lastCity = '';
+        var scrollCooldown = false;
         var obs = new IntersectionObserver(function (entries) {
-            entries.forEach(function (e) { if (e.isIntersecting) { var n = parseInt(e.target.dataset.n); if (n !== activeDay) activate(n, false); } });
-        }, { root: document.getElementById('timeline'), rootMargin: '-10% 0px -70% 0px', threshold: 0 });
+            if (scrollCooldown) return;
+            entries.forEach(function (e) { if (e.isIntersecting) { var n = parseInt(e.target.dataset.n); if (n !== activeDay) { scrollCooldown = true; activate(n, false); setTimeout(function () { scrollCooldown = false; }, 400); } } });
+        }, { root: document.getElementById('timeline'), rootMargin: '-20% 0px -75% 0px', threshold: 0 });
         document.querySelectorAll('.day-card').forEach(function (c) { obs.observe(c); });
 
         function activate(n, scroll) {
@@ -892,7 +968,8 @@
             var card = document.getElementById('d' + n);
             if (card) { card.classList.add('active'); if (scroll) card.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
             if (day.city !== lastCity) {
-                map.flyTo([day.lat, day.lng], day.zoom, { duration: 1.1, easeLinearity: 0.25 });
+                var flyZoom = Math.min(day.zoom, 9);
+                map.flyTo([day.lat, day.lng], flyZoom, { duration: 1.1, easeLinearity: 0.25 });
                 lastCity = day.city;
                 Object.entries(cMkrs).forEach(function (e) { var k = e[0], m = e[1]; m.setStyle(k === day.city ? { radius: 9, fillColor: '#059669', color: 'rgba(5,150,105,0.6)', weight: 10, fillOpacity: 1 } : { radius: 7, fillColor: '#059669', color: 'rgba(5,150,105,0.4)', weight: 8, fillOpacity: 0.95 }); });
             }
