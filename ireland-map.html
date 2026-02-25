@@ -676,7 +676,7 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        const I = { bog: 'assets/images/ireland_bog.png', blackthorn: 'assets/images/ireland_blackthorn.png', stonecircle: 'assets/images/ireland_stonecircle.png' };
+        const I = { bog: 'assets/images/ireland_bog.png', blackthorn: 'assets/images/ireland_blackthorn.png', stonecircle: 'assets/images/ireland_blackthorn.png' };
 
         const SECTIONS = [
             {
@@ -855,11 +855,17 @@
                 card.id = 'd' + d.n;
                 card.dataset.n = d.n;
                 card.setAttribute('role', 'button');
-                card.setAttribute('tabindex', '0');
-                card.innerHTML = (d.img ? `<div class="card-img-wrap"><img class="card-img" src="${d.img}" alt="${d.loc}" loading="lazy"><div class="card-img-overlay"></div></div>` : '') +
-                    `<div class="card-top"><div class="day-num">${d.n}</div><div class="card-meta"><div class="card-date">${d.date}</div><div class="card-loc">${d.loc}</div></div></div>` +
-                    `<div class="card-body"><div class="card-ttl">${d.title}</div><ul class="evts">${d.events.map(e => `<li>${e}</li>`).join('')}</ul></div>` +
-                    `<div class="card-prose-mb">${d.prose || ''}</div>`;
+                card.innerHTML = `
+      ${d.img ? `<div class="card-img-wrap"><img class="card-img" src="${d.img}" alt="${d.loc}" loading="lazy"><div class="card-img-overlay"></div></div>` : ''}
+      <div class="card-top">
+        <div class="day-num">${d.n}</div>
+        <div class="card-meta"><div class="card-date">${d.date}</div><div class="card-loc">${d.loc}</div></div>
+      </div>
+      <div class="card-body">
+        <div class="card-ttl">${d.title}</div>
+        <ul class="evts">${d.events.map(e => `<li>${e}</li>`).join('')}</ul>
+      </div>
+      <div class="card-prose-mb">${d.prose || ''}</div>`;
                 card.addEventListener('click', () => {
                     const isActive = card.classList.contains('active');
                     if (window.innerWidth <= 760 && isActive) {
