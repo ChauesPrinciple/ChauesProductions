@@ -664,7 +664,53 @@
             flex-shrink: 0;
             border: 1.5px solid
         }
+
+        .kml-popup .leaflet-popup-content-wrapper {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            padding: 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .kml-popup .leaflet-popup-tip {
+            background: var(--card);
+            border-top: 1px solid var(--border);
+            border-left: 1px solid var(--border);
+        }
+
+        .kml-popup .leaflet-popup-content {
+            margin: 0;
+            padding: 12px 14px;
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            line-height: 1.4;
+        }
+
+        .kml-category {
+            font-size: 8.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        .kml-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .kml-desc {
+            font-family: 'Lato', sans-serif;
+            font-size: 12px;
+            color: var(--prose);
+        }
     </style>
+    <script src="assets/js/kml_data.js"></script>
 </head>
 
 <body>
@@ -709,6 +755,24 @@
                 </div>
                 <div class="leg-r">
                     <div class="leg-l" style="background:#0284c7"></div>River Boat
+                </div>
+
+                <div class="leg-h" style="margin-top:6px">Curated Recommendations</div>
+                <div class="leg-r">
+                    <div class="leg-poi" style="background:rgba(234,179,8,0.3);border-color:#eab308"></div>Dining &
+                    Drinks
+                </div>
+                <div class="leg-r">
+                    <div class="leg-poi" style="background:rgba(20,184,166,0.3);border-color:#14b8a6"></div>Culture &
+                    Nature
+                </div>
+                <div class="leg-r">
+                    <div class="leg-poi" style="background:rgba(139,92,246,0.3);border-color:#8b5cf6"></div>Creative &
+                    Film
+                </div>
+                <div class="leg-r">
+                    <div class="leg-poi" style="background:rgba(148,163,184,0.3);border-color:#94a3b8"></div>
+                    Accommodations
                 </div>
             </div>
             <div id="trip-nav">
@@ -835,8 +899,8 @@
         const HONGU_SHINGU = [[33.8400, 135.7700], [33.7800, 135.8500], [33.7500, 135.9200], [33.7264, 135.9875]];
         const RETURN_RAIL = [[33.7264, 135.9875], [34.0700, 136.1900], [34.4500, 136.5100], [34.7200, 136.7100], [35.1706, 136.8816]];
 
-        const BOUNDS = L.latLngBounds([32.5, 133.5], [36.5, 141.0]);
-        const map = L.map('map', { center: [34.5, 136.8], zoom: 7, minZoom: 6, maxZoom: 16, zoomControl: false, maxBounds: BOUNDS, maxBoundsViscosity: 0.85 });
+        const BOUNDS = L.latLngBounds([30.0, 130.0], [38.5, 145.0]);
+        const map = L.map('map', { center: [34.5, 136.8], zoom: 7, minZoom: 5, maxZoom: 16, zoomControl: false, maxBounds: BOUNDS, maxBoundsViscosity: 0.85 });
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; <a href="https://openstreetmap.org">OSM</a> &copy; <a href="https://carto.com">CARTO</a>',
             subdomains: 'abcd', maxZoom: 19
@@ -901,6 +965,91 @@
             });
             cMkrs[k] = m;
         });
+
+
+        // Haversine distance formula
+        function getDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        if (typeof KML_DATA !== 'undefined') {
+            KML_DATA.forEach(p => {
+                if (!p.coordinates) return;
+
+                const isAccommodation = p.folder.toLowerCase().includes('accommodation');
+                const isTokyo = p.coordinates.lat > 35.5 && p.coordinates.lat < 35.9 && p.coordinates.lng > 139.5 && p.coordinates.lng < 140.0;
+
+                // Filter trivial accomodations entirely unless in Tokyo
+                if (isAccommodation && !isTokyo) return;
+
+                let tooClose = false;
+                if (typeof CITIES !== 'undefined') {
+                    Object.values(CITIES).forEach(c => {
+                        if (getDistance(p.coordinates.lat, p.coordinates.lng, c.lat, c.lng) < 0.2) tooClose = true;
+                    });
+                }
+                if (typeof ALL !== 'undefined') {
+                    ALL.forEach(d => {
+                        if (d.lat && d.lng && getDistance(p.coordinates.lat, p.coordinates.lng, d.lat, d.lng) < 0.2) tooClose = true;
+                    });
+                }
+
+                if (tooClose) return;
+
+                // Determine category styling
+                const f = p.folder.toLowerCase();
+                let colStr = '#94a3b8'; // default slate for accommodation / other
+                let rgb = '148,163,184';
+
+                if (f.includes('food') || f.includes('restaurant') || f.includes('coffee') || f.includes('brewer') || f.includes('special')) {
+                    colStr = '#eab308'; // Dining & Drinks
+                    rgb = '234,179,8';
+                } else if (f.includes('nature') || f.includes('temple') || f.includes('experience') || f.includes('onsen')) {
+                    colStr = '#14b8a6'; // Culture & Nature
+                    rgb = '20,184,166';
+                } else if (f.includes('film') || f.includes('otaku') || f.includes('arcade') || f.includes('music')) {
+                    colStr = '#8b5cf6'; // Creative & Film
+                    rgb = '139,92,246';
+                }
+
+                const m = L.circleMarker([p.coordinates.lat, p.coordinates.lng], {
+                    radius: 3.5,
+                    fillColor: 'rgba(' + rgb + ', 0.4)',
+                    color: colStr,
+                    weight: 1.5,
+                    opacity: 0.8,
+                    fillOpacity: 0.4
+                }).addTo(map);
+
+                m.bindTooltip('<b>' + p.name + '</b>', {
+                    className: 'ct',
+                    permanent: false,
+                    direction: 'top'
+                });
+
+                const popupContent = '<div class="kml-category" style="color:' + colStr + ';">' + p.folder + '</div><div class="kml-name">' + p.name + '</div>' +
+                    (p.description ? '<div class="kml-desc">' + p.description + '</div>' : '');
+
+                m.bindPopup(popupContent, {
+                    className: 'kml-popup',
+                    maxWidth: 280
+                });
+
+                m.on('mouseover', function () {
+                    this.setStyle({ fillOpacity: 0.9, opacity: 1, radius: 5 });
+                });
+                m.on('mouseout', function () {
+                    this.setStyle({ fillOpacity: 0.4, opacity: 0.8, radius: 3.5 });
+                });
+            });
+        }
 
         const tl = document.getElementById('timeline');
         SECTIONS.forEach(sec => {
