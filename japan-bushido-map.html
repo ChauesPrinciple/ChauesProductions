@@ -989,6 +989,10 @@
                 // Filter trivial accomodations entirely unless in Tokyo
                 if (isAccommodation && !isTokyo) return;
 
+                // Bushido-specific filter: Ignore shopping, clothing, and vintage points
+                const fLower = p.folder.toLowerCase();
+                if (fLower.includes('shopping') || fLower.includes('clothing') || fLower.includes('vintage')) return;
+
                 let tooClose = false;
                 if (typeof CITIES !== 'undefined') {
                     Object.values(CITIES).forEach(c => {

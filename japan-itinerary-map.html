@@ -1214,6 +1214,9 @@
                 // Filter trivial accomodations entirely unless in Tokyo
                 if (isAccommodation && !isTokyo) return;
 
+                // Rassera-specific filter: Ignore all locations south of Tokyo
+                if (p.coordinates.lat < 35.5) return;
+
                 let tooClose = false;
                 if (typeof CITIES !== 'undefined') {
                     Object.values(CITIES).forEach(c => {
