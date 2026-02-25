@@ -49,13 +49,15 @@
 
         #app {
             display: flex;
-            height: 100vh
+            height: 100vh;
+            height: 100dvh;
         }
 
         #sidebar {
             width: 370px;
             min-width: 370px;
             height: 100vh;
+            height: 100dvh;
             display: flex;
             flex-direction: column;
             background: var(--panel);
@@ -554,17 +556,21 @@
 
         @media(max-width:760px) {
             #app {
-                flex-direction: column
+                flex-direction: column !important;
             }
 
             #sidebar {
-                width: 100%;
-                min-width: 100%;
-                height: 50vh
+                width: 100% !important;
+                min-width: 100% !important;
+                height: 50vh !important;
+                height: 50dvh !important;
             }
 
             #map-wrap {
-                height: 50vh
+                width: 100% !important;
+                height: 50vh !important;
+                height: 50dvh !important;
+                flex: none !important;
             }
 
             .day-card.active .card-prose-mb {
@@ -572,19 +578,19 @@
             }
 
             #info {
-                display: none
+                display: none !important;
             }
 
             #trip-nav {
                 position: fixed;
-                bottom: 12px;
+                bottom: 24px;
                 left: 50%;
                 transform: translateX(-50%);
                 z-index: 1000;
             }
 
             #legend {
-                bottom: 50px;
+                bottom: 74px;
             }
         }
 
@@ -724,11 +730,11 @@
             morioka: 'assets/images/009_reh_IwateSansaTop2.jpg',
             nebuta: 'assets/images/aomori-city-view.jpg',
             castle: 'assets/images/gosyogawara-m.jpg',
-            coast: 'assets/images/tokyo_film.png',
+            coast: 'assets/images/8-why-hokkaido-is-perfect-for-summer-japan-trip-body.jpg',
             fireworks: 'assets/images/aomori-city-view.jpg',
-            hokkaido: 'assets/images/tokyo_film.png',
-            sapporo: 'assets/images/tokyo_film.png',
-            otaru: 'assets/images/tokyo_film.png',
+            hokkaido: 'assets/images/6-why-hokkaido-is-perfect-for-summer-japan-trip-body.jpg',
+            sapporo: 'assets/images/3-why-hokkaido-is-perfect-for-summer-japan-trip-body.jpg',
+            otaru: 'assets/images/2-why-hokkaido-is-perfect-for-summer-japan-trip-body.jpg',
             vintage: 'assets/images/tokyo_film.png',
         };
 
