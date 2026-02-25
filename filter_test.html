@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            background: #000;
+            color: #fff;
+            font-family: sans-serif;
+        }
+
+        .map-box {
+            width: 33vw;
+            height: 33vh;
+            position: relative;
+        }
+
+        .label {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px;
+            font-size: 10px;
+        }
+
+        .map {
+            width: 100%;
+            height: 100%;
+            background: #000 !important;
+        }
+
+        /* Filters */
+        html .f1 .leaflet-tile-pane {
+            filter: sepia(1) hue-rotate(70deg) saturate(3) brightness(0.8);
+        }
+
+        /* Dark tile */
+        html .f2 .leaflet-tile-pane {
+            filter: contrast(1.5) sepia(1) hue-rotate(85deg) saturate(5) brightness(0.6);
+        }
+
+        /* Dark tile */
+        html .f3 .leaflet-tile-pane {
+            filter: sepia(1) hue-rotate(100deg) saturate(10) brightness(0.5) contrast(2);
+        }
+
+        /* Dark tile */
+
+        html .f4 .leaflet-tile-pane {
+            filter: invert(0.85) sepia(1) hue-rotate(70deg) saturate(5);
+        }
+
+        /* Light tile */
+        html .f5 .leaflet-tile-pane {
+            filter: invert(1) hue-rotate(180deg) brightness(1.2) sepia(0.5) hue-rotate(70deg) saturate(3);
+        }
+
+        /* Light tile */
+        html .f6 .leaflet-tile-pane {
+            filter: contrast(2) sepia(1) hue-rotate(90deg) saturate(4) invert(0.9);
+        }
+
+        /* Light tile */
+
+        html .f7 .leaflet-tile-pane {
+            filter: brightness(0.5) sepia(1) hue-rotate(60deg) saturate(6) contrast(1.5);
+        }
+
+        /* Dark tile */
+        html .f8 .leaflet-tile-pane {
+            filter: invert(0.9) hue-rotate(180deg) sepia(1) hue-rotate(50deg) saturate(4);
+        }
+
+        /* Light tile */
+        html .f9 .leaflet-tile-pane {
+            filter: invert(1) brightness(0.6) sepia(1) hue-rotate(80deg) saturate(8) contrast(1.5);
+        }
+
+        /* Voyager */
+    </style>
+</head>
+
+<body>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const maps = [
+            { id: 'f1', type: 'dark_all', desc: 'Dark: sepia+hue70+sat3' },
+            { id: 'f2', type: 'dark_all', desc: 'Dark: contrast+hue85+sat5+dark' },
+            { id: 'f3', type: 'dark_all', desc: 'Dark: huge contrast+hue100' },
+            { id: 'f4', type: 'light_all', desc: 'Light: invert85+sepia+hue70' },
+            { id: 'f5', type: 'light_all', desc: 'Light: invert1+hue180+sepia+hue70' },
+            { id: 'f6', type: 'light_all', desc: 'Light: contrast+sepia+hue90+invert0.9' },
+            { id: 'f7', type: 'dark_all', desc: 'Dark: dark+sepia+hue60+sat6' },
+            { id: 'f8', type: 'light_all', desc: 'Light: invert0.9+hue180+sepia+hue50' },
+            { id: 'f9', type: 'voyager', desc: 'Voyager: invert+dark+sepia+hue80' }
+        ];
+
+        maps.forEach(m => {
+            document.write(`<div class="map-box"><div class="label">${m.id}<br>${m.desc}</div><div id="${m.id}" class="map ${m.id}"></div></div>`);
+        });
+
+        setTimeout(() => {
+            maps.forEach(m => {
+                const map = L.map(m.id, { center: [53.3, -8.0], zoom: 6, zoomControl: false, attributionControl: false });
+                L.tileLayer(`https://{s}.basemaps.cartocdn.com/${m.type}/{z}/{x}/{y}{r}.png`).addTo(map);
+            });
+        }, 100);
+    </script>
+</body>
+
+</html>

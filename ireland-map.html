@@ -578,7 +578,7 @@
         }
 
         #map .leaflet-tile-pane {
-            filter: sepia(0.15) hue-rotate(70deg) saturate(1.4) brightness(0.95);
+            filter: invert(0.9) hue-rotate(180deg) sepia(1) hue-rotate(50deg) saturate(4);
         }
 
         .leaflet-control-attribution {
@@ -851,7 +851,7 @@
 
         const BOUNDS = L.latLngBounds([51.0, -11.0], [55.5, -5.0]);
         const map = L.map('map', { center: [53.0, -7.5], zoom: 7, minZoom: 6, maxZoom: 16, zoomControl: false, maxBounds: BOUNDS, maxBoundsViscosity: 0.85 });
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; <a href="https://openstreetmap.org">OSM</a> &copy; <a href="https://carto.com">CARTO</a>',
             subdomains: 'abcd', maxZoom: 19
         }).addTo(map);
