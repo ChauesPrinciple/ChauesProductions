@@ -439,7 +439,8 @@
             padding: 10px 14px 8px;
             font-size: 10px;
             color: var(--muted);
-            box-shadow: 0 2px 12px rgba(0, 0, 0, .3)
+            box-shadow: 0 2px 12px rgba(0, 0, 0, .3);
+            pointer-events: auto;
         }
 
         .leg-h {
@@ -683,10 +684,11 @@
                 bottom: 74px;
             }
         }
-    
+
         details#legend-details summary::-webkit-details-marker {
             display: none;
         }
+
         details#legend-details summary {
             list-style: none;
             cursor: pointer;
@@ -696,14 +698,17 @@
             margin-bottom: 0;
             user-select: none;
         }
+
         details#legend-details summary::after {
             content: '▼';
             font-size: 8px;
             opacity: 0.6;
         }
+
         details#legend-details[open] summary::after {
             content: '▲';
         }
+
         .legend-inner {
             margin-top: 8px;
             padding-top: 8px;
@@ -739,26 +744,31 @@
             </div>
         </div>
         <div id="legend">
-            <div class="leg-h">Route</div>
-            <div class="leg-row">
-                <div class="leg-l" style="background:#059669"></div> Main Road
-            </div>
-            <div class="leg-row">
-                <div class="leg-ld" style="border-color:#34d399"></div> Scenic Route
-            </div>
-            <div class="leg-h" style="margin-top:6px">Sites</div>
-            <div class="leg-row">
-                <div class="leg-poi" style="background:#ef4444;border-color:#ef4444"></div> Historic / Museum
-            </div>
-            <div class="leg-row">
-                <div class="leg-poi" style="background:#a78bfa;border-color:#a78bfa"></div> Training / Craft
-            </div>
-            <div class="leg-row">
-                <div class="leg-poi" style="background:#f59e0b;border-color:#f59e0b"></div> Music / Distillery
-            </div>
-            <div class="leg-row">
-                <div class="leg-poi" style="background:#34d399;border-color:#34d399"></div> Nature / Ancient
-            </div>
+            <details id="legend-details" open>
+                <summary class="leg-h">Map Key</summary>
+                <div class="legend-inner">
+                    <div class="leg-h">Route</div>
+                    <div class="leg-row">
+                        <div class="leg-l" style="background:#059669"></div> Main Road
+                    </div>
+                    <div class="leg-row">
+                        <div class="leg-ld" style="border-color:#34d399"></div> Scenic Route
+                    </div>
+                    <div class="leg-h" style="margin-top:6px">Sites</div>
+                    <div class="leg-row">
+                        <div class="leg-poi" style="background:#ef4444;border-color:#ef4444"></div> Historic / Museum
+                    </div>
+                    <div class="leg-row">
+                        <div class="leg-poi" style="background:#a78bfa;border-color:#a78bfa"></div> Training / Craft
+                    </div>
+                    <div class="leg-row">
+                        <div class="leg-poi" style="background:#f59e0b;border-color:#f59e0b"></div> Music / Distillery
+                    </div>
+                    <div class="leg-row">
+                        <div class="leg-poi" style="background:#34d399;border-color:#34d399"></div> Nature / Ancient
+                    </div>
+                </div>
+            </details>
         </div>
         <div id="trip-nav">
             <a href="index.html">&larr; Home</a>
