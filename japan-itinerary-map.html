@@ -768,6 +768,32 @@
             font-size: 12px;
             color: var(--prose);
         }
+    
+        details#legend-details summary::-webkit-details-marker {
+            display: none;
+        }
+        details#legend-details summary {
+            list-style: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0;
+            user-select: none;
+        }
+        details#legend-details summary::after {
+            content: '▼';
+            font-size: 8px;
+            opacity: 0.6;
+        }
+        details#legend-details[open] summary::after {
+            content: '▲';
+        }
+        .legend-inner {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(150, 150, 150, 0.2);
+        }
     </style>
     <script src="assets/js/kml_data.js"></script>
 </head>
@@ -802,6 +828,9 @@
                 </div>
             </div>
             <div id="legend">
+                <details id="legend-details" open>
+                    <summary class="leg-h">Map Key</summary>
+                    <div class="legend-inner">
                 <div class="leg-h">Route</div>
                 <div class="leg-r">
                     <div class="leg-l" style="background:var(--amber)"></div>Shinkansen
@@ -837,6 +866,8 @@
                     <div class="leg-poi" style="background:rgba(148,163,184,0.5);border-color:#cbd5e1"></div>
                     Accommodations
                 </div>
+            </div>
+                </details>
             </div>
             <div id="trip-nav">
                 <a href="index.html">&larr; Home</a>
@@ -1356,6 +1387,14 @@
         }
         function scrollTo(n) { const c = document.getElementById(`d${n}`); if (c) c.scrollIntoView({ behavior: 'smooth', block: 'center' }); activate(n, false); }
         setTimeout(() => activate(1, false), 300);
+    </script>
+
+    <script>
+        // Collapse legend on mobile
+        if (window.innerWidth <= 760) {
+            const legDetails = document.getElementById('legend-details');
+            if (legDetails) legDetails.removeAttribute('open');
+        }
     </script>
 </body>
 

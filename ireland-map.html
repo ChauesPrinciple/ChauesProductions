@@ -683,6 +683,32 @@
                 bottom: 74px;
             }
         }
+    
+        details#legend-details summary::-webkit-details-marker {
+            display: none;
+        }
+        details#legend-details summary {
+            list-style: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0;
+            user-select: none;
+        }
+        details#legend-details summary::after {
+            content: '▼';
+            font-size: 8px;
+            opacity: 0.6;
+        }
+        details#legend-details[open] summary::after {
+            content: '▲';
+        }
+        .legend-inner {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(150, 150, 150, 0.2);
+        }
     </style>
 </head>
 
@@ -987,6 +1013,14 @@
         }
         function scrollTo(n) { var c = document.getElementById('d' + n); if (c) c.scrollIntoView({ behavior: 'smooth', block: 'center' }); activate(n, false); }
         setTimeout(function () { activate(1, false); }, 300);
+    </script>
+
+    <script>
+        // Collapse legend on mobile
+        if (window.innerWidth <= 760) {
+            const legDetails = document.getElementById('legend-details');
+            if (legDetails) legDetails.removeAttribute('open');
+        }
     </script>
 </body>
 
