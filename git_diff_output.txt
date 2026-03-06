@@ -1,0 +1,498 @@
+﻿diff --git a/ireland-map.html b/ireland-map.html
+index eb586b4..830ec96 100644
+--- a/ireland-map.html
++++ b/ireland-map.html
+@@ -636,7 +636,7 @@
+             transition: transform 0.2s, box-shadow 0.2s;
+         }
+ 
+-        .cta-btn:hover {
++        .cta-form {
+             transform: translateY(-1px);
+             box-shadow: 0 4px 16px rgba(5, 150, 105, 0.4);
+         }
+@@ -714,7 +714,7 @@
+             padding-top: 8px;
+             border-top: 1px solid rgba(150, 150, 150, 0.2);
+         }
+-    </style>
++    
+ </head>
+ 
+ <body>
+@@ -781,6 +781,72 @@
+         </div>
+     </div>
+ 
++
++        .cta-form {
++            display: flex;
++            flex-direction: column;
++            gap: 12px;
++            margin-top: 20px;
++            text-align: left;
++        }
++
++        .cta-input-group {
++            display: flex;
++            flex-direction: column;
++            gap: 4px;
++        }
++
++        .cta-label {
++            font-size: 11px;
++            font-weight: 600;
++            color: #fff;
++            text-transform: uppercase;
++            letter-spacing: 0.5px;
++        }
++
++        .cta-input {
++            width: 100%;
++            padding: 10px 12px;
++            background: rgba(255, 255, 255, 0.05);
++            border: 1px solid rgba(150, 150, 150, 0.2);
++            border-radius: 6px;
++            font-family: 'Inter', sans-serif;
++            font-size: 13px;
++            color: #fff;
++            transition: border-color 0.2s, background 0.2s;
++        }
++        
++        /* Ireland map specific light text override if var text isn't set */
++        body {
++            --form-text: #fff;
++        }
++
++        .cta-input:focus {
++            outline: none;
++            border-color: var(--accent);
++            background: rgba(255, 255, 255, 0.1);
++        }
++
++        .cta-input::placeholder {
++            color: rgba(150, 150, 150, 0.5);
++        }
++
++        .cta-textarea {
++            resize: vertical;
++            min-height: 80px;
++        }
++
++        .cta-submit {
++            margin-top: 8px;
++            display: inline-flex;
++            align-items: center;
++            justify-content: center;
++            gap: 6px;
++            width: 100%;
++            cursor: pointer;
++            border: none;
++        }
++    
+     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+     <script>
+         const I = { bog: 'assets/images/ireland_bog.png', blackthorn: 'assets/images/ireland_blackthorn.png', stonecircle: 'assets/images/ireland_stonecircle.png' };
+@@ -985,7 +1051,7 @@
+         /* CTA CARD */
+         const cta = document.createElement('div');
+         cta.className = 'cta-card';
+-        cta.innerHTML = '<h3>Join This Trip</h3><p>Travel with a filmmaker and literature professor through the archaeology of Irish violence and myth. Limited group size.</p><p style="margin-top: 10px; font-weight: 600; font-size: 14px; margin-bottom: 12px; color: var(--text);"><strong>$3,995</strong> per person<br><span style="font-size: 10px; font-weight: 400; color: var(--muted); opacity: 0.8;">*International flights not included</span></p><a href="https://docs.google.com/forms/d/e/1FAIpQLSfdWWbpqfl-k4JKedyTJF-JhbWG8_l2zguDloL9ea1veMnNxw/viewform" target="_blank" rel="noopener noreferrer" class="cta-btn">Express Interest \u2192</a>';
++        cta.innerHTML = '<h3>Join This Trip</h3><p>Travel with a filmmaker and literature professor through the archaeology of Irish violence and myth. Limited group size.</p><p style="margin-top: 10px; font-weight: 600; font-size: 14px; margin-bottom: 12px; color: var(--text);"><strong>$3,995</strong> per person<br><span style="font-size: 10px; font-weight: 400; color: var(--muted); opacity: 0.8;">*International flights not included</span></p><form class="cta-form" onsubmit="event.preventDefault(); sendEmail(this);"><div class="cta-input-group"><label class="cta-label" for="contact-name">Name</label><input type="text" id="contact-name" class="cta-input" placeholder="Your name" required></div><div class="cta-input-group"><label class="cta-label" for="contact-email">Email</label><input type="email" id="contact-email" class="cta-input" placeholder="your.email@example.com" required></div><div class="cta-input-group"><label class="cta-label" for="contact-message">Message</label><textarea id="contact-message" class="cta-input cta-textarea" placeholder="Tell me about your interest in this trip..." required></textarea></div><button type="submit" class="cta-btn cta-submit">Send Message ΓåÆ</button></form>';
+         tl.appendChild(cta);
+ 
+         /* STATE */
+@@ -1031,6 +1097,17 @@
+             const legDetails = document.getElementById('legend-details');
+             if (legDetails) legDetails.removeAttribute('open');
+         }
++    
++        function sendEmail(form) {
++            const name = form.querySelector('#contact-name').value;
++            const email = form.querySelector('#contact-email').value;
++            const message = form.querySelector('#contact-message').value;
++            
++            const subject = encodeURIComponent("Interest in Chaues Productions Trip");
++            const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
++            
++            window.location.href = `mailto:factum.est.illud@gmail.com?subject=${subject}&body=${body}`;
++        }
+     </script>
+ </body>
+ 
+diff --git a/japan-bushido-map.html b/japan-bushido-map.html
+index 8513f8c..77c152d 100644
+--- a/japan-bushido-map.html
++++ b/japan-bushido-map.html
+@@ -552,7 +552,7 @@
+             transition: transform 0.2s, box-shadow 0.2s;
+         }
+ 
+-        .cta-btn:hover {
++        .cta-form {
+             transform: translateY(-1px);
+             box-shadow: 0 4px 16px rgba(185, 28, 28, 0.4);
+         }
+@@ -740,7 +740,73 @@
+             padding-top: 8px;
+             border-top: 1px solid rgba(150, 150, 150, 0.2);
+         }
+-    </style>
++    
++
++        .cta-form {
++            display: flex;
++            flex-direction: column;
++            gap: 12px;
++            margin-top: 20px;
++            text-align: left;
++        }
++
++        .cta-input-group {
++            display: flex;
++            flex-direction: column;
++            gap: 4px;
++        }
++
++        .cta-label {
++            font-size: 11px;
++            font-weight: 600;
++            color: var(--text, #1e293b);
++            text-transform: uppercase;
++            letter-spacing: 0.5px;
++        }
++
++        .cta-input {
++            width: 100%;
++            padding: 10px 12px;
++            background: rgba(255, 255, 255, 0.05);
++            border: 1px solid rgba(150, 150, 150, 0.2);
++            border-radius: 6px;
++            font-family: 'Inter', sans-serif;
++            font-size: 13px;
++            color: var(--text, #1e293b);
++            transition: border-color 0.2s, background 0.2s;
++        }
++        
++        /* Ireland map specific light text override if var text isn't set */
++        body {
++            --form-text: var(--text, #1e293b);
++        }
++
++        .cta-input:focus {
++            outline: none;
++            border-color: var(--accent);
++            background: rgba(255, 255, 255, 0.1);
++        }
++
++        .cta-input::placeholder {
++            color: rgba(150, 150, 150, 0.5);
++        }
++
++        .cta-textarea {
++            resize: vertical;
++            min-height: 80px;
++        }
++
++        .cta-submit {
++            margin-top: 8px;
++            display: inline-flex;
++            align-items: center;
++            justify-content: center;
++            gap: 6px;
++            width: 100%;
++            cursor: pointer;
++            border: none;
++        }
++    
+     <script src="assets/js/kml_data.js"></script>
+ </head>
+ 
+@@ -826,6 +892,72 @@
+         </div>
+     </div>
+ 
++
++        .cta-form {
++            display: flex;
++            flex-direction: column;
++            gap: 12px;
++            margin-top: 20px;
++            text-align: left;
++        }
++
++        .cta-input-group {
++            display: flex;
++            flex-direction: column;
++            gap: 4px;
++        }
++
++        .cta-label {
++            font-size: 11px;
++            font-weight: 600;
++            color: var(--text, #1e293b);
++            text-transform: uppercase;
++            letter-spacing: 0.5px;
++        }
++
++        .cta-input {
++            width: 100%;
++            padding: 10px 12px;
++            background: rgba(255, 255, 255, 0.05);
++            border: 1px solid rgba(150, 150, 150, 0.2);
++            border-radius: 6px;
++            font-family: 'Inter', sans-serif;
++            font-size: 13px;
++            color: var(--text, #1e293b);
++            transition: border-color 0.2s, background 0.2s;
++        }
++        
++        /* Ireland map specific light text override if var text isn't set */
++        body {
++            --form-text: var(--text, #1e293b);
++        }
++
++        .cta-input:focus {
++            outline: none;
++            border-color: var(--accent);
++            background: rgba(255, 255, 255, 0.1);
++        }
++
++        .cta-input::placeholder {
++            color: rgba(150, 150, 150, 0.5);
++        }
++
++        .cta-textarea {
++            resize: vertical;
++            min-height: 80px;
++        }
++
++        .cta-submit {
++            margin-top: 8px;
++            display: inline-flex;
++            align-items: center;
++            justify-content: center;
++            gap: 6px;
++            width: 100%;
++            cursor: pointer;
++            border: none;
++        }
++    
+     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+     <script>
+         const I = {
+@@ -1134,7 +1266,7 @@
+         /* CTA CARD */
+         const cta = document.createElement('div');
+         cta.className = 'cta-card';
+-        cta.innerHTML = '<h3>Join This Trip</h3><p>Walk the warrior\u2019s path from Tokyo to the Kii Peninsula with a filmmaker and literature professor. We read Musashi, walk the Kumano Kodo, and train with real swords. Limited group size.</p><p style="margin-top: 10px; font-weight: 600; font-size: 14px; margin-bottom: 12px; color: var(--text);"><strong>$4,795</strong> per person<br><span style="font-size: 10px; font-weight: 400; color: var(--muted); opacity: 0.8;">*International flights not included</span></p><a href="https://docs.google.com/forms/d/e/1FAIpQLSfdWWbpqfl-k4JKedyTJF-JhbWG8_l2zguDloL9ea1veMnNxw/viewform" target="_blank" rel="noopener noreferrer" class="cta-btn">Express Interest \u2192</a>';
++        cta.innerHTML = '<h3>Join This Trip</h3><p>Walk the warrior\u2019s path from Tokyo to the Kii Peninsula with a filmmaker and literature professor. We read Musashi, walk the Kumano Kodo, and train with real swords. Limited group size.</p><p style="margin-top: 10px; font-weight: 600; font-size: 14px; margin-bottom: 12px; color: var(--text);"><strong>$4,795</strong> per person<br><span style="font-size: 10px; font-weight: 400; color: var(--muted); opacity: 0.8;">*International flights not included</span></p><form class="cta-form" onsubmit="event.preventDefault(); sendEmail(this);"><div class="cta-input-group"><label class="cta-label" for="contact-name">Name</label><input type="text" id="contact-name" class="cta-input" placeholder="Your name" required></div><div class="cta-input-group"><label class="cta-label" for="contact-email">Email</label><input type="email" id="contact-email" class="cta-input" placeholder="your.email@example.com" required></div><div class="cta-input-group"><label class="cta-label" for="contact-message">Message</label><textarea id="contact-message" class="cta-input cta-textarea" placeholder="Tell me about your interest in this trip..." required></textarea></div><button type="submit" class="cta-btn cta-submit">Send Message ΓåÆ</button></form>';
+         tl.appendChild(cta);
+ 
+         let activeDay = 0, lastCity = '';
+@@ -1180,6 +1312,17 @@
+             const legDetails = document.getElementById('legend-details');
+             if (legDetails) legDetails.removeAttribute('open');
+         }
++    
++        function sendEmail(form) {
++            const name = form.querySelector('#contact-name').value;
++            const email = form.querySelector('#contact-email').value;
++            const message = form.querySelector('#contact-message').value;
++            
++            const subject = encodeURIComponent("Interest in Chaues Productions Trip");
++            const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
++            
++            window.location.href = `mailto:factum.est.illud@gmail.com?subject=${subject}&body=${body}`;
++        }
+     </script>
+ </body>
+ 
+diff --git a/japan-itinerary-map.html b/japan-itinerary-map.html
+index 100507c..6aa8e83 100644
+--- a/japan-itinerary-map.html
++++ b/japan-itinerary-map.html
+@@ -612,7 +612,7 @@
+             transition: transform 0.2s, box-shadow 0.2s;
+         }
+ 
+-        .cta-btn:hover {
++        .cta-form {
+             transform: translateY(-1px);
+             box-shadow: 0 4px 16px rgba(236, 72, 153, 0.4);
+         }
+@@ -798,7 +798,73 @@
+             padding-top: 8px;
+             border-top: 1px solid rgba(150, 150, 150, 0.2);
+         }
+-    </style>
++    
++
++        .cta-form {
++            display: flex;
++            flex-direction: column;
++            gap: 12px;
++            margin-top: 20px;
++            text-align: left;
++        }
++
++        .cta-input-group {
++            display: flex;
++            flex-direction: column;
++            gap: 4px;
++        }
++
++        .cta-label {
++            font-size: 11px;
++            font-weight: 600;
++            color: #fff;
++            text-transform: uppercase;
++            letter-spacing: 0.5px;
++        }
++
++        .cta-input {
++            width: 100%;
++            padding: 10px 12px;
++            background: rgba(255, 255, 255, 0.05);
++            border: 1px solid rgba(150, 150, 150, 0.2);
++            border-radius: 6px;
++            font-family: 'Inter', sans-serif;
++            font-size: 13px;
++            color: #fff;
++            transition: border-color 0.2s, background 0.2s;
++        }
++        
++        /* Ireland map specific light text override if var text isn't set */
++        body {
++            --form-text: #fff;
++        }
++
++        .cta-input:focus {
++            outline: none;
++            border-color: var(--accent);
++            background: rgba(255, 255, 255, 0.1);
++        }
++
++        .cta-input::placeholder {
++            color: rgba(150, 150, 150, 0.5);
++        }
++
++        .cta-textarea {
++            resize: vertical;
++            min-height: 80px;
++        }
++
++        .cta-submit {
++            margin-top: 8px;
++            display: inline-flex;
++            align-items: center;
++            justify-content: center;
++            gap: 6px;
++            width: 100%;
++            cursor: pointer;
++            border: none;
++        }
++    
+     <script src="assets/js/kml_data.js"></script>
+ </head>
+ 
+@@ -889,6 +955,72 @@
+         </div>
+     </div>
+ 
++
++        .cta-form {
++            display: flex;
++            flex-direction: column;
++            gap: 12px;
++            margin-top: 20px;
++            text-align: left;
++        }
++
++        .cta-input-group {
++            display: flex;
++            flex-direction: column;
++            gap: 4px;
++        }
++
++        .cta-label {
++            font-size: 11px;
++            font-weight: 600;
++            color: #fff;
++            text-transform: uppercase;
++            letter-spacing: 0.5px;
++        }
++
++        .cta-input {
++            width: 100%;
++            padding: 10px 12px;
++            background: rgba(255, 255, 255, 0.05);
++            border: 1px solid rgba(150, 150, 150, 0.2);
++            border-radius: 6px;
++            font-family: 'Inter', sans-serif;
++            font-size: 13px;
++            color: #fff;
++            transition: border-color 0.2s, background 0.2s;
++        }
++        
++        /* Ireland map specific light text override if var text isn't set */
++        body {
++            --form-text: #fff;
++        }
++
++        .cta-input:focus {
++            outline: none;
++            border-color: var(--accent);
++            background: rgba(255, 255, 255, 0.1);
++        }
++
++        .cta-input::placeholder {
++            color: rgba(150, 150, 150, 0.5);
++        }
++
++        .cta-textarea {
++            resize: vertical;
++            min-height: 80px;
++        }
++
++        .cta-submit {
++            margin-top: 8px;
++            display: inline-flex;
++            align-items: center;
++            justify-content: center;
++            gap: 6px;
++            width: 100%;
++            cursor: pointer;
++            border: none;
++        }
++    
+     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+     <script>
+         const I = {
+@@ -1357,7 +1489,7 @@
+         /* CTA CARD */
+         const cta = document.createElement('div');
+         cta.className = 'cta-card';
+-        cta.innerHTML = '<h3>Join This Trip</h3><p>Travel with a filmmaker and adventure guide across Japan\u2019s festival heartland. Two weeks from Tokyo to Hokkaido, Nebuta to Sapporo. Limited group size.</p><p style="margin-top: 10px; font-weight: 600; font-size: 14px; margin-bottom: 12px; color: var(--text);"><strong>$5,695</strong> per person<br><span style="font-size: 10px; font-weight: 400; color: var(--muted); opacity: 0.8;">*International flights not included</span></p><a href="https://docs.google.com/forms/d/e/1FAIpQLSfdWWbpqfl-k4JKedyTJF-JhbWG8_l2zguDloL9ea1veMnNxw/viewform" target="_blank" rel="noopener noreferrer" class="cta-btn">Express Interest \u2192</a>';
++        cta.innerHTML = '<h3>Join This Trip</h3><p>Travel with a filmmaker and adventure guide across Japan\u2019s festival heartland. Two weeks from Tokyo to Hokkaido, Nebuta to Sapporo. Limited group size.</p><p style="margin-top: 10px; font-weight: 600; font-size: 14px; margin-bottom: 12px; color: var(--text);"><strong>$5,695</strong> per person<br><span style="font-size: 10px; font-weight: 400; color: var(--muted); opacity: 0.8;">*International flights not included</span></p><form class="cta-form" onsubmit="event.preventDefault(); sendEmail(this);"><div class="cta-input-group"><label class="cta-label" for="contact-name">Name</label><input type="text" id="contact-name" class="cta-input" placeholder="Your name" required></div><div class="cta-input-group"><label class="cta-label" for="contact-email">Email</label><input type="email" id="contact-email" class="cta-input" placeholder="your.email@example.com" required></div><div class="cta-input-group"><label class="cta-label" for="contact-message">Message</label><textarea id="contact-message" class="cta-input cta-textarea" placeholder="Tell me about your interest in this trip..." required></textarea></div><button type="submit" class="cta-btn cta-submit">Send Message ΓåÆ</button></form>';
+         tl.appendChild(cta);
+ 
+         let activeDay = 0, lastCity = '';
+@@ -1403,6 +1535,17 @@
+             const legDetails = document.getElementById('legend-details');
+             if (legDetails) legDetails.removeAttribute('open');
+         }
++    
++        function sendEmail(form) {
++            const name = form.querySelector('#contact-name').value;
++            const email = form.querySelector('#contact-email').value;
++            const message = form.querySelector('#contact-message').value;
++            
++            const subject = encodeURIComponent("Interest in Chaues Productions Trip");
++            const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
++            
++            window.location.href = `mailto:factum.est.illud@gmail.com?subject=${subject}&body=${body}`;
++        }
+     </script>
+ </body>
+ 

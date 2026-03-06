@@ -1,0 +1,29 @@
+﻿commit 7243fe627a797936ffa9c54329d2ef2c10288216
+Author: Robert <factum.est.illud@gmail.com>
+Date:   Thu Feb 26 14:45:47 2026 -0600
+
+    Fix map legend visibility and clickability on mobile
+
+commit 12d2dbd90a913813c90f7d003439f367883c0bba
+Author: Robert <factum.est.illud@gmail.com>
+Date:   Thu Feb 26 08:25:01 2026 -0600
+
+    feat: implement collapsible map legend using native html details element for mobile viewports
+
+commit 873afef5df318a9cd372c7dacf500e3ae0955e21
+Author: Robert <factum.est.illud@gmail.com>
+Date:   Wed Feb 25 14:18:10 2026 -0600
+
+    fix: apply map-specific KML filters for Bushido (no shopping) and Rassera (no south of Tokyo)
+
+commit d1e8e52372f7d4cde502d11d022ec322bc76c7bb
+Author: Robert <factum.est.illud@gmail.com>
+Date:   Wed Feb 25 12:48:48 2026 -0600
+
+    feat: integrate categorized KML POI markers onto interactive maps
+
+commit 4d3aaff8eaf8c7cc01477a77211769fc9c65d260
+Author: Robert <factum.est.illud@gmail.com>
+Date:   Wed Feb 25 11:55:17 2026 -0600
+
+    Fix mobile travel button scaling and refine bio layout

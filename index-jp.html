@@ -12,6 +12,10 @@
     <meta property="og:url" content="https://chauesprinciple.github.io/ChauesProductions/index-jp.html">
     <meta name="twitter:card" content="summary_large_image">
 
+    <link rel="icon" type="image/png" href="assets/images/image07.png">
+    <link rel="alternate" hreflang="en" href="https://chauesprinciple.github.io/ChauesProductions/">
+    <link rel="alternate" hreflang="ja" href="https://chauesprinciple.github.io/ChauesProductions/index-jp.html">
+
     <!-- Fonts : Noto Sans JP for Japanese text -->
     <link
         href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Nunito+Sans:ital,wght@0,400;0,500;1,400&family=Lato:ital,wght@0,300;1,300&display=swap"
@@ -188,34 +192,89 @@
         <div class="donation-text">
             <p>私の活動は、実際のロケーションに根ざした映像制作と、学生が直接体験を通じて場所を理解する手助けに基づいています。執筆した教科書を含め、活動の大部分は非営利です。ご寄付いただけると幸いです。すべての寄付金は学生のための機材や制作費に使われます：
             </p>
+            <a href="https://venmo.com/robert-ladd-9" class="contact-btn" target="_blank" rel="noopener noreferrer">Venmoで寄付する</a>
         </div>
 
         <!-- Gallery -->
-        <div class="gallery-grid">
-            <div class="gallery-item">
-                <a href="assets/images/gallery01/26e244bf_original.jpg">
-                    <img src="assets/images/gallery01/26e244bf.jpg" alt="富士急ハイランドから見た富士山">
-                </a>
-                <div class="caption">富士急ハイランドから見た富士山</div>
+        <div class="carousel" data-comp="Slider" data-options='{"autoplay":true,"interval":5000}'>
+            <div class="carousel-viewport">
+                <div class="carousel-track">
+                    <div class="carousel-slide">
+                        <a href="assets/images/gallery01/26e244bf_original.jpg">
+                            <img src="assets/images/gallery01/26e244bf.jpg" alt="富士急ハイランドから見た富士山" loading="lazy">
+                        </a>
+                    </div>
+                    <div class="carousel-slide">
+                        <a href="assets/images/gallery01/d3df87c0_original.jpg">
+                            <img src="assets/images/gallery01/d3df87c0.jpg" alt="巌流島" loading="lazy">
+                        </a>
+                    </div>
+                    <div class="carousel-slide">
+                        <a href="assets/images/gallery01/be369aa0_original.jpg">
+                            <img src="assets/images/gallery01/be369aa0.jpg" alt="奈良" loading="lazy">
+                        </a>
+                    </div>
+                </div>
+                <button class="carousel-btn carousel-prev" aria-label="前のスライド">&#8592;</button>
+                <button class="carousel-btn carousel-next" aria-label="次のスライド">&#8594;</button>
             </div>
-            <div class="gallery-item">
-                <a href="assets/images/gallery01/d3df87c0_original.jpg">
-                    <img src="assets/images/gallery01/d3df87c0.jpg" alt="巌流島">
-                </a>
-                <div class="caption">巌流島</div>
-            </div>
-            <div class="gallery-item">
-                <a href="assets/images/gallery01/be369aa0_original.jpg">
-                    <img src="assets/images/gallery01/be369aa0.jpg" alt="奈良">
-                </a>
-                <div class="caption">奈良</div>
+            <div class="carousel-footer">
+                <div class="carousel-caption">富士急ハイランドから見た富士山</div>
+                <div class="carousel-dots"></div>
             </div>
         </div>
 
     </div>
 
-    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('[data-comp="Slider"]').forEach(el => {
+                const options = JSON.parse(el.dataset.options || '{}');
+                const track = el.querySelector('.carousel-track');
+                const slides = el.querySelectorAll('.carousel-slide');
+                const dotsWrap = el.querySelector('.carousel-dots');
+                const caption = el.querySelector('.carousel-caption');
+                const captions = Array.from(slides).map(s => s.querySelector('img').alt);
+                const total = slides.length;
+                let current = 0;
+                let autoTimer = null;
 
+                slides.forEach((_, i) => {
+                    const dot = document.createElement('button');
+                    dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+                    dot.setAttribute('aria-label', (i + 1) + '枚目のスライドへ');
+                    dot.addEventListener('click', () => { goTo(i); resetAuto(); });
+                    dotsWrap.appendChild(dot);
+                });
+
+                function goTo(n) {
+                    current = (n + total) % total;
+                    track.style.transform = 'translateX(-' + (current * 100) + '%)';
+                    el.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === current));
+                    if (caption) {
+                        caption.style.opacity = '0';
+                        setTimeout(() => { caption.textContent = captions[current]; caption.style.opacity = '1'; }, 200);
+                    }
+                }
+
+                el.querySelector('.carousel-prev').addEventListener('click', () => { goTo(current - 1); resetAuto(); });
+                el.querySelector('.carousel-next').addEventListener('click', () => { goTo(current + 1); resetAuto(); });
+
+                let touchX = 0;
+                track.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+                track.addEventListener('touchend', e => {
+                    const diff = touchX - e.changedTouches[0].clientX;
+                    if (Math.abs(diff) > 40) { goTo(diff > 0 ? current + 1 : current - 1); resetAuto(); }
+                }, { passive: true });
+
+                function startAuto() {
+                    if (options.autoplay) autoTimer = setInterval(() => goTo(current + 1), options.interval || 5000);
+                }
+                function resetAuto() { clearInterval(autoTimer); startAuto(); }
+                startAuto();
+            });
+        });
+    </script>
 </body>
 
 </html>
