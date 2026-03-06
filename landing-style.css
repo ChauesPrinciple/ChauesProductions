@@ -191,13 +191,20 @@ h1 {
 
 .carousel-track {
     display: flex;
+    height: 100%;
     transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform;
 }
 
 .carousel-slide {
     min-width: 100%;
+    height: 100%;
     position: relative;
+}
+
+.carousel-slide a {
+    display: block;
+    height: 100%;
 }
 
 .carousel-slide img {
