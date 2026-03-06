@@ -215,30 +215,26 @@ h1 {
     position: relative;
     overflow: hidden;
     border-radius: 8px;
-    aspect-ratio: 4 / 3;
 }
 
 .carousel-track {
     display: flex;
-    height: 100%;
     transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform;
 }
 
 .carousel-slide {
     min-width: 100%;
-    height: 100%;
     position: relative;
 }
 
 .carousel-slide a {
     display: block;
-    height: 100%;
 }
 
 .carousel-slide img {
     width: 100%;
-    height: 100%;
+    height: clamp(200px, 55vw, 460px);
     object-fit: cover;
     display: block;
     border-radius: 8px;
