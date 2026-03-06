@@ -229,8 +229,7 @@ h1 {
 
 .carousel-slide img {
     width: 100%;
-    height: clamp(200px, 55vw, 460px);
-    object-fit: cover;
+    height: auto;
     display: block;
     border-radius: 8px;
     transition: filter 0.2s;
