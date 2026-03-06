@@ -186,6 +186,7 @@ h1 {
     position: relative;
     overflow: hidden;
     border-radius: 8px;
+    aspect-ratio: 4 / 3;
 }
 
 .carousel-track {
@@ -201,7 +202,8 @@ h1 {
 
 .carousel-slide img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
     display: block;
     border-radius: 8px;
     transition: filter 0.2s;
