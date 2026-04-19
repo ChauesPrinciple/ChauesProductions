@@ -312,6 +312,57 @@ h1 {
     }
 }
 
+/* Print Shop Carousel */
+.prints-subhead {
+    text-align: center;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: -1.25rem 0 1.75rem 0;
+}
+
+.prints-subhead a {
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.prints-subhead a:hover {
+    color: #fff;
+}
+
+.print-card {
+    position: relative;
+    display: block;
+}
+
+.print-card img {
+    width: 100%;
+    height: 22rem;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+    transition: filter 0.2s;
+}
+
+.carousel-slide a:hover .print-card img {
+    filter: brightness(1.1);
+}
+
+.print-price {
+    position: absolute;
+    bottom: 0.75rem;
+    right: 0.75rem;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 0.2rem 0.85rem;
+    border-radius: 2rem;
+    font-size: 0.85rem;
+    font-family: var(--font-main);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    letter-spacing: 0.02em;
+}
+
 /* Partners Section - Fixed Grid */
 .partners-grid {
     display: grid;

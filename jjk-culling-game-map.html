@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jujutsu Kaisen — Culling Game Ward Map | Chaues Productions</title>
+  <meta name="description" content="Interactive map of Tokyo's 23 wards through the Jujutsu Kaisen Shibuya Incident and Culling Game arcs.">
+  <meta property="og:url" content="https://chauesprinciple.github.io/ChauesProductions/jjk-culling-game-map.html">
+  <meta property="og:title" content="Jujutsu Kaisen — Culling Game Ward Map | Chaues Productions">
+  <meta property="og:description" content="Interactive map of Tokyo's 23 wards through the Jujutsu Kaisen Shibuya Incident and Culling Game arcs.">
+  <link rel="icon" type="image/png" href="https://chauesprinciple.github.io/ChauesProductions/assets/images/image07.png">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" id="leaflet-css" onerror="this.href='https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css'">
+
+  <style>
+    /* ── Leaflet core CSS inlined — renders tiles without CDN ── */
+    .leaflet-pane,.leaflet-tile,.leaflet-marker-icon,.leaflet-marker-shadow,.leaflet-tile-container,.leaflet-pane>svg,.leaflet-pane>canvas,.leaflet-zoom-box,.leaflet-image-layer,.leaflet-layer{position:absolute;left:0;top:0}
+    .leaflet-container{overflow:hidden;-webkit-tap-highlight-color:transparent;outline:0}
+    .leaflet-tile{filter:inherit;visibility:hidden}
+    .leaflet-tile-loaded{visibility:inherit}
+    .leaflet-zoom-box{width:0;height:0;box-sizing:border-box;z-index:800}
+    .leaflet-overlay-pane svg{-moz-user-select:none}
+    .leaflet-pane{z-index:400}.leaflet-tile-pane{z-index:200}.leaflet-overlay-pane{z-index:400}.leaflet-shadow-pane{z-index:500}.leaflet-marker-pane{z-index:600}.leaflet-tooltip-pane{z-index:650}.leaflet-popup-pane{z-index:700}
+    .leaflet-map-pane canvas{z-index:100}.leaflet-map-pane svg{z-index:200}
+    .leaflet-control{position:relative;z-index:800;pointer-events:auto;float:left;clear:both}
+    .leaflet-top,.leaflet-bottom{position:absolute;z-index:1000;pointer-events:none}
+    .leaflet-top{top:0}.leaflet-right{right:0}.leaflet-bottom{bottom:0}.leaflet-left{left:0}
+    .leaflet-right .leaflet-control{float:right}
+    .leaflet-top .leaflet-control{margin-top:10px}.leaflet-bottom .leaflet-control{margin-bottom:10px}
+    .leaflet-left .leaflet-control{margin-left:10px}.leaflet-right .leaflet-control{margin-right:10px}
+    .leaflet-zoom-animated{transform-origin:0 0}
+    .leaflet-zoom-anim .leaflet-zoom-animated{transition:transform .25s cubic-bezier(0,0,.25,1)}
+    .leaflet-zoom-anim .leaflet-tile,.leaflet-pan-anim .leaflet-tile{transition:none}
+    .leaflet-interactive{cursor:pointer}.leaflet-grab{cursor:grab}
+    .leaflet-dragging .leaflet-grab,.leaflet-dragging .leaflet-grab .leaflet-interactive,.leaflet-dragging .leaflet-marker-draggable{cursor:grabbing}
+    .leaflet-marker-icon,.leaflet-marker-shadow,.leaflet-image-layer,.leaflet-pane>svg path,.leaflet-tile-container{pointer-events:none}
+    .leaflet-marker-icon.leaflet-interactive,.leaflet-image-layer.leaflet-interactive,.leaflet-pane>svg path.leaflet-interactive{pointer-events:auto}
+    .leaflet-fade-anim .leaflet-popup{opacity:0;transition:opacity .2s linear}.leaflet-fade-anim .leaflet-map-pane .leaflet-popup{opacity:1}
+    .leaflet-bar{box-shadow:0 1px 5px rgba(0,0,0,.65);border-radius:4px}
+    .leaflet-bar a,.leaflet-bar a:hover{background-color:#fff;border-bottom:1px solid #ccc;width:26px;height:26px;line-height:26px;display:block;text-align:center;text-decoration:none;color:#000}
+    .leaflet-bar a:first-child{border-top-left-radius:4px;border-top-right-radius:4px}
+    .leaflet-bar a:last-child{border-bottom-left-radius:4px;border-bottom-right-radius:4px;border-bottom:none}
+    .leaflet-bar a.leaflet-disabled{cursor:default;background-color:#f4f4f4;color:#bbb}
+    .leaflet-control-zoom-in,.leaflet-control-zoom-out{font:bold 18px/26px 'Lucida Console',Monaco,monospace}
+    .leaflet-tooltip{position:absolute;padding:6px;background:#fff;border:1px solid #fff;border-radius:3px;color:#222;white-space:nowrap;pointer-events:none;box-shadow:0 1px 3px rgba(0,0,0,.4)}
+    .leaflet-tooltip-top:before,.leaflet-tooltip-bottom:before{position:absolute;pointer-events:none;border:6px solid transparent;background:transparent;content:""}
+    .leaflet-tooltip-bottom{margin-top:6px}.leaflet-tooltip-top{margin-top:-6px}
+    .leaflet-tooltip-bottom:before{left:50%;margin-left:-6px;border-top:none;border-bottom-color:#fff;top:0}
+    .leaflet-tooltip-top:before{left:50%;margin-left:-6px;border-bottom:none;border-top-color:#fff;bottom:-6px}
+    .leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#fff;color:#333;box-shadow:0 3px 14px rgba(0,0,0,.4)}
+    .leaflet-popup-content-wrapper{padding:1px;border-radius:12px}
+    .leaflet-popup-content{margin:13px 20px;line-height:1.4;font-size:13px}
+    .leaflet-popup-tip-container{width:40px;height:20px;position:absolute;left:50%;margin-left:-20px;overflow:hidden;pointer-events:none}
+    .leaflet-popup-tip{width:17px;height:17px;padding:1px;margin:-10px auto 0;transform:rotate(45deg)}
+    .leaflet-popup-close-button{position:absolute;top:0;right:0;border:none;width:24px;height:24px;font:16px/24px Tahoma,Verdana,sans-serif;color:#757575;background:transparent;cursor:pointer}
+    .leaflet-container .leaflet-control-attribution{background:rgba(255,255,255,.6);margin:0;font-size:10px;padding:0 5px}
+    /* ── End Leaflet core CSS ── */
+  </style>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #020212;
+      --panel: #04041e;
+      --card: #06062a;
+      --border: rgba(0,80,255,.2);
+      --accent: #0050ff;
+      --accent2: #cc0099;
+      --accent-dim: rgba(0,80,255,.15);
+      --text: #dde8ff;
+      --muted: #505080;
+      --prose: #9aabcc;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Raleway', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    #app {
+      display: flex;
+      height: 100vh;
+    }
+
+    #sidebar {
+      width: 380px;
+      background-color: var(--panel);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    #hdr {
+      padding: 24px 20px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .main-title {
+      font-family: 'Cinzel', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin: 0 0 4px 0;
+      line-height: 1.1;
+    }
+
+    .subtitle {
+      font-size: 0.875rem;
+      color: var(--prose);
+      font-weight: 300;
+      letter-spacing: 0.05em;
+    }
+
+    #legend {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .legend-title {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .legend-items {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+    }
+
+    .legend-swatch {
+      width: 20px;
+      height: 20px;
+      border-radius: 3px;
+      flex-shrink: 0;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    #ward-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0;
+    }
+
+    .ward-item {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background-color: transparent;
+    }
+
+    .ward-item:hover {
+      background-color: var(--accent-dim);
+    }
+
+    .ward-item.active {
+      background-color: var(--accent-dim);
+      border-left: 3px solid var(--accent);
+      padding-left: 17px;
+    }
+
+    .ward-number {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .ward-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .ward-jp {
+      font-size: 0.8rem;
+      color: var(--prose);
+      margin-top: 2px;
+    }
+
+    #map-wrap {
+      flex: 1;
+      position: relative;
+      min-height: 0;
+      overflow: hidden;
+    }
+    #map {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .leaflet-container {
+      width: 100% !important;
+      height: 100% !important;
+      background: #020212 !important;
+    }
+    .leaflet-control-zoom a {
+      background: #06062a !important;
+      color: #0050ff !important;
+      border-color: rgba(0,80,255,.3) !important;
+    }
+
+    .leaflet-popup-content-wrapper {
+      background-color: var(--card) !important;
+      border-radius: 4px !important;
+      border: 1px solid var(--border) !important;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important;
+    }
+
+    .leaflet-popup-content {
+      color: var(--text) !important;
+      font-family: 'Raleway', sans-serif !important;
+      margin: 0 !important;
+      font-size: 0.875rem !important;
+    }
+
+    .leaflet-popup-tip {
+      background-color: var(--card) !important;
+      border-top-color: var(--border) !important;
+    }
+
+    #info-panel {
+      width: 300px;
+      background-color: var(--card);
+      border-left: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 24px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-hidden {
+      display: none;
+    }
+
+    .info-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      background-color: var(--accent-dim);
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .info-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin: 0 0 12px 0;
+      line-height: 1.2;
+    }
+
+    .info-section {
+      margin-bottom: 20px;
+    }
+
+    .info-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .info-value {
+      font-size: 0.875rem;
+      color: var(--prose);
+      line-height: 1.5;
+    }
+
+    .info-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .info-list li {
+      font-size: 0.875rem;
+      color: var(--prose);
+      padding: 4px 0;
+      padding-left: 12px;
+      position: relative;
+    }
+
+    .info-list li:before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    .energy-low { color: #22c55e; }
+    .energy-moderate { color: #3b82f6; }
+    .energy-high { color: #f59e0b; }
+    .energy-extreme { color: #ef4444; }
+
+
+    /* Scrollbar */
+    #ward-list::-webkit-scrollbar,
+    #info-panel::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    #ward-list::-webkit-scrollbar-track,
+    #info-panel::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    #ward-list::-webkit-scrollbar-thumb,
+    #info-panel::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 3px;
+    }
+
+    #ward-list::-webkit-scrollbar-thumb:hover,
+    #info-panel::-webkit-scrollbar-thumb:hover {
+      background: var(--accent2);
+    }
+
+    /* Barrier tooltips */
+    .barrier-tooltip {
+      background: #0a0a20 !important;
+      border: 1px solid rgba(124,58,237,.4) !important;
+      color: #e2e8f0 !important;
+      font-family: 'Raleway', sans-serif !important;
+      font-size: 12px !important;
+      border-radius: 4px !important;
+      box-shadow: 0 0 12px rgba(124,58,237,.3) !important;
+    }
+    .barrier-tooltip::before { display: none !important; }
+
+    /* Culling Game Barrier animations */
+    @keyframes barrier-pulse {
+      0%   { stroke-opacity: 0.85; stroke-width: 3px; }
+      50%  { stroke-opacity: 0.25; stroke-width: 6px; }
+      100% { stroke-opacity: 0.85; stroke-width: 3px; }
+    }
+    @keyframes shibuya-pulse {
+      0%   { stroke-opacity: 1; stroke-width: 2px; fill-opacity: 0.18; }
+      50%  { stroke-opacity: 0.4; stroke-width: 5px; fill-opacity: 0.06; }
+      100% { stroke-opacity: 1; stroke-width: 2px; fill-opacity: 0.18; }
+    }
+    .colony-1-barrier path {
+      animation: barrier-pulse 3s ease-in-out infinite;
+      stroke: #a855f7 !important;
+    }
+    .colony-2-barrier path {
+      animation: barrier-pulse 3.4s ease-in-out infinite;
+      stroke: #60a5fa !important;
+    }
+    .shibuya-barrier path {
+      animation: shibuya-pulse 2s ease-in-out infinite;
+      stroke: #f97316 !important;
+    }
+
+    /* Responsive */
+    @media (max-width: 760px) {
+      #app {
+        flex-direction: column;
+      }
+
+      #sidebar {
+        width: 100%;
+        height: 50vh;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      #map-wrap {
+        height: 50vh;
+        flex-direction: column;
+      }
+
+      #info-panel {
+        width: 100%;
+        height: 100%;
+        border-left: none;
+        border-top: 1px solid var(--border);
+      }
+
+      .legend-items {
+        grid-template-columns: 1fr;
+      }
+
+      .main-title {
+        font-size: 1.5rem;
+      }
+    }
+
+    .subway-tip {
+      background: #0a0a20 !important;
+      border: 1px solid rgba(124,58,237,.3) !important;
+      color: #e2e8f0 !important;
+      font-family: 'Raleway', sans-serif !important;
+      font-size: 11px !important;
+      padding: 3px 8px !important;
+      border-radius: 3px !important;
+    }
+    .subway-tip::before { display: none !important; }
+  </style>
+  <script>
+const TOKYO_WARDS_GEOJSON={"type":"FeatureCollection","features":[{"type":"Feature","properties":{"N03_005":"13101","N03_004":"千代田区","ward_n":1,"ward_name":"Chiyoda"},"geometry":{"type":"Polygon","coordinates":[[[139.7295,35.6788],[139.7326,35.6763],[139.7388,35.6737],[139.745,35.6737],[139.7511,35.6763],[139.7604,35.6812],[139.7789,35.6913],[139.7696,35.7013],[139.7573,35.7013],[139.7295,35.6988],[139.7295,35.6788]]]}},{"type":"Feature","properties":{"N03_005":"13102","N03_004":"中央区","ward_n":2,"ward_name":"Chuo"},"geometry":{"type":"Polygon","coordinates":[[[139.748,35.6713],[139.7542,35.6638],[139.7665,35.6513],[139.7789,35.6388],[139.7943,35.6238],[139.8035,35.6163],[139.8035,35.6663],[139.8005,35.6838],[139.7881,35.6887],[139.7758,35.6887],[139.7665,35.6838],[139.748,35.6737],[139.748,35.6713]]]}},{"type":"Feature","properties":{"N03_005":"13103","N03_004":"港区","ward_n":3,"ward_name":"Minato"},"geometry":{"type":"Polygon","coordinates":[[[139.7203,35.6463],[139.7234,35.6363],[139.7265,35.6337],[139.7295,35.6313],[139.7542,35.6262],[139.7665,35.6238],[139.7912,35.6188],[139.7974,35.6188],[139.7912,35.6262],[139.7511,35.6663],[139.745,35.6713],[139.7357,35.6737],[139.7326,35.6737],[139.7295,35.6688],[139.7265,35.6638],[139.7203,35.6513],[139.7203,35.6463]]]}},{"type":"Feature","properties":{"N03_005":"13104","N03_004":"新宿区","ward_n":4,"ward_name":"Shinjuku"},"geometry":{"type":"Polygon","coordinates":[[[139.674,35.6788],[139.7265,35.6788],[139.7265,35.7013],[139.7234,35.7037],[139.7172,35.7063],[139.708,35.7088],[139.6987,35.7112],[139.6895,35.7112],[139.6802,35.6938],[139.674,35.6812],[139.674,35.6788]]]}},{"type":"Feature","properties":{"N03_005":"13105","N03_004":"文京区","ward_n":5,"ward_name":"Bunkyo"},"geometry":{"type":"Polygon","coordinates":[[[139.7265,35.7037],[139.7295,35.7013],[139.7542,35.7013],[139.7665,35.7037],[139.7665,35.7088],[139.7635,35.7212],[139.7604,35.7263],[139.7542,35.7313],[139.7511,35.7338],[139.748,35.7338],[139.745,35.7313],[139.7357,35.7188],[139.7326,35.7138],[139.7265,35.7037]]]}},{"type":"Feature","properties":{"N03_005":"13106","N03_004":"台東区","ward_n":6,"ward_name":"Taito"},"geometry":{"type":"Polygon","coordinates":[[[139.7635,35.7238],[139.7665,35.7112],[139.7696,35.7037],[139.7727,35.6988],[139.7758,35.6962],[139.782,35.6913],[139.785,35.6913],[139.7881,35.6988],[139.7912,35.7138],[139.7912,35.7238],[139.7635,35.7238]]]}},{"type":"Feature","properties":{"N03_005":"13107","N03_004":"墨田区","ward_n":7,"ward_name":"Sumida"},"geometry":{"type":"Polygon","coordinates":[[[139.7881,35.6913],[139.7912,35.6887],[139.7974,35.6863],[139.8035,35.6838],[139.8128,35.6887],[139.8344,35.7013],[139.8375,35.7037],[139.8375,35.7188],[139.8344,35.7238],[139.8251,35.7338],[139.822,35.7362],[139.8159,35.7338],[139.7943,35.7238],[139.7912,35.7112],[139.7881,35.6962],[139.7881,35.6913]]]}},{"type":"Feature","properties":{"N03_005":"13108","N03_004":"江東区","ward_n":8,"ward_name":"Koto"},"geometry":{"type":"Polygon","coordinates":[[[139.8035,35.6688],[139.8066,35.6138],[139.8498,35.5663],[139.8529,35.5638],[139.856,35.5613],[139.8745,35.5463],[139.8991,35.5288],[139.9115,35.5213],[139.9485,35.5213],[139.9485,35.6113],[139.933,35.6238],[139.8498,35.6913],[139.8405,35.6988],[139.8375,35.7013],[139.8313,35.6988],[139.822,35.6938],[139.8097,35.6863],[139.8066,35.6838],[139.8035,35.6812],[139.8035,35.6688]]]}},{"type":"Feature","properties":{"N03_005":"13109","N03_004":"品川区","ward_n":9,"ward_name":"Shinagawa"},"geometry":{"type":"Polygon","coordinates":[[[139.671,35.5963],[139.6802,35.5938],[139.8467,35.5613],[139.8529,35.5613],[139.8467,35.5688],[139.8405,35.5763],[139.8128,35.6063],[139.8066,35.6113],[139.8005,35.6163],[139.7881,35.6188],[139.7265,35.6313],[139.7203,35.6288],[139.6895,35.6088],[139.674,35.5988],[139.671,35.5963]]]}},{"type":"Feature","properties":{"N03_005":"13110","N03_004":"目黒区","ward_n":10,"ward_name":"Meguro"},"geometry":{"type":"Polygon","coordinates":[[[139.6679,35.5963],[139.6771,35.6013],[139.708,35.6213],[139.7234,35.6313],[139.7234,35.6337],[139.7203,35.6438],[139.7172,35.6487],[139.7049,35.6513],[139.6864,35.6538],[139.6771,35.6538],[139.674,35.6412],[139.671,35.6213],[139.6679,35.6013],[139.6679,35.5963]]]}},{"type":"Feature","properties":{"N03_005":"13111","N03_004":"大田区","ward_n":11,"ward_name":"Ota"},"geometry":{"type":"Polygon","coordinates":[[[139.5815,35.5213],[139.9084,35.5213],[139.9053,35.5237],[139.9022,35.5263],[139.8775,35.5438],[139.856,35.5588],[139.8313,35.5638],[139.819,35.5663],[139.782,35.5738],[139.7696,35.5763],[139.6925,35.5913],[139.6771,35.5938],[139.6648,35.5938],[139.6494,35.5862],[139.597,35.5588],[139.5877,35.5538],[139.5815,35.5488],[139.5815,35.5213]]]}},{"type":"Feature","properties":{"N03_005":"13112","N03_004":"世田谷区","ward_n":12,"ward_name":"Setagaya"},"geometry":{"type":"Polygon","coordinates":[[[139.5815,35.5513],[139.6062,35.5638],[139.6586,35.5913],[139.6617,35.5938],[139.6648,35.5963],[139.6679,35.6038],[139.671,35.6238],[139.674,35.6438],[139.674,35.6588],[139.671,35.6663],[139.6679,35.6737],[139.6586,35.6763],[139.6494,35.6763],[139.6401,35.6737],[139.6247,35.6688],[139.6093,35.6638],[139.5877,35.6562],[139.5815,35.6538],[139.5815,35.5513]]]}},{"type":"Feature","properties":{"N03_005":"13113","N03_004":"渋谷区","ward_n":13,"ward_name":"Shibuya"},"geometry":{"type":"Polygon","coordinates":[[[139.671,35.6688],[139.674,35.6613],[139.6771,35.6562],[139.6895,35.6538],[139.708,35.6513],[139.7172,35.6513],[139.7203,35.6538],[139.7234,35.6588],[139.7295,35.6713],[139.7295,35.6763],[139.671,35.6763],[139.671,35.6688]]]}},{"type":"Feature","properties":{"N03_005":"13114","N03_004":"中野区","ward_n":14,"ward_name":"Nakano"},"geometry":{"type":"Polygon","coordinates":[[[139.6432,35.7063],[139.6463,35.6962],[139.6494,35.6863],[139.6525,35.6788],[139.6617,35.6763],[139.6679,35.6763],[139.671,35.6788],[139.6771,35.6887],[139.6864,35.7063],[139.6895,35.7138],[139.6833,35.7287],[139.6802,35.7313],[139.6771,35.7313],[139.6648,35.7263],[139.6432,35.7163],[139.6432,35.7063]]]}},{"type":"Feature","properties":{"N03_005":"13115","N03_004":"杉並区","ward_n":15,"ward_name":"Suginami"},"geometry":{"type":"Polygon","coordinates":[[[139.5815,35.6562],[139.5846,35.6562],[139.5939,35.6588],[139.6463,35.6763],[139.6494,35.6788],[139.6494,35.6838],[139.6401,35.7138],[139.637,35.7163],[139.597,35.7313],[139.5815,35.7362],[139.5815,35.6562]]]}},{"type":"Feature","properties":{"N03_005":"13116","N03_004":"豊島区","ward_n":16,"ward_name":"Toshima"},"geometry":{"type":"Polygon","coordinates":[[[139.6833,35.7313],[139.6895,35.7163],[139.6925,35.7138],[139.711,35.7088],[139.7203,35.7063],[139.7265,35.7063],[139.7388,35.7238],[139.7419,35.7287],[139.745,35.7338],[139.7326,35.7388],[139.7265,35.7413],[139.708,35.7413],[139.6895,35.7388],[139.6833,35.7362],[139.6833,35.7313]]]}},{"type":"Feature","properties":{"N03_005":"13117","N03_004":"北区","ward_n":17,"ward_name":"Kita"},"geometry":{"type":"Polygon","coordinates":[[[139.7234,35.7437],[139.7419,35.7362],[139.748,35.7362],[139.7511,35.7388],[139.7604,35.7512],[139.7635,35.7563],[139.7696,35.7662],[139.7573,35.8038],[139.7511,35.8188],[139.7234,35.8188],[139.7234,35.7437]]]}},{"type":"Feature","properties":{"N03_005":"13118","N03_004":"荒川区","ward_n":18,"ward_name":"Arakawa"},"geometry":{"type":"Polygon","coordinates":[[[139.7511,35.7362],[139.7604,35.7287],[139.7635,35.7263],[139.7974,35.7263],[139.8035,35.7287],[139.8097,35.7313],[139.819,35.7362],[139.822,35.7388],[139.822,35.7437],[139.819,35.7463],[139.8005,35.7538],[139.7727,35.7638],[139.7696,35.7638],[139.7573,35.7463],[139.7511,35.7362]]]}},{"type":"Feature","properties":{"N03_005":"13119","N03_004":"板橋区","ward_n":19,"ward_name":"Itabashi"},"geometry":{"type":"Polygon","coordinates":[[[139.637,35.8188],[139.6432,35.8062],[139.6586,35.7788],[139.6771,35.7463],[139.6802,35.7413],[139.6833,35.7388],[139.6864,35.7388],[139.7049,35.7413],[139.7203,35.7437],[139.7203,35.8188],[139.637,35.8188]]]}},{"type":"Feature","properties":{"N03_005":"13120","N03_004":"練馬区","ward_n":20,"ward_name":"Nerima"},"geometry":{"type":"Polygon","coordinates":[[[139.5815,35.7388],[139.5846,35.7362],[139.5908,35.7338],[139.6309,35.7188],[139.6401,35.7163],[139.6463,35.7188],[139.6586,35.7238],[139.6802,35.7338],[139.6802,35.7388],[139.674,35.7512],[139.6401,35.8113],[139.637,35.8163],[139.634,35.8188],[139.5815,35.8188],[139.5815,35.7388]]]}},{"type":"Feature","properties":{"N03_005":"13121","N03_004":"足立区","ward_n":21,"ward_name":"Adachi"},"geometry":{"type":"Polygon","coordinates":[[[139.7542,35.8137],[139.7665,35.7762],[139.7696,35.7688],[139.7727,35.7662],[139.7758,35.7638],[139.7943,35.7563],[139.822,35.7463],[139.8405,35.7688],[139.8806,35.8188],[139.7542,35.8188],[139.7542,35.8137]]]}},{"type":"Feature","properties":{"N03_005":"13122","N03_004":"葛飾区","ward_n":22,"ward_name":"Katsushika"},"geometry":{"type":"Polygon","coordinates":[[[139.8251,35.7362],[139.8282,35.7313],[139.8375,35.7212],[139.8498,35.7212],[139.9145,35.7362],[139.9361,35.7413],[139.9454,35.7437],[139.9485,35.7463],[139.9485,35.8188],[139.8837,35.8188],[139.8806,35.8163],[139.8775,35.8137],[139.8529,35.7837],[139.8467,35.7762],[139.8251,35.7488],[139.8251,35.7362]]]}},{"type":"Feature","properties":{"N03_005":"13123","N03_004":"江戸川区","ward_n":23,"ward_name":"Edogawa"},"geometry":{"type":"Polygon","coordinates":[[[139.8405,35.7013],[139.8529,35.6913],[139.856,35.6887],[139.9361,35.6238],[139.9454,35.6163],[139.9485,35.6138],[139.9485,35.7437],[139.9269,35.7388],[139.8621,35.7238],[139.8405,35.7188],[139.8405,35.7013]]]}}]};
+  </script>
+
+  <script>
+    /* ── Subway: try real OSM data via Overpass, fall back to hardcoded ── */
+    const LINE_COLORS = {
+      'Tokyo Metro Ginza Line':'#F9A11B','東京メトロ銀座線':'#F9A11B',
+      'Tokyo Metro Marunouchi Line':'#E60012','東京メトロ丸ノ内線':'#E60012',
+      'Tokyo Metro Hibiya Line':'#9C9C9C','東京メトロ日比谷線':'#9C9C9C',
+      'Tokyo Metro Tozai Line':'#00A7D8','東京メトロ東西線':'#00A7D8',
+      'Tokyo Metro Chiyoda Line':'#009944','東京メトロ千代田線':'#009944',
+      'Tokyo Metro Yurakucho Line':'#C9A600','東京メトロ有楽町線':'#C9A600',
+      'Tokyo Metro Hanzomon Line':'#6C3281','東京メトロ半蔵門線':'#6C3281',
+      'Tokyo Metro Namboku Line':'#00A5A0','東京メトロ南北線':'#00A5A0',
+      'Tokyo Metro Fukutoshin Line':'#9B4F96','東京メトロ副都心線':'#9B4F96',
+      'Toei Asakusa Line':'#EF5BA1','都営浅草線':'#EF5BA1',
+      'Toei Mita Line':'#006CB4','都営三田線':'#006CB4',
+      'Toei Shinjuku Line':'#6CBB3C','都営新宿線':'#6CBB3C',
+      'Toei Oedo Line':'#B01C85','都営大江戸線':'#B01C85',
+      'JR Yamanote Line':'#80C241','山手線':'#80C241',
+      'JR Chuo Line (rapid)':'#F68B1F','中央線快速':'#F68B1F',
+      'JR Sobu Line (local)':'#F9D100','中央・総武線各駅停車':'#F9D100',
+      'JR Keihin-Tohoku Line':'#00B2E5','京浜東北線':'#00B2E5',
+    };
+
+    const FALLBACK_SUBWAY = [
+      {name:'JR Yamanote Line',color:'#80C241',w:3,coords:[[35.658,139.7016],[35.6694,139.7022],[35.6802,139.7025],[35.6896,139.7006],[35.7005,139.7005],[35.7122,139.704],[35.7196,139.7099],[35.7281,139.7106],[35.7367,139.729],[35.7335,139.7392],[35.7336,139.7457],[35.7383,139.7609],[35.731,139.77],[35.728,139.7707],[35.7204,139.7764],[35.7141,139.7774],[35.7074,139.7745],[35.6984,139.7731],[35.6942,139.7706],[35.6812,139.7671],[35.676,139.76],[35.6665,139.7571],[35.6558,139.7567],[35.6455,139.7471],[35.6284,139.7387],[35.6195,139.7282],[35.6303,139.7236],[35.6414,139.6991],[35.6467,139.7011],[35.658,139.7016]]},
+      {name:'JR Chuo-Sobu',color:'#F9D100',w:2,coords:[[35.7056,139.6179],[35.7049,139.6371],[35.7056,139.649],[35.7033,139.6681],[35.7062,139.6781],[35.696,139.6928],[35.6896,139.7006],[35.6898,139.7291],[35.7013,139.7358],[35.7011,139.7509],[35.6999,139.7627],[35.6984,139.7731],[35.6955,139.817],[35.7067,139.8685]]},
+      {name:'JR Keihin-Tohoku',color:'#00B2E5',w:2,coords:[[35.7755,139.8046],[35.7504,139.8013],[35.728,139.7707],[35.7141,139.7774],[35.6984,139.7731],[35.6812,139.7671],[35.676,139.76],[35.6665,139.7571],[35.6558,139.7567],[35.6455,139.7471],[35.6284,139.7387],[35.587,139.7272]]},
+      {name:'Metro Ginza Line',color:'#F9A11B',w:2.5,coords:[[35.7116,139.7966],[35.7095,139.7891],[35.7141,139.7774],[35.7074,139.7745],[35.6999,139.7717],[35.6942,139.7706],[35.6870,139.770],[35.6731,139.7657],[35.6714,139.7647],[35.6692,139.7617],[35.6665,139.7571],[35.67,139.749],[35.6748,139.7414],[35.671,139.7382],[35.6717,139.723],[35.6682,139.7157],[35.6645,139.7159],[35.658,139.7016]]},
+      {name:'Metro Marunouchi',color:'#E60012',w:2.5,coords:[[35.7056,139.6179],[35.7033,139.6681],[35.7096,139.69],[35.7196,139.7099],[35.7281,139.7106],[35.7096,139.73],[35.7013,139.7358],[35.6961,139.7571],[35.6942,139.7706],[35.6812,139.7671],[35.676,139.76],[35.6731,139.7657],[35.6748,139.7414],[35.67,139.749]]},
+      {name:'Metro Hibiya',color:'#9C9C9C',w:2.5,coords:[[35.6441,139.6975],[35.6414,139.6991],[35.6467,139.7011],[35.654,139.7066],[35.658,139.7016],[35.6627,139.7314],[35.6742,139.7593],[35.6760,139.76],[35.6812,139.7671],[35.6984,139.7731],[35.7141,139.7774],[35.7204,139.7764],[35.728,139.7707],[35.7504,139.8013]]},
+      {name:'Metro Tozai',color:'#00A7D8',w:2.5,coords:[[35.7033,139.6681],[35.7062,139.6781],[35.7096,139.69],[35.7096,139.71],[35.7013,139.7358],[35.7011,139.7509],[35.6942,139.7706],[35.6984,139.7731],[35.6987,139.7843],[35.6971,139.804],[35.6955,139.817],[35.6636,139.8068],[35.6527,139.8341],[35.693,139.8832]]},
+      {name:'Metro Chiyoda',color:'#009944',w:2.5,coords:[[35.6547,139.6893],[35.658,139.7016],[35.6645,139.7159],[35.6682,139.7157],[35.6717,139.723],[35.671,139.7382],[35.6748,139.7414],[35.6738,139.75],[35.6812,139.7671],[35.6942,139.7706],[35.7013,139.7358],[35.7096,139.73],[35.7196,139.7099],[35.7204,139.7764],[35.728,139.7707],[35.7504,139.8013],[35.7755,139.8046]]},
+      {name:'Metro Hanzomon',color:'#6C3281',w:2.5,coords:[[35.6547,139.6893],[35.658,139.7016],[35.6645,139.7159],[35.6692,139.7617],[35.6731,139.7657],[35.6812,139.7671],[35.6942,139.7706],[35.6987,139.7843],[35.6971,139.804],[35.7101,139.8012],[35.713,139.802]]},
+      {name:'Metro Namboku',color:'#00A5A0',w:2,coords:[[35.6078,139.6674],[35.6303,139.7236],[35.6414,139.6991],[35.6547,139.6893],[35.67,139.749],[35.6748,139.7414],[35.6738,139.745],[35.6812,139.7671],[35.7096,139.73],[35.7196,139.7099],[35.7241,139.7156],[35.7367,139.729],[35.7527,139.7337],[35.76,139.7337],[35.7755,139.8046]]},
+      {name:'Toei Oedo',color:'#B01C85',w:2.5,coords:[[35.6896,139.7006],[35.7062,139.6781],[35.7096,139.69],[35.7196,139.7099],[35.7367,139.729],[35.7506,139.7082],[35.76,139.7337],[35.7527,139.7337],[35.7504,139.8013],[35.7366,139.7837],[35.728,139.7707],[35.7141,139.7774],[35.7101,139.8012],[35.6984,139.7731],[35.6961,139.7571],[35.6731,139.7657],[35.6665,139.7571],[35.6627,139.7314],[35.658,139.7016],[35.6547,139.6893],[35.67,139.749],[35.6748,139.7414],[35.6896,139.7006]]},
+      {name:'Toei Asakusa',color:'#EF5BA1',w:2,coords:[[35.7116,139.7966],[35.6987,139.7843],[35.6765,139.7744],[35.6731,139.7657],[35.6665,139.7571],[35.6558,139.7567],[35.6455,139.7471],[35.6284,139.7387],[35.6195,139.7282]]},
+      {name:'Toei Mita',color:'#006CB4',w:2,coords:[[35.7755,139.8046],[35.76,139.7337],[35.7527,139.7337],[35.7281,139.7106],[35.7196,139.7099],[35.7096,139.73],[35.6961,139.7571],[35.6812,139.7671],[35.6731,139.7657],[35.6665,139.7571],[35.6558,139.7567],[35.6455,139.7471],[35.6284,139.7387]]},
+      {name:'Toei Shinjuku',color:'#6CBB3C',w:2,coords:[[35.7056,139.6179],[35.7033,139.6681],[35.6896,139.7006],[35.6898,139.7291],[35.6961,139.7571],[35.6812,139.7671],[35.6984,139.7731],[35.6987,139.7843],[35.6971,139.804],[35.701,139.8175],[35.7067,139.8685]]},
+    ];
+
+    function addSubwayLines() {
+      const OVERPASS = 'https://overpass-api.de/api/interpreter';
+      const Q = '[out:json];(rel[type=route][route=subway](35.52,139.58,35.82,139.95);rel[type=route][route~"^(light_rail)$"](35.52,139.58,35.82,139.95););out geom qt;';
+      fetch(OVERPASS, {method:'POST', body:Q})
+        .then(r => r.ok ? r.json() : Promise.reject())
+        .then(data => {
+          if (!data.elements || !data.elements.length) throw new Error('empty');
+          const drawn = new Set();
+          data.elements.forEach(rel => {
+            const name = rel.tags['name:en'] || rel.tags.name || '';
+            if (drawn.has(name)) return;
+            drawn.add(name);
+            const col = LINE_COLORS[name] || rel.tags.colour || rel.tags.color || '#888';
+            (rel.members||[]).filter(m=>m.type==='way'&&m.geometry).forEach(way=>{
+              L.polyline(way.geometry.map(p=>[p.lat,p.lon]),
+                {color:col,weight:2.5,opacity:0.85,lineJoin:'round'})
+                .bindTooltip(name,{sticky:true,className:'subway-tip'}).addTo(map);
+            });
+          });
+        })
+        .catch(() => {
+          // Overpass unavailable (local file) — use hardcoded station-level routes
+          FALLBACK_SUBWAY.forEach(l=>{
+            L.polyline(l.coords,{color:l.color,weight:l.w,opacity:0.85,lineJoin:'round',lineCap:'round'})
+              .bindTooltip(l.name,{sticky:true,className:'subway-tip'}).addTo(map);
+          });
+        });
+    }
+
+
+    // Init on load
+    window.addEventListener('load', function() {
+      if (typeof L === 'undefined') {
+        var m = document.getElementById('map');
+        if (m) { m.style.cssText='background:#060614;display:flex;align-items:center;justify-content:center'; m.innerHTML='<p style="color:#7c3aed;font-family:Raleway,sans-serif;font-size:13px;padding:20px;text-align:center"><strong>⚠ Map library failed to load</strong><br><small>Leaflet could not be fetched from the CDN.<br>Check your internet connection and reload.</small></p>'; }
+        return;
+      }
+      initMap();
+    });
+  </script>
+</body>
+</html>
