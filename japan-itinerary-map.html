@@ -616,27 +616,78 @@
             box-shadow: 0 4px 16px rgba(236, 72, 153, 0.4);
         }
 
+        #sheet-handle {
+            display: none;
+        }
+
         @media(max-width:760px) {
             #app {
-                flex-direction: column !important;
-            }
-
-            #sidebar {
-                width: 100% !important;
-                min-width: 100% !important;
-                height: 50vh !important;
-                height: 50dvh !important;
-            }
-
-            #timeline {
-                padding-bottom: 25vh !important;
+                display: block !important;
+                height: 100dvh;
+                position: relative;
             }
 
             #map-wrap {
+                position: absolute !important;
+                inset: 0 !important;
                 width: 100% !important;
-                height: 50vh !important;
-                height: 50dvh !important;
+                height: 100dvh !important;
                 flex: none !important;
+            }
+
+            #sidebar {
+                position: fixed !important;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                top: auto;
+                width: 100% !important;
+                min-width: 0 !important;
+                height: 92dvh !important;
+                border-right: none;
+                border-top-left-radius: 18px;
+                border-top-right-radius: 18px;
+                box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.35);
+                transform: translateY(calc(92dvh - 140px));
+                transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+                will-change: transform;
+                z-index: 1200;
+            }
+
+            #sidebar.dragging {
+                transition: none;
+            }
+
+            #sheet-handle {
+                display: block;
+                width: 100%;
+                padding: 9px 0 5px;
+                flex-shrink: 0;
+                background: var(--panel);
+                border-top-left-radius: 18px;
+                border-top-right-radius: 18px;
+                touch-action: none;
+                cursor: grab;
+            }
+
+            #sheet-handle::before {
+                content: '';
+                display: block;
+                width: 38px;
+                height: 4px;
+                border-radius: 2px;
+                background: rgba(255, 255, 255, 0.25);
+                margin: 0 auto;
+            }
+
+            #hdr {
+                touch-action: none;
+                cursor: grab;
+            }
+
+            #timeline {
+                padding-bottom: 40vh !important;
+                -webkit-overflow-scrolling: touch;
             }
 
             .day-card.active .card-prose-mb {
@@ -649,14 +700,22 @@
 
             #trip-nav {
                 position: fixed;
-                bottom: 24px;
+                top: 12px;
+                bottom: auto;
                 left: 50%;
                 transform: translateX(-50%);
-                z-index: 1000;
+                z-index: 1100;
             }
 
             #legend {
-                bottom: 74px;
+                top: 58px;
+                bottom: auto;
+                left: 12px;
+                z-index: 1100;
+            }
+
+            .leaflet-control-zoom {
+                margin-bottom: 152px !important;
             }
         }
 
@@ -864,6 +923,7 @@
 <body>
     <div id="app">
         <div id="sidebar">
+            <div id="sheet-handle"></div>
             <div id="hdr">
                 <div class="eyebrow"><a href="index.html" style="color:inherit;text-decoration:none;">Chaues
                         Productions</a> &middot; Group 8 to 12</div>
@@ -1457,11 +1517,98 @@
     </script>
 
     <script>
-        // Collapse legend on mobile
-        if (window.innerWidth <= 760) {
+        // Mobile bottom-sheet behavior (Google Maps style)
+        (function () {
+            const mq = window.matchMedia('(max-width:760px)');
+            const sheet = document.getElementById('sidebar');
+            const handle = document.getElementById('sheet-handle');
+            const hdr = document.getElementById('hdr');
             const legDetails = document.getElementById('legend-details');
-            if (legDetails) legDetails.removeAttribute('open');
-        }
+
+            function refreshMap() {
+                if (typeof map !== 'undefined' && map) map.invalidateSize();
+            }
+
+            function snapPoints() {
+                const vh = window.innerHeight;
+                return {
+                    full: 0,
+                    half: Math.round(0.42 * vh),
+                    peek: Math.round(0.92 * vh - 140)
+                };
+            }
+
+            let currentY = null;
+
+            function setY(y, animate) {
+                if (animate) sheet.classList.remove('dragging');
+                else sheet.classList.add('dragging');
+                currentY = y;
+                sheet.style.transform = 'translateY(' + y + 'px)';
+            }
+
+            function snapTo(y) {
+                const p = snapPoints();
+                const pts = [p.full, p.half, p.peek];
+                let nearest = pts[0];
+                pts.forEach(t => { if (Math.abs(t - y) < Math.abs(nearest - y)) nearest = t; });
+                setY(nearest, true);
+                setTimeout(refreshMap, 340);
+            }
+
+            function initSheet() {
+                if (!mq.matches) { sheet.style.transform = ''; currentY = null; return; }
+                setY(snapPoints().peek, true);
+            }
+
+            let startY = 0, startTranslate = 0, dragging = false, moved = false;
+
+            function onDown(e) {
+                if (!mq.matches) return;
+                dragging = true; moved = false;
+                startY = e.touches ? e.touches[0].clientY : e.clientY;
+                startTranslate = currentY != null ? currentY : snapPoints().peek;
+                sheet.classList.add('dragging');
+            }
+            function onMove(e) {
+                if (!dragging) return;
+                const y = e.touches ? e.touches[0].clientY : e.clientY;
+                const dy = y - startY;
+                if (Math.abs(dy) > 4) moved = true;
+                const p = snapPoints();
+                let nt = Math.max(p.full, Math.min(p.peek, startTranslate + dy));
+                setY(nt, false);
+                if (e.cancelable) e.preventDefault();
+            }
+            function onUp() {
+                if (!dragging) return;
+                dragging = false;
+                const p = snapPoints();
+                if (!moved) {
+                    snapTo(currentY <= (p.half + p.peek) / 2 ? p.peek : p.half);
+                } else {
+                    snapTo(currentY);
+                }
+            }
+
+            [handle, hdr].forEach(el => {
+                if (!el) return;
+                el.addEventListener('touchstart', onDown, { passive: true });
+                el.addEventListener('mousedown', onDown);
+            });
+            window.addEventListener('touchmove', onMove, { passive: false });
+            window.addEventListener('mousemove', onMove);
+            window.addEventListener('touchend', onUp);
+            window.addEventListener('mouseup', onUp);
+
+            window.addEventListener('resize', () => { initSheet(); setTimeout(refreshMap, 120); });
+            if (mq.addEventListener) mq.addEventListener('change', initSheet);
+
+            if (mq.matches && legDetails) legDetails.removeAttribute('open');
+
+            initSheet();
+            setTimeout(refreshMap, 300);
+        })();
     </script>
 
     <script>

@@ -424,28 +424,83 @@
       border-radius: 2px;
     }
 
+    #sheet-handle { display: none; }
+
     /* Responsive */
     @media (max-width: 760px) {
       #app {
-        flex-direction: column;
-      }
-
-      #sidebar {
-        width: 100%;
-        height: 50vh;
-        border-right: none;
-        border-bottom: 1px solid var(--border);
+        display: block;
+        height: 100dvh;
+        position: relative;
       }
 
       #map-wrap {
-        height: 50vh;
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100dvh;
       }
 
-      #info-panel {
-        width: 100%;
-        max-height: 30vh;
-        bottom: 0;
+      #sidebar {
+        position: fixed;
+        left: 0;
         right: 0;
+        bottom: 0;
+        top: auto;
+        width: 100%;
+        height: 92dvh;
+        border-right: none;
+        border-top-left-radius: 18px;
+        border-top-right-radius: 18px;
+        box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.5);
+        transform: translateY(calc(92dvh - 132px));
+        transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+        will-change: transform;
+        z-index: 1200;
+      }
+
+      #sidebar.dragging { transition: none; }
+
+      #sheet-handle {
+        display: block;
+        width: 100%;
+        padding: 9px 0 5px;
+        flex-shrink: 0;
+        background: var(--panel);
+        border-top-left-radius: 18px;
+        border-top-right-radius: 18px;
+        touch-action: none;
+        cursor: grab;
+      }
+
+      #sheet-handle::before {
+        content: '';
+        display: block;
+        width: 38px;
+        height: 4px;
+        border-radius: 2px;
+        background: rgba(255, 255, 255, 0.22);
+        margin: 0 auto;
+      }
+
+      #hdr {
+        touch-action: none;
+        cursor: grab;
+        padding: 1rem 1.25rem 1.1rem;
+      }
+
+      #hdr h1 { font-size: 1.7rem; }
+
+      #info-panel {
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        top: 12px;
+        bottom: auto;
+        width: auto;
+        max-height: 42dvh;
+        border-radius: 10px;
+        z-index: 1150;
       }
     }
 
@@ -564,6 +619,7 @@ const TOKYO_WARDS_GEOJSON={"type":"FeatureCollection","features":[{"type":"Featu
 <body>
   <div id="app">
     <div id="sidebar">
+      <div id="sheet-handle"></div>
       <div id="hdr">
         <div class="eyebrow">Chaues Productions</div>
         <h1>CHAINSAW MAN</h1>
@@ -935,6 +991,7 @@ const TOKYO_WARDS_GEOJSON={"type":"FeatureCollection","features":[{"type":"Featu
     }).addTo(map);
 
     map.fitBounds([[35.52, 139.58], [35.82, 139.95]]);
+    window.__leafletMap = map;
     setTimeout(() => map.invalidateSize(), 300);
 
     let wardLayer = null;
@@ -1110,6 +1167,95 @@ const TOKYO_WARDS_GEOJSON={"type":"FeatureCollection","features":[{"type":"Featu
       }
     }, 1000);
   }); // end window.addEventListener('load')
+  </script>
+
+  <script>
+    // Mobile bottom-sheet behavior (Google Maps style)
+    (function () {
+      const mq = window.matchMedia('(max-width:760px)');
+      const sheet = document.getElementById('sidebar');
+      const handle = document.getElementById('sheet-handle');
+      const hdr = document.getElementById('hdr');
+      const wardList = document.getElementById('ward-list');
+
+      function refreshMap() {
+        if (window.__leafletMap) window.__leafletMap.invalidateSize();
+      }
+
+      function snapPoints() {
+        const vh = window.innerHeight;
+        return { full: 0, half: Math.round(0.42 * vh), peek: Math.round(0.92 * vh - 132) };
+      }
+
+      let currentY = null;
+
+      function setY(y, animate) {
+        if (animate) sheet.classList.remove('dragging');
+        else sheet.classList.add('dragging');
+        currentY = y;
+        sheet.style.transform = 'translateY(' + y + 'px)';
+      }
+
+      function snapTo(y) {
+        const p = snapPoints();
+        const pts = [p.full, p.half, p.peek];
+        let nearest = pts[0];
+        pts.forEach(t => { if (Math.abs(t - y) < Math.abs(nearest - y)) nearest = t; });
+        setY(nearest, true);
+        setTimeout(refreshMap, 340);
+      }
+
+      function initSheet() {
+        if (!mq.matches) { sheet.style.transform = ''; currentY = null; return; }
+        setY(snapPoints().peek, true);
+      }
+
+      let startY = 0, startTranslate = 0, dragging = false, moved = false;
+
+      function onDown(e) {
+        if (!mq.matches) return;
+        dragging = true; moved = false;
+        startY = e.touches ? e.touches[0].clientY : e.clientY;
+        startTranslate = currentY != null ? currentY : snapPoints().peek;
+        sheet.classList.add('dragging');
+      }
+      function onMove(e) {
+        if (!dragging) return;
+        const y = e.touches ? e.touches[0].clientY : e.clientY;
+        const dy = y - startY;
+        if (Math.abs(dy) > 4) moved = true;
+        const p = snapPoints();
+        let nt = Math.max(p.full, Math.min(p.peek, startTranslate + dy));
+        setY(nt, false);
+        if (e.cancelable) e.preventDefault();
+      }
+      function onUp() {
+        if (!dragging) return;
+        dragging = false;
+        const p = snapPoints();
+        if (!moved) snapTo(currentY <= (p.half + p.peek) / 2 ? p.peek : p.half);
+        else snapTo(currentY);
+      }
+
+      [handle, hdr].forEach(el => {
+        if (!el) return;
+        el.addEventListener('touchstart', onDown, { passive: true });
+        el.addEventListener('mousedown', onDown);
+      });
+      window.addEventListener('touchmove', onMove, { passive: false });
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('touchend', onUp);
+      window.addEventListener('mouseup', onUp);
+
+      // Tapping a ward collapses the sheet so the map + detail are visible
+      if (wardList) wardList.addEventListener('click', () => { if (mq.matches) snapTo(snapPoints().peek); });
+
+      window.addEventListener('resize', () => { initSheet(); setTimeout(refreshMap, 120); });
+      if (mq.addEventListener) mq.addEventListener('change', initSheet);
+
+      initSheet();
+      setTimeout(refreshMap, 400);
+    })();
   </script>
 </body>
 </html>

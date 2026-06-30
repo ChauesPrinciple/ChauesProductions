@@ -571,29 +571,78 @@
             box-shadow: 0 4px 16px rgba(185, 28, 28, 0.4);
         }
 
+        #sheet-handle {
+            display: none;
+        }
+
         @media(max-width:760px) {
-
-            #app,
-            body {
-                flex-direction: column !important;
-            }
-
-            #sidebar {
-                width: 100% !important;
-                min-width: 100% !important;
-                height: 50vh !important;
-                height: 50dvh !important;
-            }
-
-            #timeline {
-                padding-bottom: 25vh !important;
+            #app {
+                display: block !important;
+                height: 100dvh;
+                position: relative;
             }
 
             #map-wrap {
+                position: absolute !important;
+                inset: 0 !important;
                 width: 100% !important;
-                height: 50vh !important;
-                height: 50dvh !important;
+                height: 100dvh !important;
                 flex: none !important;
+            }
+
+            #sidebar {
+                position: fixed !important;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                top: auto;
+                width: 100% !important;
+                min-width: 0 !important;
+                height: 92dvh !important;
+                border-right: none;
+                border-top-left-radius: 18px;
+                border-top-right-radius: 18px;
+                box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.18);
+                transform: translateY(calc(92dvh - 140px));
+                transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+                will-change: transform;
+                z-index: 1200;
+            }
+
+            #sidebar.dragging {
+                transition: none;
+            }
+
+            #sheet-handle {
+                display: block;
+                width: 100%;
+                padding: 9px 0 5px;
+                flex-shrink: 0;
+                background: var(--panel);
+                border-top-left-radius: 18px;
+                border-top-right-radius: 18px;
+                touch-action: none;
+                cursor: grab;
+            }
+
+            #sheet-handle::before {
+                content: '';
+                display: block;
+                width: 38px;
+                height: 4px;
+                border-radius: 2px;
+                background: rgba(0, 0, 0, 0.18);
+                margin: 0 auto;
+            }
+
+            #hdr {
+                touch-action: none;
+                cursor: grab;
+            }
+
+            #timeline {
+                padding-bottom: 40vh !important;
+                -webkit-overflow-scrolling: touch;
             }
 
             .day-card.active .card-prose-mb {
@@ -606,14 +655,22 @@
 
             #trip-nav {
                 position: fixed;
-                bottom: 24px;
+                top: 12px;
+                bottom: auto;
                 left: 50%;
                 transform: translateX(-50%);
-                z-index: 1000;
+                z-index: 1100;
             }
 
             #legend {
-                bottom: 74px;
+                top: 58px;
+                bottom: auto;
+                left: 12px;
+                z-index: 1100;
+            }
+
+            .leaflet-control-zoom {
+                margin-bottom: 152px !important;
             }
         }
 
@@ -821,15 +878,16 @@
 <body>
     <div id="app">
         <div id="sidebar">
+            <div id="sheet-handle"></div>
             <div id="hdr">
                 <div class="eyebrow"><a href="index.html" style="color:inherit;text-decoration:none;">Chaues
                         Productions</a></div>
                 <div class="trip-h">Bushido: the Way of the Warrior</div>
-                <div class="trip-d">11 days &middot; Tokyo &middot; Kyoto &middot; Kii Peninsula</div>
+                <div class="trip-d">12 days &middot; Tokyo &middot; Kyoto &middot; Osaka &middot; Kii Peninsula</div>
                 <div id="prog-track">
                     <div id="prog-fill"></div>
                 </div>
-                <div id="day-ctr">Day 1 of 11</div>
+                <div id="day-ctr">Day 1 of 12</div>
             </div>
             <div id="timeline"></div>
         </div>
@@ -961,30 +1019,41 @@
                 ]
             },
             {
+                label: 'OSAKA : THE BRUSH', days: [
+                    {
+                        n: 7, date: 'Day 7', loc: 'Osaka', type: 'cultural',
+                        title: 'The Oversized Brush: Shodo Calligraphy',
+                        lat: 34.6687, lng: 135.5024, zoom: 12, city: 'osaka',
+                        events: ['JR Tokaido Line: Kyoto to Osaka (~30 min)', 'Check in, overnight in Osaka', 'Shodo (Japanese calligraphy) class with an oversized brush', 'Brush more than 5x the usual size, 150cm x 150cm sheet of paper', 'Write the single virtue you will carry up the Kumano Kodo', 'Evening: Dotonbori and Osaka at leisure'],
+                        prose: `<p class="prose-p">Before the mountain, the brush. We break the journey south in <strong>Osaka</strong> for a session in <strong>Shodo</strong> — Japanese calligraphy — but not the seated, small-format kind. Here the brush is more than five times the usual size, and the paper is a single sheet measuring 150cm by 150cm laid out across the floor.</p><p class="prose-p">Writing at this scale is a whole-body discipline. The artist puts his soul into one character that is at once <em>powerful, fragile, and beautiful</em>. To manipulate a brush this large you cannot rely on the wrist or the arm alone — you move from the hips and the legs, the entire body dynamic and committed. There is no second stroke. The character is written once, and what your body carries in that moment is what lands on the paper.</p><p class="prose-p">This is not a performance. You will choose a single <strong>virtue</strong> — courage, patience, sincerity, compassion — the one you intend to meditate on as you walk the <strong>Kumano Kodo</strong>. You write that one word. It becomes the question you carry up the pilgrimage trail, set down in ink before you ever set foot on the mountain.</p>`
+                    },
+                ]
+            },
+            {
                 label: 'KII PENINSULA : THE PATH', days: [
                     {
-                        n: 7, date: 'Day 7', loc: 'Kyoto to Mt. Koya', type: 'travel',
+                        n: 8, date: 'Day 8', loc: 'Osaka to Mt. Koya', type: 'travel',
                         title: 'To the Sacred Mountain', img: I.koyasan,
                         lat: 34.2130, lng: 135.5850, zoom: 13, city: 'koyasan',
-                        events: ['JR Tokaido Line: Kyoto to Osaka (~30 min)', 'Osaka Loop Line to Shin-Imamiya (~16 min)', 'Nankai Koya Line limited express (~90 min, change at Hashimoto for Gokurakubashi)', 'Cable car: Gokurakubashi to Koyasan (5 min, 330m)', 'Check in to temple lodging (shukubo)', 'Afternoon: Kongobuji head temple, Banryutei rock garden', 'Danjo Garan: Konpon Daito Pagoda (45m tall)', 'Shojin ryori dinner (Buddhist vegetarian cuisine)', 'Night walk: Okunoin — 2km cedar approach, 200,000+ graves'],
+                        events: ['Nankai Koya Line limited express from Osaka (~90 min, change at Hashimoto for Gokurakubashi)', 'Cable car: Gokurakubashi to Koyasan (5 min, 330m)', 'Check in to temple lodging (shukubo)', 'Afternoon: Kongobuji head temple, Banryutei rock garden', 'Danjo Garan: Konpon Daito Pagoda (45m tall)', 'Shojin ryori dinner (Buddhist vegetarian cuisine)', 'Night walk: Okunoin — 2km cedar approach, 200,000+ graves'],
                         prose: `<p class="prose-p"><strong>Mt. Koya</strong> (Koyasan) is the headquarters of Shingon Buddhism, founded by Kobo Daishi (Kukai) in 816 AD. 117 temples stand in this mountain plateau, set in a basin shaped like a lotus petal and ringed by peaks reaching 1,000 meters. You arrive via the <strong>Nankai Koya Line</strong> limited express to Gokurakubashi, then a cable car that climbs 330 meters in five minutes. There is no other way up.</p><p class="prose-p">We stay in a <strong>shukubo</strong> \u2014 a working temple that takes overnight guests. The monks serve <strong>shojin ryori</strong>, the Buddhist vegetarian cuisine refined here for twelve centuries. No meat, no fish, no garlic, no onion. You eat what the monks eat. Morning prayers at 6am take the form of the <strong>Shojinku</strong> ceremony, held twice daily at 6am and 10:30am — a meal carried in procession to Kobo Daishi’s mausoleum in Okunoin, where he is believed to remain in eternal meditation. Attendance is expected.</p><p class="prose-p"><strong>Kongobuji</strong> is the head monastery of Shingon Buddhism, at the center of 117 temples. The <strong>Banryutei Rock Garden</strong> inside the complex is Japan’s largest, depicting dragons emerging from clouds. <strong>Danjo Garan</strong> holds the 45-meter <strong>Konpon Daito Pagoda</strong> and Kondo Hall where major ceremonies are performed.</p><p class="prose-p">The night walk through <strong>Okunoin</strong> is not optional. The two-kilometer approach is lined with cedar trees some 1,000 years old. More than 200,000 gravestones are scattered through the forest, including the <strong>Tokugawa Mausoleum</strong>. <strong>Torodo Hall</strong> houses over 10,000 eternally-lit lanterns.</p>`
                     },
                     {
-                        n: 8, date: 'Day 8', loc: 'Mt. Koya to Kumano Kodo', type: 'cultural',
+                        n: 9, date: 'Day 9', loc: 'Mt. Koya to Kumano Kodo', type: 'cultural',
                         title: 'Begin the Kumano Kodo',
                         lat: 33.9833, lng: 135.6833, zoom: 11, city: 'hongu',
                         events: ['Dawn: morning prayer service with the monks', 'Cable car down: Koyasan to Gokurakubashi', 'Nankai Koya Line to Osaka Namba (~90 min)', 'JR Kuroshio limited express: Osaka to Kii-Tanabe (~2 hours)', 'Ryujin Bus: Kii-Tanabe to Takijiri-oji trailhead (~40 min)', 'Walk Takijiri-oji to Chikatsuyu village (近露) — 12km, ~5 hours', 'Overnight: Chikatsuyu village'],
                         prose: `<p class="prose-p">The <strong>Kumano Kodo</strong> is one of only two pilgrimage trails in the world designated as UNESCO World Heritage Sites (the other is the Camino de Santiago in Spain). For over a thousand years, emperors, samurai, and commoners walked this same path through the mountains of the Kii Peninsula to reach the three Grand Shrines of Kumano. The connection to the warrior path is direct: samurai walked this trail as spiritual preparation, and Musashi himself wandered similar mountain paths as part of his <em>musha shugyo</em> \u2014 the warrior\u2019s pilgrimage.</p><p class="prose-p">Today’s section: <strong>Takijiri-oji to Chikatsuyu</strong>, the opening 12 kilometers of the Nakahechi. The trail climbs immediately from the trailhead to <strong>Takahara</strong>, a ridge hamlet with an ancient shrine ringed by camphor trees and views over the Hatenashi range. Further in, the <strong>Gyuba-doji statue</strong> depicts the abdicated Emperor Kazan riding both a horse and a cow — one of the oldest pilgrimage markers on the route. The trail descends on cobbled stone to <strong>Chikatsuyu</strong>, the overnight stop. This is a working village, not a resort. Supplies are limited. The walking takes about five hours.</p>`
                     },
                     {
-                        n: 9, date: 'Day 9', loc: 'Kumano Kodo', type: 'cultural',
+                        n: 10, date: 'Day 10', loc: 'Kumano Kodo', type: 'cultural',
                         title: 'The Ancient Pilgrimage',
                         lat: 33.8400, lng: 135.7700, zoom: 12, city: 'hongu',
                         events: ['Morning: 近露王子跡 (Chikatsuyu Oji) — one of the trail’s sacred waypoint shrines', 'Ryujin Bus east from Chikatsuyu to Hongu (~50 min)', 'Kumano Hongu Taisha Grand Shrine', 'Oyunohara: the 34-meter torii at the original flood-plain site', 'Onsen: Yunomine Onsen — 1,800-year-old hot spring, the only UNESCO-listed spa in the world', 'Ryujin Bus west to Kannon-ji-mae (観音寺前) stop (~50 min)', '4-minute walk to Musuhi Budojo', 'Budo session with Matsufune Asami: kenjutsu and Ryukyu karate', 'Overnight: Chikatsuyu village minshuku'],
                         prose: `<p class="prose-p"><strong>Kumano Hongu Taisha</strong> is the first of the three Grand Shrines, and the spiritual terminus of the Nakahechi route. The original site at <strong>Oyunohara</strong> was destroyed by floods in 1889 and relocated uphill. What remains at the flood plain is the largest torii gate in the world, standing 34 meters tall in an empty field at the confluence of two rivers.</p><p class="prose-p">The <strong>onsen</strong> at the trail\u2019s end is not optional. The Kumano region sits on volcanic geology and the hot springs are part of the pilgrimage tradition. You walk, you arrive, you soak. This is how it has been done for a thousand years.</p><p class="prose-p"><strong>Musuhi Budojo</strong> (産巣日武道場) is where the day ends. Overnight is in a village minshuku in Chikatsuyu. The name comes from the Kojiki creation texts \u2014 <em>musuhi</em> is the mysterious force that generates and nurtures all things. The dojo sits in <strong>Chikaatsu</strong> (近露) in Nakahechimachi, Tanabe City, a village the Nakahechi route passes directly through. From Hongu, the <strong>Ryujin Bus</strong> to <strong>Kannon-ji-mae</strong> (観音寺前) stop is approximately 50 minutes; the dojo is a 4-minute walk from the stop. Address: 和歌山県田辺市中辺路町近露1038</p><p class="prose-p">The evening session covers <strong>kenjutsu</strong> and <strong>Ryukyu karate</strong> with Matsufune Asami. The sword work closes the thread that runs from the Sword Museum in Tokyo through tameshigiri in Kyoto. The Ryukyu karate is something different from everything that came before: older, rooted in Okinawa, grounded in strikes rather than weapons. This is where the Bushido itinerary ends — not in a museum or a ceremony, but on the floor of a working dojo at the edge of a mountain pilgrimage route.</p>`
                     },
                     {
-                        n: 10, date: 'Day 10', loc: 'Shingu', type: 'cultural',
+                        n: 11, date: 'Day 11', loc: 'Shingu', type: 'cultural',
                         title: 'Shingu, the River, and the Sea',
                         lat: 33.7264, lng: 135.9875, zoom: 12, city: 'shingu',
                         events: ['Morning: Kumano Hayatama Taisha Grand Shrine', 'World Heritage Kumano River boat (kawabune) via Kawafune Center', 'Flat-bottom wooden boat, traditional river pilots', 'Reservation required: 0735-44-0987 (Kawafune Center)', 'Boarding: 54-8 Tanaga, Kumanogawa-cho, Shingu City'],
@@ -995,7 +1064,7 @@
             {
                 label: 'RETURN', days: [
                     {
-                        n: 11, date: 'Day 11', loc: 'Shingu to Tokyo', type: 'travel',
+                        n: 12, date: 'Day 12', loc: 'Shingu to Tokyo', type: 'travel',
                         title: 'Return to Tokyo', img: I.tokyo_arrive,
                         lat: 35.6812, lng: 139.7671, zoom: 11, city: 'tokyo',
                         events: ['JR limited express to Shin-Osaka or Nagoya', 'Tokaido Shinkansen back to Tokyo', 'Arrive Tokyo evening', 'Final night at leisure'],
@@ -1007,7 +1076,8 @@
         const ALL = SECTIONS.flatMap(s => s.days);
 
         const TOKAIDO = [[35.6812, 139.7671], [35.5076, 139.6172], [35.1706, 136.8816], [34.9858, 135.7588]];
-        const KOYA_LINE = [[34.9858, 135.7588], [34.6685, 135.5024], [34.3133, 135.6067], [34.2130, 135.5850]];
+        const KOYA_LINE = [[34.9858, 135.7588], [34.6687, 135.5024], [34.3133, 135.6067], [34.2130, 135.5850]];
+        const KYOTO_OSAKA = [[34.9858, 135.7588], [34.6687, 135.5024]];
         const KUMANO_TRAIL = [[34.2130, 135.5850], [34.0500, 135.6200], [33.9833, 135.6833], [33.9200, 135.7200], [33.8400, 135.7700]];
         const HONGU_SHINGU = [[33.8400, 135.7700], [33.7800, 135.8500], [33.7500, 135.9200], [33.7264, 135.9875]];
         const RETURN_RAIL = [[33.7264, 135.9875], [34.0700, 136.1900], [34.4500, 136.5100], [34.7200, 136.7100], [35.1706, 136.8816]];
@@ -1037,11 +1107,12 @@
         const ROUTE_SEGS = [
             { day: 1, s: [], l: [], t: [], r: [] },
             { day: 4, s: TOKAIDO, l: [], t: [], r: [] },
-            { day: 7, s: TOKAIDO, l: KOYA_LINE, t: [], r: [] },
-            { day: 8, s: TOKAIDO, l: KOYA_LINE, t: KUMANO_TRAIL.slice(0, 3), r: [] },
-            { day: 9, s: TOKAIDO, l: KOYA_LINE, t: KUMANO_TRAIL, r: [] },
-            { day: 10, s: TOKAIDO, l: KOYA_LINE, t: KUMANO_TRAIL, r: HONGU_SHINGU },
-            { day: 11, s: [...RETURN_RAIL, [35.5076, 139.6172], [35.6812, 139.7671]], l: KOYA_LINE, t: KUMANO_TRAIL, r: HONGU_SHINGU },
+            { day: 7, s: TOKAIDO, l: KYOTO_OSAKA, t: [], r: [] },
+            { day: 8, s: TOKAIDO, l: KOYA_LINE, t: [], r: [] },
+            { day: 9, s: TOKAIDO, l: KOYA_LINE, t: KUMANO_TRAIL.slice(0, 3), r: [] },
+            { day: 10, s: TOKAIDO, l: KOYA_LINE, t: KUMANO_TRAIL, r: [] },
+            { day: 11, s: TOKAIDO, l: KOYA_LINE, t: KUMANO_TRAIL, r: HONGU_SHINGU },
+            { day: 12, s: [...RETURN_RAIL, [35.5076, 139.6172], [35.6812, 139.7671]], l: KOYA_LINE, t: KUMANO_TRAIL, r: HONGU_SHINGU },
         ];
 
         function updateRoute(n) {
@@ -1053,6 +1124,7 @@
         const CITIES = {
             tokyo: { lat: 35.6812, lng: 139.7671, name: 'Tokyo' },
             kyoto: { lat: 34.9858, lng: 135.7588, name: 'Kyoto' },
+            osaka: { lat: 34.6687, lng: 135.5024, name: 'Osaka' },
             koyasan: { lat: 34.2130, lng: 135.5850, name: 'Koyasan' },
             hongu: { lat: 33.8400, lng: 135.7700, name: 'Kumano Kodo' },
             shingu: { lat: 33.7264, lng: 135.9875, name: 'Shingu' },
@@ -1250,11 +1322,98 @@
     </script>
 
     <script>
-        // Collapse legend on mobile
-        if (window.innerWidth <= 760) {
+        // Mobile bottom-sheet behavior (Google Maps style)
+        (function () {
+            const mq = window.matchMedia('(max-width:760px)');
+            const sheet = document.getElementById('sidebar');
+            const handle = document.getElementById('sheet-handle');
+            const hdr = document.getElementById('hdr');
             const legDetails = document.getElementById('legend-details');
-            if (legDetails) legDetails.removeAttribute('open');
-        }
+
+            function refreshMap() {
+                if (typeof map !== 'undefined' && map) map.invalidateSize();
+            }
+
+            function snapPoints() {
+                const vh = window.innerHeight;
+                return {
+                    full: 0,
+                    half: Math.round(0.42 * vh),
+                    peek: Math.round(0.92 * vh - 140)
+                };
+            }
+
+            let currentY = null;
+
+            function setY(y, animate) {
+                if (animate) sheet.classList.remove('dragging');
+                else sheet.classList.add('dragging');
+                currentY = y;
+                sheet.style.transform = 'translateY(' + y + 'px)';
+            }
+
+            function snapTo(y) {
+                const p = snapPoints();
+                const pts = [p.full, p.half, p.peek];
+                let nearest = pts[0];
+                pts.forEach(t => { if (Math.abs(t - y) < Math.abs(nearest - y)) nearest = t; });
+                setY(nearest, true);
+                setTimeout(refreshMap, 340);
+            }
+
+            function initSheet() {
+                if (!mq.matches) { sheet.style.transform = ''; currentY = null; return; }
+                setY(snapPoints().peek, true);
+            }
+
+            let startY = 0, startTranslate = 0, dragging = false, moved = false;
+
+            function onDown(e) {
+                if (!mq.matches) return;
+                dragging = true; moved = false;
+                startY = e.touches ? e.touches[0].clientY : e.clientY;
+                startTranslate = currentY != null ? currentY : snapPoints().peek;
+                sheet.classList.add('dragging');
+            }
+            function onMove(e) {
+                if (!dragging) return;
+                const y = e.touches ? e.touches[0].clientY : e.clientY;
+                const dy = y - startY;
+                if (Math.abs(dy) > 4) moved = true;
+                const p = snapPoints();
+                let nt = Math.max(p.full, Math.min(p.peek, startTranslate + dy));
+                setY(nt, false);
+                if (e.cancelable) e.preventDefault();
+            }
+            function onUp() {
+                if (!dragging) return;
+                dragging = false;
+                const p = snapPoints();
+                if (!moved) {
+                    snapTo(currentY <= (p.half + p.peek) / 2 ? p.peek : p.half);
+                } else {
+                    snapTo(currentY);
+                }
+            }
+
+            [handle, hdr].forEach(el => {
+                if (!el) return;
+                el.addEventListener('touchstart', onDown, { passive: true });
+                el.addEventListener('mousedown', onDown);
+            });
+            window.addEventListener('touchmove', onMove, { passive: false });
+            window.addEventListener('mousemove', onMove);
+            window.addEventListener('touchend', onUp);
+            window.addEventListener('mouseup', onUp);
+
+            window.addEventListener('resize', () => { initSheet(); setTimeout(refreshMap, 120); });
+            if (mq.addEventListener) mq.addEventListener('change', initSheet);
+
+            if (mq.matches && legDetails) legDetails.removeAttribute('open');
+
+            initSheet();
+            setTimeout(refreshMap, 300);
+        })();
     </script>
 
     <script>
