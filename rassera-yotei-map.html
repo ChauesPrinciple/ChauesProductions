@@ -1,0 +1,1592 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rassera, to Yōtei! Japan Summer 2027 | Chaues Productions</title>
+    <meta name="description" content="11-day group trip through Tokyo, Tohoku, and Hokkaido: the Nebuta Festival, the Ghost of Yōtei locations, and adventure filmmaking with Robert Ladd.">
+    <meta property="og:title" content="Rassera, to Yōtei! Japan Summer 2027 | Chaues Productions">
+    <meta property="og:description" content="11-day group trip through Tokyo, Tohoku, and Hokkaido: the Nebuta Festival, the Ghost of Yōtei locations, and adventure filmmaking with Robert Ladd.">
+    <meta property="og:image" content="assets/images/aomori-city-view.jpg">
+    <meta property="og:url" content="https://chauesprinciple.github.io/ChauesProductions/japan-itinerary-map.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" type="image/png" href="assets/images/image07.png">
+    <link rel="canonical" href="https://chauesprinciple.github.io/ChauesProductions/japan-itinerary-map.html" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --bg: #07101f;
+            --panel: #0b1628;
+            --card: #111d35;
+            --border: rgba(255, 255, 255, 0.06);
+            --amber: #ec4899;
+            --amber-dim: rgba(245, 158, 11, 0.12);
+            --amber-text: rgba(245, 158, 11, 0.55);
+            --text: #e2e8f0;
+            --muted: #64748b;
+            --prose: #b0bcc9;
+            --festival: #ef4444;
+            --partner: #a78bfa;
+            --cultural: #34d399;
+            --travel: #ec4899;
+            --arrival: #ec4899;
+            --finale: #fb923c;
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Raleway', sans-serif;
+            background: var(--bg);
+            color: var(--text)
+        }
+
+        #app {
+            display: flex;
+            height: 100vh;
+            height: 100dvh;
+        }
+
+        #sidebar {
+            width: 370px;
+            min-width: 370px;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            background: var(--panel);
+            border-right: 1px solid var(--border);
+            z-index: 10
+        }
+
+        #hdr {
+            padding: 18px 22px 14px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg)
+        }
+
+        .eyebrow {
+            font-size: 9px;
+            font-weight: 700;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--amber);
+            margin-bottom: 5px
+        }
+
+        .trip-h {
+            font-size: 17px;
+            font-weight: 700;
+            font-family: 'Cinzel', serif;
+            color: #fff;
+            line-height: 1.15
+        }
+
+        .trip-d {
+            font-size: 10px;
+            color: var(--muted);
+            margin-top: 3px
+        }
+
+        #prog-track {
+            height: 2px;
+            background: rgba(255, 255, 255, 0.05);
+            margin-top: 12px;
+            border-radius: 1px;
+            overflow: hidden
+        }
+
+        #prog-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--amber), #fb7185);
+            width: 0%;
+            transition: width 0.5s ease
+        }
+
+        #day-ctr {
+            font-size: 9px;
+            color: var(--muted);
+            margin-top: 5px;
+            letter-spacing: .3px
+        }
+
+        #timeline {
+            flex: 1;
+            overflow-y: auto;
+            padding: 6px 0 60vh;
+            scroll-behavior: smooth
+        }
+
+        #timeline::-webkit-scrollbar {
+            width: 3px
+        }
+
+        #timeline::-webkit-scrollbar-thumb {
+            background: var(--amber-dim);
+            border-radius: 2px
+        }
+
+        .sec-label {
+            padding: 14px 22px 5px;
+            font-size: 8.5px;
+            font-weight: 700;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--muted)
+        }
+
+        .day-card {
+            margin: 3px 10px;
+            border-radius: 10px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            overflow: hidden;
+            position: relative
+        }
+
+        .day-card:hover {
+            border-color: rgba(245, 158, 11, 0.18);
+            background: #131f3c
+        }
+
+        .day-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            transition: width 0.2s
+        }
+
+        .day-card::before {
+            background: var(--amber);
+        }
+
+        .day-card.active {
+            border-color: rgba(236, 72, 153, 0.35);
+            /* bold pink */
+            background: #152342;
+            transform: translateX(3px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4)
+        }
+
+        .day-card.active::before {
+            width: 4px
+        }
+
+        .card-img-wrap {
+            position: relative;
+            overflow: hidden;
+            height: 80px
+        }
+
+        .card-img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            display: block;
+            opacity: 0.55;
+            transition: opacity 0.3s;
+            filter: saturate(0.7)
+        }
+
+        .day-card.active .card-img {
+            opacity: 0.85;
+            filter: saturate(1)
+        }
+
+        .card-img-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60%;
+            background: linear-gradient(transparent, var(--card))
+        }
+
+        .day-card.active .card-img-overlay {
+            background: linear-gradient(transparent, #152342)
+        }
+
+        .card-top {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 9px 12px 6px
+        }
+
+        .day-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            background: var(--amber-dim);
+            color: var(--amber-text);
+            border: 1px solid rgba(245, 158, 11, 0.18);
+            flex-shrink: 0;
+            transition: all 0.2s
+        }
+
+        .day-card.partner .day-num {
+            border-color: rgba(167, 139, 250, 0.4);
+            color: var(--partner);
+        }
+
+        .day-card.cultural .day-num {
+            border-color: rgba(52, 211, 153, 0.4);
+            color: var(--cultural);
+        }
+
+        .day-card.festival .day-num {
+            border-color: rgba(239, 68, 68, 0.4);
+            color: var(--festival);
+        }
+
+        .day-card.finale .day-num {
+            border-color: rgba(251, 146, 60, 0.4);
+            color: var(--finale);
+        }
+
+        .day-card.active.arrival .day-num,
+        .day-card.active.travel .day-num {
+            background: var(--amber);
+            color: #000;
+            border-color: var(--amber);
+        }
+
+        .day-card.active.partner .day-num {
+            background: var(--partner);
+            color: #000;
+            border-color: var(--partner);
+        }
+
+        .day-card.active.cultural .day-num {
+            background: var(--cultural);
+            color: #000;
+            border-color: var(--cultural);
+        }
+
+        .day-card.active.festival .day-num {
+            background: var(--festival);
+            color: #000;
+            border-color: var(--festival);
+        }
+
+        .day-card.active.finale .day-num {
+            background: var(--finale);
+            color: #000;
+            border-color: var(--finale);
+        }
+
+        .card-meta {
+            flex: 1;
+            min-width: 0
+        }
+
+        .card-date {
+            font-size: 9px;
+            color: var(--muted);
+            margin-bottom: 1px
+        }
+
+        .card-loc {
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .card-em {
+            font-size: 16px;
+            flex-shrink: 0
+        }
+
+        .card-body {
+            padding: 0 12px 10px
+        }
+
+        .card-prose-mb {
+            display: none;
+            padding: 10px 12px 15px;
+            border-top: 1px solid var(--border);
+            margin-top: 10px;
+        }
+
+        .day-card.active .card-prose-mb {
+            display: none;
+        }
+
+        .card-ttl {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--amber);
+            margin-bottom: 5px;
+            line-height: 1.3
+        }
+
+        .evts {
+            list-style: none
+        }
+
+        .evts li {
+            font-size: 10.5px;
+            color: var(--muted);
+            padding: 1.5px 0 1.5px 10px;
+            position: relative;
+            line-height: 1.5
+        }
+
+        .evts li::before {
+            content: '·';
+            position: absolute;
+            left: 0;
+            color: var(--amber);
+            font-weight: 900
+        }
+
+        #map-wrap {
+            flex: 1;
+            position: relative
+        }
+
+        #map {
+            width: 100%;
+            height: 100%
+        }
+
+        #info {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 290px;
+            z-index: 900;
+            display: flex;
+            flex-direction: column;
+            pointer-events: none
+        }
+
+        #info-img-wrap {
+            flex: 0 0 190px;
+            overflow: hidden;
+            position: relative
+        }
+
+        #info-img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            display: block;
+            transition: opacity 0.5s;
+            filter: saturate(0.85)
+        }
+
+        #info-img-grad {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 90px;
+            background: linear-gradient(transparent, rgba(7, 16, 31, 0.98))
+        }
+
+        #info-text {
+            background: rgba(7, 16, 31, 0.93);
+            backdrop-filter: blur(18px);
+            border-left: 1px solid var(--border);
+            padding: 16px 20px 20px;
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column
+        }
+
+        #info-text::-webkit-scrollbar {
+            width: 3px
+        }
+
+        #info-text::-webkit-scrollbar-thumb {
+            background: var(--amber-dim);
+            border-radius: 2px
+        }
+
+        .info-day-lbl {
+            font-size: 8.5px;
+            font-weight: 700;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--amber);
+            margin-bottom: 4px
+        }
+
+        .info-loc-lbl {
+            font-size: 21px;
+            font-weight: 700;
+            font-family: 'Cinzel', serif;
+            color: #fff;
+            line-height: 1;
+            margin-bottom: 2px
+        }
+
+        .info-ttl-lbl {
+            font-size: 10.5px;
+            color: var(--muted);
+            line-height: 1.4;
+            margin-bottom: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border)
+        }
+
+        #info-prose {
+            flex: 1
+        }
+
+        .prose-p {
+            font-family: 'Raleway', sans-serif;
+            font-size: 12.5px;
+            font-weight: 300;
+            color: var(--prose);
+            line-height: 1.75;
+            margin-bottom: 10px
+        }
+
+        .prose-p:last-child {
+            margin-bottom: 0
+        }
+
+        .prose-p strong {
+            color: #d4dde8;
+            font-weight: 400;
+            font-style: italic
+        }
+
+        #legend {
+            position: absolute;
+            bottom: 24px;
+            left: 16px;
+            z-index: 1000;
+            background: rgba(7, 16, 31, 0.88);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px 14px;
+            pointer-events: auto;
+        }
+
+        .leg-h {
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 7px
+        }
+
+        .leg-r {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+            font-size: 10px;
+            color: var(--text)
+        }
+
+        .leg-l {
+            width: 22px;
+            height: 2px;
+            flex-shrink: 0
+        }
+
+        .leg-ld {
+            width: 22px;
+            height: 0;
+            border-top: 2px dashed;
+            flex-shrink: 0
+        }
+
+        .ct {
+            background: rgba(7, 16, 31, 0.92) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: #fff !important;
+            border-radius: 6px !important;
+            font-family: 'Raleway', sans-serif !important;
+            font-size: 11px !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
+            padding: 5px 9px !important
+        }
+
+        .leaflet-control-attribution {
+            font-size: 8px !important;
+            background: rgba(0, 0, 0, 0.3) !important;
+            color: rgba(255, 255, 255, 0.4) !important;
+            padding: 1px 5px !important;
+            opacity: 0.4;
+            transition: opacity 0.2s;
+        }
+
+        .leaflet-control-attribution:hover {
+            opacity: 1;
+        }
+
+        .leaflet-control-attribution a {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        .leaflet-control-zoom a {
+            background: rgba(11, 22, 40, 0.92) !important;
+            color: #ccc !important;
+            border-color: var(--border) !important
+        }
+
+        .leaflet-control-zoom a:hover {
+            background: var(--card) !important;
+            color: #fff !important
+        }
+
+        .leaflet-container {
+            background: var(--bg) !important
+        }
+
+        .cta-card {
+            margin: 24px 16px 12px;
+            padding: 28px 20px;
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.12), rgba(236, 72, 153, 0.04));
+            border: 1px solid var(--amber);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .cta-card h3 {
+            font-size: 16px;
+            color: var(--amber);
+            margin: 0 0 8px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-card p {
+            font-size: 12px;
+            color: var(--muted);
+            margin: 0 0 16px;
+            line-height: 1.5;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 10px 28px;
+            background: var(--amber);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(236, 72, 153, 0.4);
+        }
+
+        #sheet-handle {
+            display: none;
+        }
+
+        @media(max-width:760px) {
+            #app {
+                display: block !important;
+                height: 100dvh;
+                position: relative;
+            }
+
+            #map-wrap {
+                position: absolute !important;
+                inset: 0 !important;
+                width: 100% !important;
+                height: 100dvh !important;
+                flex: none !important;
+            }
+
+            #sidebar {
+                position: fixed !important;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                top: auto;
+                width: 100% !important;
+                min-width: 0 !important;
+                height: 92dvh !important;
+                border-right: none;
+                border-top-left-radius: 18px;
+                border-top-right-radius: 18px;
+                box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.35);
+                transform: translateY(calc(92dvh - 140px));
+                transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+                will-change: transform;
+                z-index: 1200;
+            }
+
+            #sidebar.dragging {
+                transition: none;
+            }
+
+            #sheet-handle {
+                display: block;
+                width: 100%;
+                padding: 9px 0 5px;
+                flex-shrink: 0;
+                background: var(--panel);
+                border-top-left-radius: 18px;
+                border-top-right-radius: 18px;
+                touch-action: none;
+                cursor: grab;
+            }
+
+            #sheet-handle::before {
+                content: '';
+                display: block;
+                width: 38px;
+                height: 4px;
+                border-radius: 2px;
+                background: rgba(255, 255, 255, 0.25);
+                margin: 0 auto;
+            }
+
+            #hdr {
+                touch-action: none;
+                cursor: grab;
+            }
+
+            #timeline {
+                padding-bottom: 40vh !important;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .day-card.active .card-prose-mb {
+                display: block;
+            }
+
+            #info {
+                display: none !important;
+            }
+
+            #trip-nav {
+                position: fixed;
+                top: 12px;
+                bottom: auto;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 1100;
+            }
+
+            #legend {
+                top: 58px;
+                bottom: auto;
+                left: 12px;
+                z-index: 1100;
+            }
+
+            .leaflet-control-zoom {
+                margin-bottom: 152px !important;
+            }
+        }
+
+        #trip-nav {
+            position: absolute;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0;
+            background: rgba(15, 23, 42, 0.88);
+            border: 1px solid rgba(236, 72, 153, 0.25);
+            border-radius: 22px;
+            padding: 0;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+            font-family: 'Raleway', sans-serif;
+        }
+
+        #trip-nav a {
+            padding: 8px 16px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: rgba(236, 72, 153, 0.5);
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        #trip-nav a:first-child {
+            border-radius: 22px 0 0 22px;
+        }
+
+        #trip-nav a:last-child {
+            border-radius: 0 22px 22px 0;
+        }
+
+        #trip-nav a:hover {
+            color: #ec4899;
+            background: rgba(236, 72, 153, 0.08);
+        }
+
+        #trip-nav a.active {
+            color: #ec4899;
+            background: rgba(236, 72, 153, 0.15);
+        }
+
+        #trip-nav .sep {
+            width: 1px;
+            height: 18px;
+            background: rgba(236, 72, 153, 0.2);
+            flex-shrink: 0;
+        }
+
+        .leg-poi {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            border: 1.5px solid
+        }
+
+        .kml-popup .leaflet-popup-content-wrapper {
+            background: rgba(7, 16, 31, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+            padding: 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .kml-popup .leaflet-popup-tip {
+            background: rgba(7, 16, 31, 0.92);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .kml-popup .leaflet-popup-content {
+            margin: 0;
+            padding: 12px 14px;
+            font-family: 'Raleway', sans-serif;
+            color: #fff;
+            line-height: 1.4;
+        }
+
+        .kml-category {
+            font-size: 8.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        .kml-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .kml-desc {
+            font-family: 'Raleway', sans-serif;
+            font-size: 12px;
+            color: var(--prose);
+        }
+
+        details#legend-details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details#legend-details summary {
+            list-style: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0;
+            user-select: none;
+        }
+
+        details#legend-details summary::after {
+            content: '▼';
+            font-size: 8px;
+            opacity: 0.6;
+        }
+
+        details#legend-details[open] summary::after {
+            content: '▲';
+        }
+
+        .legend-inner {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(150, 150, 150, 0.2);
+        }
+
+        .cta-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .cta-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .cta-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-input {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(150, 150, 150, 0.2);
+            border-radius: 6px;
+            font-family: 'Raleway', sans-serif;
+            font-size: 13px;
+            color: #fff;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        
+        .cta-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .cta-input::placeholder {
+            color: rgba(150, 150, 150, 0.5);
+        }
+
+        .cta-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .cta-submit {
+            margin-top: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            cursor: pointer;
+            border: none;
+        }
+\n        body { --form-text: #fff; }\n    </style>
+    <script src="assets/js/kml_data.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div id="sidebar">
+            <div id="sheet-handle"></div>
+            <div id="hdr">
+                <div class="eyebrow"><a href="index.html" style="color:inherit;text-decoration:none;">Chaues
+                        Productions</a> &middot; Group 8 to 12</div>
+                <div class="trip-h">Rassera, to Yōtei! Japan Summer 2027</div>
+                <div class="trip-d">August 2 to August 12, 2027 &middot; 11 days</div>
+                <div id="prog-track">
+                    <div id="prog-fill"></div>
+                </div>
+                <div id="day-ctr">Day 1 of 11</div>
+            </div>
+            <div id="timeline"></div>
+        </div>
+        <div id="map-wrap">
+            <div id="map"></div>
+            <div id="info">
+                <div id="info-img-wrap">
+                    <img id="info-img" src="" alt="" loading="lazy" />
+                    <div id="info-img-grad"></div>
+                </div>
+                <div id="info-text">
+                    <div class="info-day-lbl" id="ib-day">Day 1 · Thu Jul 31</div>
+                    <div class="info-loc-lbl" id="ib-loc">Tokyo</div>
+                    <div class="info-ttl-lbl" id="ib-ttl">Arrive Tokyo</div>
+                    <div id="info-prose"></div>
+                </div>
+            </div>
+            <div id="legend">
+                <details id="legend-details" open>
+                    <summary class="leg-h">Map Key</summary>
+                    <div class="legend-inner">
+                        <div class="leg-h">Route</div>
+                        <div class="leg-r">
+                            <div class="leg-l" style="background:var(--amber)"></div>Shinkansen
+                        </div>
+                        <div class="leg-r">
+                            <div class="leg-l" style="background:#ec4899"></div>Local / Ltd. Express
+                        </div>
+                        <div class="leg-r">
+                            <div class="leg-ld" style="border-color:rgba(234,88,12,0.7)"></div>Return Flight
+                        </div>
+                        <div class="leg-h" style="margin-top:6px">Sites</div>
+                        <div class="leg-r">
+                            <div class="leg-poi" style="background:#ef4444;border-color:#ef4444"></div>Festival /
+                            Cultural
+                        </div>
+                        <div class="leg-r">
+                            <div class="leg-poi" style="background:#10b981;border-color:#10b981"></div>Film Site
+                        </div>
+
+                        <div class="leg-h" style="margin-top:6px">Curated Recommendations</div>
+                        <div class="leg-r">
+                            <div class="leg-poi" style="background:rgba(234,179,8,0.5);border-color:#fde047"></div>
+                            Dining &
+                            Drinks
+                        </div>
+                        <div class="leg-r">
+                            <div class="leg-poi" style="background:rgba(20,184,166,0.5);border-color:#5eead4"></div>
+                            Culture &
+                            Nature
+                        </div>
+                        <div class="leg-r">
+                            <div class="leg-poi" style="background:rgba(139,92,246,0.5);border-color:#c4b5fd"></div>
+                            Creative &
+                            Film
+                        </div>
+                        <div class="leg-r">
+                            <div class="leg-poi" style="background:rgba(148,163,184,0.5);border-color:#cbd5e1"></div>
+                            Accommodations
+                        </div>
+                    </div>
+                </details>
+            </div>
+            <div id="trip-nav">
+                <a href="index.html">&larr; Home</a>
+                <div class="sep"></div>
+                <a href="japan-itinerary-map.html">Rassera!</a>
+                <div class="sep"></div>
+                <a href="rassera-yotei-map.html" class="active">Yōtei!</a>
+                <div class="sep"></div>
+                <a href="japan-bushido-map.html">Bushido</a>
+                <div class="sep"></div>
+                <a href="ireland-map.html">Ireland</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const I = {
+            tokyo_arrive: 'assets/images/tokyo_finale.png',
+            tokyo_night: 'assets/images/tokyo_film.png',
+                        tokyo_street: 'assets/images/tokyo_film.png',
+            racing: 'assets/bonsai_racing.png',
+            morioka: 'assets/images/009_reh_IwateSansaTop2.jpg',
+            nebuta: 'assets/images/aomori-city-view.jpg',
+            castle: 'assets/images/gosyogawara-m.jpg',
+            coast: 'assets/images/8-why-hokkaido-is-perfect-for-summer-japan-trip-body.jpg',
+            fireworks: 'assets/images/aomori-city-view.jpg',
+            hokkaido: 'assets/images/6-why-hokkaido-is-perfect-for-summer-japan-trip-body.jpg',
+            sapporo: 'assets/images/3-why-hokkaido-is-perfect-for-summer-japan-trip-body.jpg',
+            otaru: 'assets/images/2-why-hokkaido-is-perfect-for-summer-japan-trip-body.jpg',
+            vintage: 'assets/images/tokyo_film.png',
+        };
+
+        const SECTIONS = [
+            {
+                label: 'TOKYO', days: [
+                    {
+                        n: 1, date: 'Mon Aug 2', loc: 'Tokyo', type: 'arrival',
+                        title: 'Arrive Tokyo', img: I.tokyo_arrive,
+                        lat: 35.6812, lng: 139.7671, zoom: 12, city: 'tokyo',
+                        events: [
+                            'Land Haneda or Narita: check in to Sequence Miyashita Park, Shibuya',
+                            'Welcome lunch: Udatsu Sushi (confirm group capacity)',
+                            'Easy evening: ramen, Kabukicho or Shibuya Crossing',
+                            'Optional: arrive earlier for extra days in Tokyo on your own'
+                        ],
+                        prose: `<p class="prose-p">Landing in Tokyo is always a calibration. The city runs at a frequency you haven't encountered, and the first twelve hours don't align with anything. We check into <strong>Sequence Miyashita Park</strong> in Shibuya. The hotel sits directly above Miyashita Park and puts you inside the culture rather than across the street from it. Shibuya is the Tokyo base for the opening night.</p><p class="prose-p">We open at <strong>Udatsu</strong> for counter omakase with Chef Toru Udatsu, one of Tokyo's serious sushiya. You sit, you eat what appears, and you stop trying to frame it. The evening is deliberately loose. Shibuya Crossing at dusk is not a tourist gesture; it is a functional portrait of organized mass. Get on Japan time by moving, not sleeping. Join us on this adventure and go places you would never go on your own.</p>`
+                    }
+                ]
+            },
+            {
+                label: 'JOURNEY NORTH', days: [
+                    {
+                        n: 2, date: 'Tue Aug 3', loc: 'Morioka', type: 'travel',
+                        title: 'Tokyo to Morioka, Sansa Festival', img: I.morioka,
+                        lat: 39.7014, lng: 141.1349, zoom: 13, city: 'morioka',
+                        events: [
+                            'Tohoku Shinkansen ~2h20m: reserve group block',
+                            'Possible stop: Ebisu brewery in Fukushima (to confirm)',
+                            'Kitakami River walk: Mt. Iwate over the city',
+                            'Azumaya: wanko soba until you tap out',
+                            'Nagasawa Coffee or Clammbon',
+                            'EVENING: Morioka Sansa Festival'
+                        ],
+                        prose: `<p class="prose-p">The Tohoku Shinkansen runs northeast. Within two hours the Tokyo skyline dissolves entirely into cedar ridges and terraced fieldwork. There is a potential stop at an <strong>Ebisu</strong> site in Fukushima depending on timing, but the ultimate destination today is <strong>Morioka</strong>. The NYT ranked Morioka as the #2 of 52 Places on Earth in 2023. This is not because it was constructed for tourism, but because it is compact, real, and still functions primarily for the people who live there.</p><p class="prose-p">The <strong>Sansa Festival</strong> is the reason we stop here tonight. It is the world's largest taiko drum procession featuring 10,000 performers moving through the streets. At the close of the night the procession opens to anyone who wants to join it. Walk into it.</p>`
+                    }
+                ]
+            },
+            {
+                label: 'AOMORI, NEBUTA FESTIVAL', days: [
+                    {
+                        n: 3, date: 'Wed Aug 4', loc: 'Aomori', type: 'travel',
+                        title: 'Morioka to Aomori, Nebuta Night 3', img: I.nebuta,
+                        lat: 40.8244, lng: 140.74, zoom: 13, city: 'aomori',
+                        events: [
+                            'Shinkansen Morioka to Aomori ~1hr (JR Pass)',
+                            'Check in: Aomori base for five nights',
+                            'A-FACTORY waterfront: apple cider, bay views',
+                            'Rassera Land: floats up close at builder huts',
+                            '6:45pm: Nebuta Night 3',
+                            'Haneto costume (join the procession)'
+                        ],
+                        prose: `<p class="prose-p">One more hour north and the shinkansen arrives in Aomori at the northern terminus of Honshu. The city has built its entire civic identity around this festival. The <strong>nebuta</strong> are warrior-figure lantern floats the size of shipping containers. They are internally wired and pulled through streets on wheeled platforms while Haneto dancers circle and the crowd chants <strong>Rassera</strong>.</p><p class="prose-p">Tonight is the first parade night for the group. Rent the costume and get into the procession. The Haneto dance is not performative tourism; it is the participation structure the festival was designed around. You are supposed to be in it.</p>`
+                    },
+                    {
+                        n: 4, date: 'Thu Aug 5', loc: 'Aomori', type: 'cultural',
+                        title: 'Aomori Cultural Day, Nebuta Night 4', img: I.nebuta,
+                        lat: 40.8244, lng: 140.74, zoom: 13, city: 'aomori',
+                        events: [
+                            '7am: Nokke-don at Furukawa Market',
+                            'Nebuta no Ie Wa Rasse: float museum, costume try-on',
+                            'Aomori Museum of Art: Yoshitomo Nara\'s Aomori Dog',
+                            'Sannai-Maruyama Jomon Site (UNESCO, bus ~20min)',
+                            '6:45pm: Nebuta Night 4'
+                        ],
+                        prose: `<p class="prose-p"><strong>Furukawa Market</strong> opens before dawn for fishing families. By 7am the Nokke-don stalls are running. You buy a bowl of rice and choose toppings from whatever came off the boats this morning, including sea urchin, salmon roe, scallop, and squid. It is one of the most direct eating experiences in Japan.</p><p class="prose-p"><strong>Wa Rasse</strong> is one of the only places you can read a nebuta float at close range to see the internal wire armature, the layered washi paper, and the engineering of light distribution. <strong>Sannai-Maruyama</strong> is a Jomon settlement 5,500 years old sitting adjacent to the city. It is mostly unvisited, UNESCO-listed, and genuinely worth the bus ride. The parade begins again at 6:45 pm.</p>`
+                    },
+                    {
+                        n: 5, date: 'Fri Aug 6', loc: 'Hachinohe / Aomori', type: 'festival',
+                        title: 'Hachinohe Coast, Nebuta Award Night', img: I.coast,
+                        lat: 40.5122, lng: 141.4884, zoom: 11, city: 'aomori',
+                        events: [
+                            'Shinkansen Aomori to Hachinohe (JR Pass)',
+                            'Kabushima Shrine: 30,000 tame gulls, 92 stairs',
+                            'Tanesashi Coast: rugged Pacific coastline trail',
+                            'Miroku Yokocho izakaya: fresh seafood lunch',
+                            'Hachinohe to Aomori ~40min',
+                            '6:45pm: Nebuta Night 5, award-winning floats'
+                        ],
+                        prose: `<p class="prose-p"><strong>Hachinohe</strong> runs on the Pacific as a fishing port culture that is rougher and colder in character than the festival cities to the west. <strong>Kabushima Shrine</strong> hosts the largest colony of black-tailed gulls in Japan. They have been there long enough to register humans as furniture, and 30,000 birds will not move for you. The shrine requires ninety-two stone stairs on the open ocean, so an umbrella is recommended.</p><p class="prose-p"><strong>Tanesashi Coast</strong> is serious Pacific coastline and one of the less-visited stretches on the east face of Honshu. We are back in Aomori before dark for <strong>Award Night</strong>, the parade where the season's winning floats make their final ceremonial procession. This one carries additional weight. It is the one the city built toward.</p>`
+                    },
+                    {
+                        n: 6, date: 'Sat Aug 7', loc: 'Aomori', type: 'finale',
+                        title: 'Nebuta Finale, Marine Procession', img: I.fireworks,
+                        lat: 40.8244, lng: 140.74, zoom: 13, city: 'aomori',
+                        events: [
+                            'Morning: rest, final market run',
+                            '1:00pm: Final daytime parade',
+                            '7:15pm: Marine Procession (floats on boats in Aomori Bay)',
+                            'Fireworks over the bay'
+                        ],
+                        prose: `<p class="prose-p">August 7 the festival turns to face the bay. The float-on-boats procession is not standard Japanese pageantry. It is an internally lit warrior lantern mounted on a boat at night with Aomori's fireworks launching overhead. If you carry one image from this trip intact twenty years from now, it will be this one.</p><p class="prose-p">The <strong>1pm daytime parade</strong> is smaller and more navigable, providing a good final pass when you can actually see the floats without the crowd pressure of the evening. This is the last night of the Aomori Nebuta Festival.</p>`
+                    },
+                    {
+                        n: 7, date: 'Sun Aug 8', loc: 'Hirosaki / Goshogawara', type: 'festival',
+                        title: 'Hirosaki and Goshogawara Tachineputa', img: I.castle,
+                        lat: 40.8065, lng: 140.439, zoom: 11, city: 'aomori',
+                        events: [
+                            'Morning: train to Hirosaki (JR Pass), Hirosaki Castle (Edo original) and MOCA',
+                            'JR Gono Line to Goshogawara (JR Pass)',
+                            'Tsugaru Railway: scenic ride across the Tsugaru Plain',
+                            'Tachineputa Museum: 3 giant floats on display year-round',
+                            'Nakamade Akai Ringo: Goshogawara red-flesh apple tasting',
+                            '19:00 to 21:00: Goshogawara Tachineputa parade',
+                            'Floats 23m tall, 19 tons: stand at corners for the pivot',
+                            '21:21 train back: Goshogawara to Kawabe, change for Aomori, arrives 22:55 (JR Pass)'
+                        ],
+                        prose: `<p class="prose-p"><strong>Hirosaki Castle</strong> is one of twelve original Edo-period fortresses still standing in Japan. The MOCA occupies a converted sake brewery. Both are worth the morning, but we remain in transit.</p><p class="prose-p">The <strong>Tsugaru Railway</strong> carries us west across the Tsugaru Plain. This is not a commuter transfer. The single-car train rolling through rice paddies with Mt. Iwaki in the distance is one of the most quietly photogenic passages on the trip. The changing seasons of the plain seen from the windows have drawn visitors and locals for generations.</p><p class="prose-p">In Goshogawara, we visit the <strong>Tachineputa Museum</strong> first. Three giant Tachineputa floats stand on permanent display here, the same ones that will process through the streets tonight. Viewing them up close in the museum lets you read the internal wire armature, the painted washi layers, and the engineering that holds 19 tons upright before it all goes into motion at dark.</p><p class="prose-p">Goshogawara is also the origin of the <strong>Nakamade Akai Ringo</strong>, a red-flesh apple that is tart, vivid, and entirely different from what you expect an apple to be. World-leading pastry chefs source it specifically for the flavor profile. We will taste the handcrafted apple products: juice, wine, jam, and confections produced locally.</p><p class="prose-p">At 7pm the <strong>Tachineputa parade</strong> begins. The floats stand 23 meters tall and weigh 19 tons each, navigating streets that were designed for none of that. Position yourself at a corner of the parade route. Watch the rope teams heave, the float tilt, and 19 tons pivot through an intersection. The chant is <strong>Yattemare</strong>. After the parade we take the 21:21 train to Kawabe and change there for Aomori, arriving at 22:55.</p>`
+                    }
+                ]
+            },
+            {
+                label: 'HOKKAIDO, LAKE TOYA AND YŌTEI', days: [
+                    {
+                        n: 8, date: 'Mon Aug 9', loc: 'Lake Toya', type: 'travel',
+                        title: 'Aomori to Lake Toya', img: I.coast,
+                        lat: 42.5658, lng: 140.8197, zoom: 10, city: 'toya',
+                        events: [
+                            'Hokkaido Shinkansen: Shin-Aomori to Shin-Hakodate-Hokuto (JR Pass)',
+                            'SEIKAN TUNNEL: 54km undersea, longest rail tunnel',
+                            'Ltd. express Shin-Hakodate-Hokuto to Toya (JR Pass)',
+                            'Bus Toya Station to Toyako Onsen ~15min',
+                            'Check in: Toyako Onsen base for three nights',
+                            '8:45pm: Lake Toya fireworks from the lakeshore'
+                        ],
+                        prose: `<p class="prose-p">The Hokkaido Shinkansen descends into the <strong>Seikan Tunnel</strong> 240 meters below the Tsugaru Strait. It runs 54 kilometers underwater as the longest railway tunnel in the world. At Shin-Hakodate-Hokuto we change to the limited express north along Uchiura Bay to <strong>Toya</strong>.</p><p class="prose-p">Toyako Onsen is the Hokkaido base for the last three nights. The lake fireworks go up at 8:45 every night of the season, starting the evening we arrive.</p>`
+                    },
+                    {
+                        n: 9, date: 'Tue Aug 10', loc: 'Lake Toya', type: 'cultural',
+                        title: 'Lake Toya and Nakajima', img: I.hokkaido,
+                        lat: 42.5658, lng: 140.8197, zoom: 12, city: 'toya',
+                        events: [
+                            'Morning: sightseeing boat with landing on Nakajima Island',
+                            'Afternoon: lakeside onsen at Toyako Onsen',
+                            'Dinner in Toyako Onsen',
+                            '8:45pm: Lake Toya fireworks from the lakeshore'
+                        ],
+                        prose: `<p class="prose-p"><strong>Lake Toya</strong> is a caldera lake. On their reference trip the Sucker Punch team saw <strong>Mount Yōtei</strong> from across this water, the mountain reflected in the lake, and that view went into the look of the game.</p><p class="prose-p">The island at the center of the lake is <strong>Nakajima</strong>. The game's Nakajima Ice Cave Hideout borrows its name. The summer sightseeing boats from the Toyako Onsen pier land on the island, and the afternoon is open for the lakeside onsen.</p><p class="prose-p">The fireworks go up over the lake each night of the season at 8:45 and run about twenty minutes. We watch from the lakeshore.</p>`
+                    },
+                    {
+                        n: 10, date: 'Wed Aug 11', loc: 'Mt. Yōtei / Noboribetsu', type: 'cultural',
+                        title: 'Mt. Yōtei and Jigokudani', img: I.sapporo,
+                        lat: 42.8267, lng: 140.8114, zoom: 10, city: 'toya',
+                        events: [
+                            'Chartered van from Toyako Onsen',
+                            'Lake Hill Farm: Mt. Yōtei viewpoint',
+                            'Fukidashi Park, Kyogoku: Yōtei spring water',
+                            'Afternoon: Noboribetsu Jigokudani (Hell Valley)',
+                            'Optional: Noboribetsu Date Jidai Mura, Edo-era village',
+                            'Evening: back to Toyako Onsen'
+                        ],
+                        prose: `<p class="prose-p">The game is named for <strong>Mount Yōtei</strong>. The Ainu name is <strong>Matneshiri</strong>, the Female Mountain, and Nate Fox, the game's co-creative director, has said that hearing it on the reference trip is what tied the mountain to Atsu, the game's hero. In the game her family home sits beneath the summit, and the grasslands at its foot are the <strong>Yōtei Grasslands</strong>.</p><p class="prose-p">We see the mountain from <strong>Lake Hill Farm</strong> and then go around to <strong>Fukidashi Park</strong> in Kyogoku, where the mountain's spring water comes up at its base.</p><p class="prose-p">In the afternoon we drive to <strong>Noboribetsu Jigokudani</strong>, a valley of steam vents and sulfur. It is the inspiration for <strong>Koga Fortress</strong>, the setting of the Final Hunt of the Onryō, and the valley's oni folklore and statues fed the game's oni mythos. We return to Toyako Onsen for the night.</p>`
+                    }
+                ]
+            },
+            {
+                label: 'DEPARTURE', days: [
+                    {
+                        n: 11, date: 'Thu Aug 12', loc: 'Haneda', type: 'travel',
+                        title: 'Lake Toya to Haneda, Departure', img: I.tokyo_night,
+                        lat: 35.5494, lng: 139.7798, zoom: 11, city: 'tokyo',
+                        events: [
+                            'Bus to Toya Station',
+                            'Ltd. express to New Chitose Airport',
+                            'Flight: New Chitose to Haneda ~1.5hrs',
+                            'Connect to international departures at Haneda'
+                        ],
+                        prose: `<p class="prose-p">The last morning starts at the lake. We take the limited express from Toya to New Chitose Airport and fly to Haneda, about 90 minutes in the air. The trip ends at Haneda, so book international departures from Haneda for the evening of August 12 or later. Anyone staying on in Tokyo continues from there on their own.</p>`
+                    }
+                ]
+            }
+        ];
+
+        const ALL = [];
+        SECTIONS.forEach(s => s.days.forEach(d => ALL.push(d)));
+
+        // ROUTES
+        const SKN_TOHOKU = [
+            [35.6812, 139.7671], [35.9077, 139.6239], [36.3658, 140.4712],
+            [37.7500, 140.4673], [38.2682, 140.8694], [38.9143, 141.1138],
+            [39.4067, 141.1174], [39.7014, 141.1349], [40.1974, 141.3854],
+            [40.5122, 141.4884], [40.7724, 140.6916], [40.8244, 140.7400]
+        ];
+        const OU = [[40.8244, 140.7400], [40.7333, 140.6278], [40.6031, 140.4631]];
+        const GONO = [[40.6031, 140.4631], [40.7200, 140.4380], [40.8065, 140.4390]];
+        const GOSHO_VAN = [[40.8065, 140.4390], [40.8200, 140.6000], [40.8244, 140.7400]];
+        const HACHI = [[40.8244, 140.7400], [40.7724, 140.6916], [40.5122, 141.4884]];
+        const SKN_HKD = [[40.8244, 140.7400], [40.7724, 140.6916], [41.0500, 140.6200], [41.4500, 140.5200], [41.6779, 140.4344]];
+        const MATSU = [[41.6779, 140.4344], [41.5600, 140.2700], [41.4297, 140.1086]];
+        const SKN_HKD2 = [[41.6779, 140.4344], [41.7688, 140.7289]]; // Kikonai to Shin-Hakodate-Hokuto
+        const HOKUTO_T = [[41.7688, 140.7289], [41.9917, 140.6667], [42.1044, 140.5747], [42.2567, 140.2583], [42.5256, 140.3714], [42.5577, 140.7635], [42.5658, 140.8197]];
+        const VAN = [[42.5658, 140.8197], [42.6200, 140.8000], [42.8546, 140.8798], [42.7000, 141.0000], [42.4996, 141.1484], [42.5200, 140.9500], [42.5658, 140.8197]];
+        const TOYA_CTS = [[42.5577, 140.7635], [42.4500, 141.0000], [42.4128, 141.1856], [42.4300, 141.3500], [42.6339, 141.6053], [42.7752, 141.6923]];
+        function arc(a, b, c, n) { c = c || 1; n = n || 20; const r = []; for (let i = 0; i <= n; i++) { const t = i / n; r.push([a[0] + (b[0] - a[0]) * t + Math.sin(Math.PI * t) * c, a[1] + (b[1] - a[1]) * t]); } return r; }
+        const FLT = arc([42.7752, 141.6923], [35.5494, 139.7798], -1.5);
+
+        // MAP
+        const BOUNDS = L.latLngBounds([32.0, 134.0], [46.0, 148.0]);
+        const map = L.map('map', { center: [40.0, 140.8], zoom: 7, minZoom: 5, maxZoom: 16, zoomControl: false, maxBounds: BOUNDS, maxBoundsViscosity: 0.85 });
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://openstreetmap.org">OSM</a> &copy; <a href="https://carto.com">CARTO</a>',
+            subdomains: 'abcd', maxZoom: 19
+        }).addTo(map);
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+        const dim = { color: '#334155', weight: 1.5, opacity: 0.4 };
+        const loc = { color: '#334155', weight: 1.2, opacity: 0.45 };
+        L.polyline(SKN_TOHOKU, dim).addTo(map);
+        L.polyline(OU, loc).addTo(map);
+        L.polyline(GONO, loc).addTo(map);
+        L.polyline(GOSHO_VAN, loc).addTo(map);
+        L.polyline(SKN_HKD, dim).addTo(map);
+        L.polyline(SKN_HKD2, dim).addTo(map);
+        L.polyline(HOKUTO_T, loc).addTo(map);
+        L.polyline(VAN, loc).addTo(map);
+        L.polyline(TOYA_CTS, loc).addTo(map);
+        L.polyline(FLT, { color: 'rgba(234,88,12,0.45)', weight: 1.5, dashArray: '4,6' }).addTo(map);
+
+        const aSkn = L.polyline([], { color: '#ec4899', weight: 3.5, opacity: 0.95, lineCap: 'round' }).addTo(map);
+        const aLoc = L.polyline([], { color: '#ec4899', weight: 3.5, opacity: 0.95, lineCap: 'round' }).addTo(map);
+        const aFlt = L.polyline([], { color: '#ea580c', weight: 2, opacity: 0.95, dashArray: '5,7' }).addTo(map);
+
+        const ROUTE_SEGS = [
+            { day: 1, s: [], l: [], f: [] },
+            { day: 2, s: SKN_TOHOKU.slice(0, 8), l: [], f: [] },
+            { day: 3, s: SKN_TOHOKU, l: [], f: [] },
+            { day: 5, s: SKN_TOHOKU, l: [HACHI], f: [] },
+            { day: 7, s: SKN_TOHOKU, l: [HACHI, [...OU, ...GONO, ...GOSHO_VAN]], f: [] },
+            { day: 8, s: [SKN_TOHOKU, SKN_HKD, SKN_HKD2], l: [HACHI, [...OU, ...GONO, ...GOSHO_VAN], HOKUTO_T], f: [] },
+            { day: 10, s: [SKN_TOHOKU, SKN_HKD, SKN_HKD2], l: [HACHI, [...OU, ...GONO, ...GOSHO_VAN], HOKUTO_T, VAN], f: [] },
+            { day: 11, s: [SKN_TOHOKU, SKN_HKD, SKN_HKD2], l: [HACHI, [...OU, ...GONO, ...GOSHO_VAN], HOKUTO_T, VAN, TOYA_CTS], f: FLT },
+        ];
+
+        function updateRoute(n) {
+            let seg = ROUTE_SEGS[0];
+            for (let i = 0; i < ROUTE_SEGS.length; i++) {
+                if (n >= ROUTE_SEGS[i].day) seg = ROUTE_SEGS[i];
+            }
+            aSkn.setLatLngs(seg.s); aLoc.setLatLngs(seg.l); aFlt.setLatLngs(seg.f);
+        }
+
+        const CITIES = {
+            tokyo: { lat: 35.6812, lng: 139.7671, name: 'Tokyo' },
+            morioka: { lat: 39.7014, lng: 141.1349, name: 'Morioka' },
+            aomori: { lat: 40.8244, lng: 140.7400, name: 'Aomori' },
+            toya: { lat: 42.5658, lng: 140.8197, name: 'Lake Toya' },
+        };
+
+        const POIS = [
+            { lat: 40.5122, lng: 141.4884, name: 'Hachinohe (Day trip)', color: '#ef4444' },
+            { lat: 40.6031, lng: 140.4631, name: 'Hirosaki (Day trip)', color: '#ef4444' },
+            { lat: 40.8065, lng: 140.4390, name: 'Goshogawara (Tachineputa)', color: '#ef4444' },
+            { lat: 42.8267, lng: 140.8114, name: 'Mt. Yōtei', color: '#ef4444' },
+            { lat: 42.6200, lng: 140.8000, name: 'Lake Hill Farm', color: '#ef4444' },
+            { lat: 42.8546, lng: 140.8798, name: 'Fukidashi Park', color: '#ef4444' },
+            { lat: 42.4996, lng: 141.1484, name: 'Noboribetsu Jigokudani', color: '#ef4444' },
+            { lat: 42.7752, lng: 141.6923, name: 'New Chitose Airport', color: '#ef4444' },
+        ];
+        POIS.forEach(p => {
+            L.circleMarker([p.lat, p.lng], { radius: 4, fillColor: p.color, color: p.color, weight: 1.5, opacity: 0.8, fillOpacity: 0.7 }).addTo(map)
+                .bindTooltip(p.name, { className: 'ct', permanent: false, direction: 'top' });
+        });
+
+        const FILM_SITES = [
+            { lat: 35.7050, lng: 139.6496, name: 'Mabashi Inari Shrine (Tokyo In Film)' },
+            { lat: 35.7049, lng: 139.6497, name: 'Live Music JIROKICHI (Tokyo In Film)' },
+            { lat: 35.7334, lng: 139.8827, name: 'KOIWA BUSH BASH (Tokyo In Film)' }
+        ];
+        FILM_SITES.forEach(s => {
+            L.circleMarker([s.lat, s.lng], { radius: 4, fillColor: '#10b981', color: '#10b981', weight: 1.5, opacity: 0.8, fillOpacity: 0.7 }).addTo(map)
+                .bindTooltip(`<b>${s.name}</b>`, { className: 'ct', permanent: false, direction: 'top' });
+        });
+
+        const cMkrs = {};
+        Object.entries(CITIES).forEach(([k, c]) => {
+            const m = L.circleMarker([c.lat, c.lng], { radius: 6, fillColor: '#ec4899', color: 'rgba(236,72,153,0.3)', weight: 7, opacity: 1, fillOpacity: 0.9 }).addTo(map);
+            m.bindTooltip(`<b>${c.name}</b>`, { className: 'ct', permanent: false, direction: 'top' });
+            m.on('click', () => {
+                const daysInCity = ALL.filter(x => x.city === k);
+                if (daysInCity.length > 0) {
+                    const closestDay = daysInCity.reduce((prev, curr) => Math.abs(curr.n - activeDay) < Math.abs(prev.n - activeDay) ? curr : prev);
+                    scrollTo(closestDay.n);
+                }
+            });
+            cMkrs[k] = m;
+        });
+
+        // BUILD TIMELINE
+
+        // Haversine distance formula
+        function getDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        if (typeof KML_DATA !== 'undefined') {
+            KML_DATA.forEach(p => {
+                if (!p.coordinates) return;
+
+                const isAccommodation = p.folder.toLowerCase().includes('accommodation');
+                const isTokyo = p.coordinates.lat > 35.5 && p.coordinates.lat < 35.9 && p.coordinates.lng > 139.5 && p.coordinates.lng < 140.0;
+
+                // Filter trivial accomodations entirely unless in Tokyo
+                if (isAccommodation && !isTokyo) return;
+
+                // Rassera-specific filter: Ignore all locations south of Tokyo
+                if (p.coordinates.lat < 35.5) return;
+
+                let tooClose = false;
+                if (typeof CITIES !== 'undefined') {
+                    Object.values(CITIES).forEach(c => {
+                        if (getDistance(p.coordinates.lat, p.coordinates.lng, c.lat, c.lng) < 0.2) tooClose = true;
+                    });
+                }
+                if (typeof ALL !== 'undefined') {
+                    ALL.forEach(d => {
+                        if (d.lat && d.lng && getDistance(p.coordinates.lat, p.coordinates.lng, d.lat, d.lng) < 0.2) tooClose = true;
+                    });
+                }
+
+                if (tooClose) return;
+
+                // Determine category styling
+                const f = p.folder.toLowerCase();
+                let colStr = '#cbd5e1'; // default light slate for accommodation / other
+                let rgb = '148,163,184';
+
+                if (f.includes('food') || f.includes('restaurant') || f.includes('coffee') || f.includes('brewer') || f.includes('special')) {
+                    colStr = '#fde047'; // Dining & Drinks (light amber/yellow)
+                    rgb = '234,179,8';
+                } else if (f.includes('nature') || f.includes('temple') || f.includes('experience') || f.includes('onsen')) {
+                    colStr = '#5eead4'; // Culture & Nature (light teal)
+                    rgb = '20,184,166';
+                } else if (f.includes('film') || f.includes('otaku') || f.includes('arcade') || f.includes('music')) {
+                    colStr = '#c4b5fd'; // Creative & Film (light purple)
+                    rgb = '139,92,246';
+                }
+
+                const m = L.circleMarker([p.coordinates.lat, p.coordinates.lng], {
+                    radius: 3.5,
+                    fillColor: 'rgba(' + rgb + ', 0.5)',
+                    color: colStr,
+                    weight: 1.5,
+                    opacity: 0.9,
+                    fillOpacity: 0.5
+                }).addTo(map);
+
+                m.bindTooltip('<b>' + p.name + '</b>', {
+                    className: 'ct',
+                    permanent: false,
+                    direction: 'top'
+                });
+
+                const popupContent = '<div class="kml-category" style="color:' + colStr + ';">' + p.folder + '</div><div class="kml-name">' + p.name + '</div>' +
+                    (p.description ? '<div class="kml-desc">' + p.description + '</div>' : '');
+
+                m.bindPopup(popupContent, {
+                    className: 'kml-popup',
+                    maxWidth: 280
+                });
+
+                m.on('mouseover', function () {
+                    this.setStyle({ fillOpacity: 0.9, opacity: 1, radius: 5 });
+                });
+                m.on('mouseout', function () {
+                    this.setStyle({ fillOpacity: 0.5, opacity: 0.9, radius: 3.5 });
+                });
+            });
+        }
+
+        const tl = document.getElementById('timeline');
+        SECTIONS.forEach(sec => {
+            const wrap = document.createElement('div');
+            const lbl = document.createElement('div');
+            lbl.className = 'sec-label'; lbl.textContent = sec.label; wrap.appendChild(lbl);
+            sec.days.forEach(d => {
+                const card = document.createElement('div');
+                card.className = `day-card ${d.type}`;
+                card.id = `d${d.n}`;
+                card.dataset.n = d.n;
+                card.setAttribute('role', 'button');
+                card.setAttribute('tabindex', '0');
+                card.innerHTML = `
+      ${d.img ? `<div class="card-img-wrap"><img class="card-img" src="${d.img}" alt="${d.loc}" loading="lazy"><div class="card-img-overlay"></div></div>` : ''}
+      <div class="card-top">
+        <div class="day-num">${d.n}</div>
+        <div class="card-meta"><div class="card-date">${d.date}</div><div class="card-loc">${d.loc}</div></div>
+        
+      </div>
+      <div class="card-body">
+        <div class="card-ttl">${d.title}</div>
+        <ul class="evts">${d.events.map(e => `<li>${e}</li>`).join('')}</ul>
+      </div>
+      <div class="card-prose-mb">${d.prose || ''}</div>`;
+                card.addEventListener('click', () => activate(d.n, true));
+                card.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        activate(d.n, true);
+                    }
+                });
+                wrap.appendChild(card);
+            });
+            tl.appendChild(wrap);
+        });
+
+        /* CTA CARD */
+        const cta = document.createElement('div');
+        cta.className = 'cta-card';
+        cta.innerHTML = '<h3>Join This Trip</h3><p>Travel with a filmmaker and adventure guide across Japan\u2019s festival heartland. Eleven days from Tokyo to Hokkaido, Nebuta to Mt. Yōtei. Limited group size.</p><p style="margin-top: 10px; font-weight: 600; font-size: 14px; margin-bottom: 12px; color: var(--text);"><strong>$3,220</strong> per person, sharing a double<br><span style="font-size: 12px; font-weight: 400;">Single room $4,240 &middot; Group of 4 sharing $3,200</span><br><span style="font-size: 10px; font-weight: 400; color: var(--muted); opacity: 0.8;">*International flights not included</span></p><form class="cta-form" onsubmit="event.preventDefault(); sendEmail(this);"><div class="cta-input-group"><label class="cta-label" for="contact-name">Name</label><input type="text" id="contact-name" class="cta-input" placeholder="Your name" required></div><div class="cta-input-group"><label class="cta-label" for="contact-email">Email</label><input type="email" id="contact-email" class="cta-input" placeholder="your.email@example.com" required></div><div class="cta-input-group"><label class="cta-label" for="contact-message">Message</label><textarea id="contact-message" class="cta-input cta-textarea" placeholder="Tell me about your interest in this trip..." required></textarea></div><button type="submit" class="cta-btn cta-submit">Send Message &rarr;</button></form>';
+        tl.appendChild(cta);
+
+        let activeDay = 0, lastCity = '';
+        let scrollCooldown = false;
+        const obs = new IntersectionObserver(entries => {
+            if (scrollCooldown) return;
+            entries.forEach(e => { if (e.isIntersecting) { const n = parseInt(e.target.dataset.n); if (n !== activeDay) { scrollCooldown = true; activate(n, false); setTimeout(() => { scrollCooldown = false; }, 400); } } });
+        }, { root: document.getElementById('timeline'), rootMargin: '-20% 0px -75% 0px', threshold: 0 });
+        document.querySelectorAll('.day-card').forEach(c => obs.observe(c));
+
+        function activate(n, scroll) {
+            activeDay = n;
+            const day = ALL.find(d => d.n === n); if (!day) return;
+            document.querySelectorAll('.day-card').forEach(c => c.classList.remove('active'));
+            const card = document.getElementById(`d${n}`);
+            if (card) { card.classList.add('active'); if (scroll) card.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+            if (day.city !== lastCity) {
+                const flyZoom = Math.min(day.zoom, 9);
+                map.flyTo([day.lat, day.lng], flyZoom, { duration: 1.1, easeLinearity: 0.25 });
+                lastCity = day.city;
+                Object.entries(cMkrs).forEach(([k, m]) => m.setStyle(k === day.city
+                    ? { radius: 9, fillColor: '#ec4899', color: 'rgba(236,72,153,0.6)', weight: 10, fillOpacity: 1 }
+                    : { radius: 6, fillColor: '#ec4899', color: 'rgba(236,72,153,0.3)', weight: 7, fillOpacity: 0.9 }));
+            }
+            updateRoute(n);
+            document.getElementById('ib-day').textContent = `Day ${n} \u00b7 ${day.date}`;
+            document.getElementById('ib-loc').textContent = day.loc;
+            document.getElementById('ib-ttl').textContent = day.title;
+            document.getElementById('info-prose').innerHTML = (day.img ? `<img src="${day.img}" style="width:100%; border-radius:8px; margin-bottom:15px; border:1px solid var(--border);">` : '') + (day.prose || '');
+            const img = document.getElementById('info-img');
+            if (day.img && img.src !== day.img) { img.style.opacity = 0; setTimeout(() => { img.src = day.img; img.alt = day.loc; img.style.opacity = 1; }, 200); }
+            const pct = ((n - 1) / (ALL.length - 1)) * 100;
+            document.getElementById('prog-fill').style.width = pct + '%';
+            document.getElementById('day-ctr').textContent = `Day ${n} of ${ALL.length}`;
+        }
+        function scrollTo(n) { const c = document.getElementById(`d${n}`); if (c) c.scrollIntoView({ behavior: 'smooth', block: 'center' }); activate(n, false); }
+        setTimeout(() => activate(1, false), 300);
+    </script>
+
+    <script>
+        // Mobile bottom-sheet behavior (Google Maps style)
+        (function () {
+            const mq = window.matchMedia('(max-width:760px)');
+            const sheet = document.getElementById('sidebar');
+            const handle = document.getElementById('sheet-handle');
+            const hdr = document.getElementById('hdr');
+            const legDetails = document.getElementById('legend-details');
+
+            function refreshMap() {
+                if (typeof map !== 'undefined' && map) map.invalidateSize();
+            }
+
+            function snapPoints() {
+                const vh = window.innerHeight;
+                return {
+                    full: 0,
+                    half: Math.round(0.42 * vh),
+                    peek: Math.round(0.92 * vh - 140)
+                };
+            }
+
+            let currentY = null;
+
+            function setY(y, animate) {
+                if (animate) sheet.classList.remove('dragging');
+                else sheet.classList.add('dragging');
+                currentY = y;
+                sheet.style.transform = 'translateY(' + y + 'px)';
+            }
+
+            function snapTo(y) {
+                const p = snapPoints();
+                const pts = [p.full, p.half, p.peek];
+                let nearest = pts[0];
+                pts.forEach(t => { if (Math.abs(t - y) < Math.abs(nearest - y)) nearest = t; });
+                setY(nearest, true);
+                setTimeout(refreshMap, 340);
+            }
+
+            function initSheet() {
+                if (!mq.matches) { sheet.style.transform = ''; currentY = null; return; }
+                setY(snapPoints().peek, true);
+            }
+
+            let startY = 0, startTranslate = 0, dragging = false, moved = false;
+
+            function onDown(e) {
+                if (!mq.matches) return;
+                dragging = true; moved = false;
+                startY = e.touches ? e.touches[0].clientY : e.clientY;
+                startTranslate = currentY != null ? currentY : snapPoints().peek;
+                sheet.classList.add('dragging');
+            }
+            function onMove(e) {
+                if (!dragging) return;
+                const y = e.touches ? e.touches[0].clientY : e.clientY;
+                const dy = y - startY;
+                if (Math.abs(dy) > 4) moved = true;
+                const p = snapPoints();
+                let nt = Math.max(p.full, Math.min(p.peek, startTranslate + dy));
+                setY(nt, false);
+                if (e.cancelable) e.preventDefault();
+            }
+            function onUp() {
+                if (!dragging) return;
+                dragging = false;
+                const p = snapPoints();
+                if (!moved) {
+                    snapTo(currentY <= (p.half + p.peek) / 2 ? p.peek : p.half);
+                } else {
+                    snapTo(currentY);
+                }
+            }
+
+            [handle, hdr].forEach(el => {
+                if (!el) return;
+                el.addEventListener('touchstart', onDown, { passive: true });
+                el.addEventListener('mousedown', onDown);
+            });
+            window.addEventListener('touchmove', onMove, { passive: false });
+            window.addEventListener('mousemove', onMove);
+            window.addEventListener('touchend', onUp);
+            window.addEventListener('mouseup', onUp);
+
+            window.addEventListener('resize', () => { initSheet(); setTimeout(refreshMap, 120); });
+            if (mq.addEventListener) mq.addEventListener('change', initSheet);
+
+            if (mq.matches && legDetails) legDetails.removeAttribute('open');
+
+            initSheet();
+            setTimeout(refreshMap, 300);
+        })();
+    </script>
+
+    <script>
+        function sendEmail(form) {
+            const name = form.querySelector('#contact-name').value;
+            const email = form.querySelector('#contact-email').value;
+            const message = form.querySelector('#contact-message').value;
+            
+            const subject = encodeURIComponent("Interest in Chaues Productions Trip");
+            const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+            
+            window.location.href = `mailto:factum.est.illud@gmail.com?subject=${subject}&body=${body}`;
+        }
+    </script>
+</body>
+
+</html>
